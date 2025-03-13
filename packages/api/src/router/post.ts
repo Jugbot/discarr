@@ -1,39 +1,183 @@
-import { z } from 'zod'
-
-import { desc, eq } from '@acme/db'
-import { Post } from '@acme/db/schema'
-
+import { eq } from '@acme/db'
+import { Media } from '@acme/db/schema'
+import { inferRouterContext } from '@trpc/server'
+import { BaseMessageOptions } from 'discord.js'
+import {
+  getClient,
+  getServer,
+  getTextChannel,
+  makeThread,
+} from '../api/discord'
+import { client as jellyseerrClient } from '../api/jellyseer'
+import { components } from '../generated/overseerrAPI'
+import { fromMovie, fromSeries, MediaInfo } from '../model/Media'
 import { createTRPCRouter, publicProcedure } from '../trpc'
 
 export const postRouter = createTRPCRouter({
-  all: publicProcedure.query(({ ctx }) => {
-    // return ctx.db.select().from(schema.post).orderBy(desc(schema.post.id));
-    return ctx.db.query.Post.findMany({
-      orderBy: desc(Post.id),
-      limit: 10,
-    })
+  hook: publicProcedure.mutation(async ({ ctx }) => {
+    console.log('running media sync hook')
+    const result = await jellyseerrClient.GET('/media')
+
+    if (!result.data) {
+      throw new Error(`Error fetching media: ${result.response.statusText}`)
+    }
+
+    for (const media of result.data.results) {
+      const mediaDetails = await getDetails(media)
+      console.log(`processing media ${mediaDetails.title}`)
+      await processMediaUpdate(ctx)(mediaDetails)
+    }
+
+    await Promise.all(
+      result.data.results.map(async (media) => {
+        const mediaDetails = await getDetails(media)
+        await processMediaUpdate(ctx)(mediaDetails)
+      }),
+    )
   }),
-
-  byId: publicProcedure
-    .input(z.object({ id: z.string() }))
-    .query(({ ctx, input }) => {
-      // return ctx.db
-      //   .select()
-      //   .from(schema.post)
-      //   .where(eq(schema.post.id, input.id));
-
-      return ctx.db.query.Post.findFirst({
-        where: eq(Post.id, input.id),
-      })
-    }),
-
-  // create: protectedProcedure
-  //   .input(CreatePostSchema)
-  //   .mutation(({ ctx, input }) => {
-  //     return ctx.db.insert(Post).values(input);
-  //   }),
-
-  // delete: protectedProcedure.input(z.string()).mutation(({ ctx, input }) => {
-  //   return ctx.db.delete(Post).where(eq(Post.id, input));
-  // }),
 })
+
+function getDetails(media: components['schemas']['MediaInfo']) {
+  const handleBadResponse = <T>(res: {
+    data?: T
+    response: Response
+    error?: unknown
+  }) => {
+    if (!res.data) {
+      return Promise.reject(
+        Error(`Error fetching media details: ${res.response.status}`, {
+          cause: res.error,
+        }),
+      )
+    }
+    return res.data
+  }
+
+  if (media.mediaType === 'movie') {
+    return jellyseerrClient
+      .GET('/movie/{movieId}', {
+        params: {
+          path: {
+            movieId: media.tmdbId,
+          },
+        },
+      })
+      .then(handleBadResponse)
+      .then(fromMovie(media))
+  }
+  return jellyseerrClient
+    .GET('/tv/{tvId}', {
+      params: {
+        path: {
+          tvId: media.tmdbId,
+        },
+      },
+    })
+    .then(handleBadResponse)
+    .then(fromSeries(media))
+}
+
+function discordMessagePayload(media: MediaInfo): BaseMessageOptions {
+  function getLinks() {
+    if (media.type === 'movie') {
+      return [`[${media.title}](${media.link})`]
+    }
+    return media.episodes.map(
+      (episode) => `[S${episode.season}E${episode.episode}](${media.link})`,
+    )
+  }
+
+  const links = getLinks()
+
+  return {
+    content: media.title,
+    embeds: [
+      {
+        title: media.title,
+        description: `${media.overview}\n${links.join(' ')}`,
+        thumbnail: {
+          url: media.image,
+        },
+        fields: [
+          {
+            name: 'Download Status',
+            value: `${media.downloadStatus.completion * 100}%`,
+            inline: true,
+          },
+          {
+            name: 'touched',
+            value: new Date().toISOString(),
+          },
+          {
+            name: 'status',
+            value: media.status,
+          },
+        ],
+      },
+    ],
+  }
+}
+
+const upsertThread =
+  (ctx: inferRouterContext<typeof postRouter>) => async (media: MediaInfo) => {
+    const discordClient = await getClient()
+    const guild = await getServer(discordClient)
+    const channel = await getTextChannel(guild)
+
+    const threadRow = await ctx.db.query.Media.findFirst({
+      where: eq(Media.jellyseerr_id, media.id),
+    })
+
+    async function fetchThreadStarterMessage(thread_id?: string) {
+      if (!thread_id) {
+        return null
+      }
+      const handleBadThread = async (thread_id: string) => {
+        await ctx.db.delete(Media).where(eq(Media.thread_id, thread_id))
+        return null
+      }
+      const message = channel.messages
+        .fetch(thread_id)
+        .then((r) => {
+          if (!r) {
+            return handleBadThread(thread_id)
+          }
+          return r
+        })
+        .catch(() => {
+          return handleBadThread(thread_id)
+        })
+      return message
+    }
+
+    async function makeNewThread() {
+      const newThread = await makeThread(channel)(
+        discordMessagePayload(media),
+        {
+          name: 'History',
+        },
+      )
+      await ctx.db.insert(Media).values({
+        jellyseerr_id: media.id,
+        thread_id: newThread.id,
+      })
+      return newThread
+    }
+
+    return await fetchThreadStarterMessage(threadRow?.thread_id).then(
+      async (thread) => {
+        if (!thread) {
+          return makeNewThread()
+        }
+        return thread
+      },
+    )
+  }
+
+const processMediaUpdate =
+  (ctx: inferRouterContext<typeof postRouter>) =>
+  async (extraInfo: MediaInfo) => {
+    console.log(`Processing media id:${extraInfo.id}`)
+
+    await upsertThread(ctx)(extraInfo)
+  }

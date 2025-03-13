@@ -7,9 +7,11 @@
       "outputs": ["dist/**"]
     },
     "check-types": {
+      "env": ["DISCORD_TOKEN"],
       "dependsOn": ["^check-types"]
     },
     "dev": {
+      "env": ["DISCORD_TOKEN"],
       "inputs": ["$TURBO_DEFAULT$", ".env.local"],
       "persistent": true,
       "interactive": false,

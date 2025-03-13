@@ -30,3 +30,6 @@ storybook-static
 
 .turbo
 vite.config.ts.timestamp*
+
+.env
+.env.local

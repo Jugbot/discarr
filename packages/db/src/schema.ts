@@ -90,3 +90,18 @@ export const Session = pgTable('session', {
 export const SessionRelations = relations(Session, ({ one }) => ({
   user: one(User, { fields: [Session.userId], references: [User.id] }),
 }))
+
+export const Media = pgTable(
+  'media',
+  {
+    // id: uuid('id').notNull().primaryKey().defaultRandom(),
+    jellyseerr_id: integer('jellyseerr_id').notNull().unique(),
+    // TODO: check if this is the right size
+    thread_id: varchar('thread_id', { length: 255 }).notNull(),
+  },
+  (media) => ({
+    compoundKey: primaryKey({
+      columns: [media.jellyseerr_id, media.thread_id],
+    }),
+  }),
+)

@@ -10,19 +10,26 @@
   },
   "scripts": {
     "dev": "tsx watch src/server",
-    "check-types": "tsc"
+    "check-types": "tsc",
+    "gen-types": "node ./scripts/gen-types.js ./src/generated"
   },
   "dependencies": {
     "@acme/db": "workspace:*",
     "@trpc/server": "catalog:",
+    "ansi-escape-sequences": "catalog:",
     "cors": "catalog:",
+    "discord.js": "catalog:",
+    "dotenv": "catalog:",
+    "openapi-fetch": "catalog:",
     "superjson": "catalog:",
     "zod": "catalog:"
   },
   "devDependencies": {
     "@acme/tsconfig": "workspace:*",
     "@types/cors": "catalog:",
+    "@types/node-cron": "catalog:",
     "eslint": "catalog:",
+    "node-cron": "catalog:",
     "prettier": "catalog:",
     "tsx": "catalog:",
     "typescript": "catalog:"

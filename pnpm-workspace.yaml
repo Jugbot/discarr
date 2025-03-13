@@ -20,11 +20,14 @@ catalog:
   '@trpc/react-query': ^10.45.2
   '@trpc/server': ^10.45.2
   '@types/cors': ^2.8.17
+  '@types/node-cron': ^3.0.11
   '@types/react': ^18.3.3
   '@types/react-dom': ^18.3.0
   '@vitejs/plugin-react-swc': ^3.5.0
+  ansi-escape-sequences: ^6.2.4
   cors: ^2.8.5
-  dotenv: ^16.4.5
+  discord.js: ^14.18.0
+  dotenv: ^16.4.7
   drizzle-kit: ^0.24.2
   drizzle-orm: ^0.33.0
   drizzle-zod: ^0.5.1
@@ -41,6 +44,8 @@ catalog:
   msw: ^1.3.4
   msw-storybook-addon: ^1.10.0
   msw-trpc: ^1.3.4
+  node-cron: ^3.0.3
+  openapi-fetch: ^0.13.4
   postgres: ^3.4.4
   prettier: ^3.3.3
   react: ^18.3.1
