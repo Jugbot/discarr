@@ -1,0 +1,5 @@
+{
+  "extends": "@acme/tsconfig/node.json",
+  "include": ["src"],
+  "exclude": ["node_modules"]
+}

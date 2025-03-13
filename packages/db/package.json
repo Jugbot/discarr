@@ -1,0 +1,37 @@
+{
+  "name": "@acme/db",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": {
+      "default": "./src/index.ts"
+    },
+    "./client": {
+      "default": "./src/client.ts"
+    },
+    "./schema": {
+      "default": "./src/schema.ts"
+    }
+  },
+  "scripts": {
+    "dev": "docker-compose up",
+    "push": "drizzle-kit push",
+    "studio": "drizzle-kit studio",
+    "check-types": "tsc"
+  },
+  "dependencies": {
+    "dotenv": "catalog:",
+    "drizzle-orm": "catalog:",
+    "drizzle-zod": "catalog:",
+    "postgres": "catalog:",
+    "zod": "catalog:"
+  },
+  "devDependencies": {
+    "@acme/tsconfig": "workspace:*",
+    "drizzle-kit": "catalog:",
+    "eslint": "catalog:",
+    "prettier": "catalog:",
+    "typescript": "catalog:"
+  }
+}

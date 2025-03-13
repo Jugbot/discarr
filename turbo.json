@@ -1,0 +1,20 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "tasks": {
+    "build": {
+      "env": ["POSTGRES_URL", "VITE_API_BASE_URL"],
+      "inputs": ["$TURBO_DEFAULT$", ".env.local"],
+      "outputs": ["dist/**"]
+    },
+    "check-types": {
+      "dependsOn": ["^check-types"]
+    },
+    "dev": {
+      "inputs": ["$TURBO_DEFAULT$", ".env.local"],
+      "persistent": true,
+      "interactive": false,
+      "cache": false
+    },
+    "test": {}
+  }
+}

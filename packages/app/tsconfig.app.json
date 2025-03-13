@@ -1,0 +1,4 @@
+{
+  "extends": "@acme/tsconfig/browser.json",
+  "include": ["src", ".storybook/**/*", "setup-tests.ts"]
+}
