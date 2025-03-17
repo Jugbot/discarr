@@ -58,33 +58,23 @@ client.once(Events.ClientReady, (readyClient) => {
   console.log(`Ready! Logged in as ${readyClient.user.tag}`)
   getServer(readyClient)
     .then(getTextChannel)
-    // .then(async (channel) => {
-    //   if (!channel.isTextBased()) {
-    //     throw new Error(`Channel ${channel.id} is not text-based`)
-    //   }
-    //   const result = await channel.send('Hello world!')
-    //   if (!result.thread) {
-    //     return result.startThread({
-    //       name: 'test',
-    //       reason: 'testing stuff',
-    //     })
-    //   }
-    //   return result.thread
-    // })
-    // .then((thread) => {
-    //   return thread?.send('Hello from thread!')
-    // })
     .catch((error) => {
       throw error
     })
 })
+
+let pendingLogin: Promise<Client<boolean>> | null = null
 
 export const getClient = () => {
   if (client.isReady()) {
     return Promise.resolve(client)
   }
 
-  return client
+  if (pendingLogin) {
+    return pendingLogin
+  }
+
+  pendingLogin = client
     .login(config.DISCORD_TOKEN)
     .then(() => {
       console.log('Discord client logged in')
@@ -95,4 +85,6 @@ export const getClient = () => {
         cause: error,
       })
     })
+
+  return pendingLogin
 }

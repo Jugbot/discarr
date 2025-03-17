@@ -16,24 +16,26 @@ import { createTRPCRouter, publicProcedure } from '../trpc'
 export const postRouter = createTRPCRouter({
   hook: publicProcedure.mutation(async ({ ctx }) => {
     console.log('running media sync hook')
-    const result = await jellyseerrClient.GET('/media')
+    const result = await jellyseerrClient.GET('/media', {
+      params: {
+        query: {
+          take: 99999,
+        },
+      },
+    })
 
     if (!result.data) {
       throw new Error(`Error fetching media: ${result.response.statusText}`)
     }
 
-    for (const media of result.data.results) {
-      const mediaDetails = await getDetails(media)
-      console.log(`processing media ${mediaDetails.title}`)
-      await processMediaUpdate(ctx)(mediaDetails)
-    }
-
     await Promise.all(
       result.data.results.map(async (media) => {
         const mediaDetails = await getDetails(media)
+        console.log(`processing media ${mediaDetails.title}`)
         await processMediaUpdate(ctx)(mediaDetails)
       }),
     )
+    console.log('media sync hook complete')
   }),
 })
 
@@ -86,11 +88,25 @@ function discordMessagePayload(media: MediaInfo): BaseMessageOptions {
       (episode) => `[S${episode.season}E${episode.episode}](${media.link})`,
     )
   }
+  function colorFromStatus(status: MediaInfo['status']) {
+    switch (status) {
+      case 'Partially Available':
+      case 'Available':
+        return 3066993
+      case 'Blacklisted':
+        return 15158332
+      case 'Pending':
+        return 15105570
+      case 'Processing':
+        return 3447003
+      default:
+        return undefined
+    }
+  }
 
   const links = getLinks()
 
   return {
-    content: media.title,
     embeds: [
       {
         title: media.title,
@@ -98,6 +114,7 @@ function discordMessagePayload(media: MediaInfo): BaseMessageOptions {
         thumbnail: {
           url: media.image,
         },
+        color: colorFromStatus(media.status),
         fields: [
           {
             name: 'Download Status',
@@ -118,6 +135,7 @@ function discordMessagePayload(media: MediaInfo): BaseMessageOptions {
   }
 }
 
+// TODO: Update existing message
 const upsertThread =
   (ctx: inferRouterContext<typeof postRouter>) => async (media: MediaInfo) => {
     const discordClient = await getClient()
@@ -154,7 +172,7 @@ const upsertThread =
       const newThread = await makeThread(channel)(
         discordMessagePayload(media),
         {
-          name: 'History',
+          name: media.title,
         },
       )
       await ctx.db.insert(Media).values({
@@ -167,6 +185,9 @@ const upsertThread =
     return await fetchThreadStarterMessage(threadRow?.thread_id).then(
       async (thread) => {
         if (!thread) {
+          console.log(
+            `thread not found for ${media.title}, creating new thread`,
+          )
           return makeNewThread()
         }
         return thread
@@ -177,7 +198,7 @@ const upsertThread =
 const processMediaUpdate =
   (ctx: inferRouterContext<typeof postRouter>) =>
   async (extraInfo: MediaInfo) => {
-    console.log(`Processing media id:${extraInfo.id}`)
-
     await upsertThread(ctx)(extraInfo)
+
+    // TODO: trigger faux-events
   }

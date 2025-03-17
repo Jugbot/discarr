@@ -33,17 +33,17 @@ export interface MediaInfo<Type extends 'movie' | 'tv' = 'movie' | 'tv'> {
 const imageUrlFromPath = (path: string) =>
   `https://image.tmdb.org/t/p/w600_and_h900_bestv2/${path}`
 
-const statusTextFromCode = (code: string) => {
+const statusTextFromCode = (code: number) => {
   switch (code) {
-    case '2':
+    case 2:
       return 'Pending'
-    case '3':
+    case 3:
       return 'Processing'
-    case '4':
+    case 4:
       return 'Partially Available'
-    case '5':
+    case 5:
       return 'Available'
-    case '6':
+    case 6:
       return 'Blacklisted'
     default:
       return 'Unknown'
@@ -100,7 +100,7 @@ export const fromSeries =
     type: 'tv',
     overview: series.overview,
     image: imageUrlFromPath(series.posterPath),
-    status: statusTextFromCode(series.status),
+    status: statusTextFromCode(media.status),
     link: media.mediaUrl ?? `${config.JELLYSEER_URL}/tv/${media.tmdbId}`,
     ...downloadStatusSummary(media.downloadStatus),
   })
@@ -113,7 +113,7 @@ export const fromMovie =
     type: 'movie',
     overview: movie.overview,
     image: imageUrlFromPath(movie.posterPath),
-    status: statusTextFromCode(movie.status),
+    status: statusTextFromCode(media.status),
     link: media.mediaUrl ?? `${config.JELLYSEER_URL}/movie/${media.tmdbId}`,
     ...downloadStatusSummary(media.downloadStatus),
   })
