@@ -9,7 +9,8 @@
     }
   },
   "scripts": {
-    "dev": "tsx watch src/server",
+    "dev": "vite",
+    "build": "vite build",
     "check-types": "tsc",
     "gen-types": "node ./scripts/gen-types.js ./src/generated"
   },
@@ -32,6 +33,8 @@
     "node-cron": "catalog:",
     "prettier": "catalog:",
     "tsx": "catalog:",
-    "typescript": "catalog:"
+    "typescript": "catalog:",
+    "vite": "catalog:",
+    "vite-plugin-node": "^4.0.0"
   }
 }

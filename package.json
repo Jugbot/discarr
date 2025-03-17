@@ -18,24 +18,24 @@
   },
   "devDependencies": {
     "@eslint/js": "catalog:",
-    "@types/react": "catalog:",
     "@types/react-dom": "catalog:",
-    "eslint": "catalog:",
+    "@types/react": "catalog:",
     "eslint-config-prettier": "catalog:",
-    "eslint-plugin-react": "catalog:",
     "eslint-plugin-react-hooks": "catalog:",
     "eslint-plugin-react-refresh": "catalog:",
+    "eslint-plugin-react": "catalog:",
     "eslint-plugin-turbo": "catalog:",
+    "eslint": "catalog:",
     "globals": "catalog:",
     "husky": "catalog:",
     "lint-staged": "catalog:",
     "prettier": "catalog:",
     "turbo": "catalog:",
-    "typescript": "catalog:",
-    "typescript-eslint": "catalog:"
+    "typescript-eslint": "catalog:",
+    "typescript": "catalog:"
   },
   "engines": {
-    "node": ">=18.0.0"
+    "node": ">=22.0.0"
   },
   "packageManager": "pnpm@9.9.0"
 }
