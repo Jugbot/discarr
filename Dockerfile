@@ -5,8 +5,6 @@ ENV PATH="$PNPM_HOME:$PATH"
 RUN corepack enable
 
 FROM base AS builder
-# RUN apk update
-# RUN apk add --no-cache libc6-compat
 
 COPY . ./app
 WORKDIR /app
@@ -39,7 +37,5 @@ RUN adduser --system --uid 1001 nodejs
 USER nodejs
  
 COPY --from=installer --chown=nodejs:nodejs /app/ ./
-# COPY --from=installer --chown=nodejs:nodejs /app/packages/api/dist ./
-# COPY --from=installer --chown=nodejs:nodejs /app/packages/api/node_modules ./node_modules/
  
 CMD ["node", "./packages/api/dist/server.cjs"]
