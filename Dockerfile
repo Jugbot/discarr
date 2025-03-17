@@ -1,42 +1,37 @@
-# Build stage
-FROM node:18-alpine AS builder
+FROM node:18-alpine AS base
 
-# Install pnpm
-RUN corepack enable && corepack prepare pnpm@9.9.0 --activate
-
-WORKDIR /app
-
-# Copy package files
-COPY package.json pnpm-lock.yaml ./
-COPY pnpm-workspace.yaml ./
-
-# Install dependencies
-RUN pnpm install --frozen-lockfile
-
-# Copy source code
+FROM base AS builder
+RUN apk update
+RUN apk add --no-cache libc6-compat
+WORKDIR /
+RUN pnpm add -g turbo@^2
 COPY . .
-
-# Build the application
+ 
+# Generate a partial monorepo with a pruned lockfile for a target workspace.
+RUN turbo prune @acme/api @acme/app --docker
+ 
+# Add lockfile and package.json's of isolated subworkspace
+FROM base AS installer
+RUN apk update
+RUN apk add --no-cache libc6-compat
+WORKDIR /
+ 
+# First install the dependencies (as they change less often)
+COPY --from=builder /out/json/ .
+RUN pnpm install --frozen-lockfile
+ 
+# Build the project
+COPY --from=builder /out/full/ .
 RUN pnpm build
-
-# Production stage
-FROM node:18-alpine AS runner
-
-# Install pnpm
-RUN corepack enable && corepack prepare pnpm@9.9.0 --activate
-
-WORKDIR /app
-
-# Copy package files and install production dependencies
-COPY package.json pnpm-lock.yaml ./
-COPY pnpm-workspace.yaml ./
-RUN pnpm install --frozen-lockfile --prod
-
-# Copy built assets from builder
-COPY --from=builder /app/dist ./dist
-
-# Expose the port your app runs on
-EXPOSE 3000
-
-# Start the application
-CMD ["node", "dist/index.js"] 
+ 
+FROM base AS runner
+WORKDIR /
+ 
+# Don't run production as root
+RUN addgroup --system --gid 1001 nodejs
+RUN adduser --system --uid 1001 nodejs
+USER nodejs
+ 
+COPY --from=installer --chown=nodejs:nodejs /packages/api/dist ./
+ 
+CMD node apps/web/server.js
