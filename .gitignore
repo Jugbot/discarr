@@ -13,6 +13,7 @@ dist-ssr
 *.local
 *.tsbuildinfo
 .cache
+.pnpm-store
 
 # Editor directories and files
 .vscode/*
