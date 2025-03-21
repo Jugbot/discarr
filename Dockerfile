@@ -38,4 +38,4 @@ USER nodejs
  
 COPY --from=installer --chown=nodejs:nodejs /app/ ./
  
-CMD ["node", "./packages/api/dist/server.cjs"]
+CMD ["node", "--import=tsx", "./packages/api/src/server.ts"]

@@ -14,7 +14,8 @@
     "check-types": "turbo check-types",
     "check": "pnpm check-types && pnpm check-format",
     "prepare": "husky",
-    "catalog": "pnpx codemod pnpm/catalog"
+    "catalog": "pnpx codemod pnpm/catalog",
+    "postcatalog": "pnpm _prettier --write pnpm-workspace.yaml"
   },
   "devDependencies": {
     "@eslint/js": "catalog:",

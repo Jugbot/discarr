@@ -1,8 +1,5 @@
-// For format details, see https://aka.ms/devcontainer.json. For config options, see the
-// README at: https://github.com/devcontainers/templates/tree/main/src/docker-in-docker
 {
-  "name": "Docker in Docker",
-  // Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
+  "name": "Node + PostgreSQL + Docker",
   "image": "mcr.microsoft.com/devcontainers/base:bullseye",
 
   "features": {
@@ -12,9 +9,9 @@
       "moby": "true"
     },
     "ghcr.io/devcontainers/features/node:1": {
-      "pnpmVersion": "9.9.0"
-    },
-    "ghcr.io/itsmechlark/features/postgresql:1": {}
+      "pnpmVersion": "9.9.0",
+      "version": "22"
+    }
   },
   "forwardPorts": [3000, 6006, 5432],
   "postCreateCommand": "pnpm install",
