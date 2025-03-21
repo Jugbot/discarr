@@ -10,6 +10,7 @@ COPY . ./app
 WORKDIR /app
  
 # Generate a partial monorepo with a pruned lockfile for a target workspace.
+RUN pnpm add -g turbo
 RUN pnpm turbo prune @acme/api @acme/app --docker
  
 # Add lockfile and package.json's of isolated subworkspace
@@ -36,7 +37,7 @@ RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nodejs
 USER nodejs
  
-COPY --from=installer --chown=nodejs:nodejs /app/ ./
+COPY --from=installer --chown=nodejs:nodejs /app/out/full/ ./
 
 RUN mkdir -p /var/lib/postgresql/data && \
     chown -R nodejs:nodejs /var/lib/postgresql
