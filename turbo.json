@@ -17,6 +17,11 @@
       "interactive": false,
       "cache": false
     },
+    "prod": {
+      "persistent": true,
+      "interactive": false,
+      "cache": false
+    },
     "test": {}
   }
 }

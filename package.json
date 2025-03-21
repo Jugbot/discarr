@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "turbo dev --ui=tui",
+    "prod": "turbo prod",
     "build": "turbo build",
     "test": "turbo test",
     "format": "pnpm _prettier --write . && pnpm _eslint --fix .",

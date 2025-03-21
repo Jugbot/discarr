@@ -15,7 +15,7 @@
     }
   },
   "scripts": {
-    "dev": "docker-compose up",
+    "prod": "pg_ctl start",
     "push": "drizzle-kit push",
     "studio": "drizzle-kit studio",
     "check-types": "tsc"

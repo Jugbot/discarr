@@ -1,19 +1,37 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the
+// README at: https://github.com/devcontainers/templates/tree/main/src/javascript-node-postgres
 {
-  "name": "Node + PostgreSQL + Docker",
-  "image": "mcr.microsoft.com/devcontainers/base:bullseye",
+  "name": "Node.js & PostgreSQL",
+  "dockerComposeFile": "docker-compose.yml",
+  "service": "app",
+  "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
 
+  // Features to add to the dev container. More info: https://containers.dev/features.
   "features": {
-    "ghcr.io/devcontainers/features/docker-in-docker:2": {
-      "version": "latest",
-      "enableNonRootDocker": "true",
-      "moby": "true"
+    "ghcr.io/devcontainers/features/docker-in-docker:2": {}
+  },
+
+  // Use 'forwardPorts' to make a list of ports inside the container available locally.
+  // This can be used to network with other containers or with the host.
+  "forwardPorts": [3000, 5173, 5432],
+  "portsAttributes": {
+    "3000": {
+      "label": "server"
     },
-    "ghcr.io/devcontainers/features/node:1": {
-      "pnpmVersion": "9.9.0",
-      "version": "22"
+    "5173": {
+      "label": "client"
+    },
+    "5432": {
+      "label": "database"
     }
   },
-  "forwardPorts": [3000, 6006, 5432],
+
+  // Use 'postCreateCommand' to run commands after the container is created.
   "postCreateCommand": "pnpm install",
+
+  // Configure tool-specific properties.
+  // "customizations": {},
+
+  // Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
   "remoteUser": "root"
 }
