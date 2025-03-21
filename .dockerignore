@@ -1,2 +1,11 @@
 node_modules
 dist
+Dockerfile
+
+.cache
+.git
+.github
+.husky
+.pnpm-store
+.turbo
+.vscode
