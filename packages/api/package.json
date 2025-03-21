@@ -9,8 +9,8 @@
     }
   },
   "scripts": {
-    "dev": "tsx watch src/server.ts",
-    "prod": "tsx src/server.ts",
+    "dev": "tsx watch src/server",
+    "prod": "tsx src/server",
     "check-types": "tsc",
     "gen-types": "node ./scripts/gen-types.js ./src/generated"
   },
