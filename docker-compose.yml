@@ -1,0 +1,10 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    env_file:
+      - path: .env.local
+        required: false
+      - path: packages/api/.env.local
+        required: true

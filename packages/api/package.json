@@ -10,6 +10,7 @@
   },
   "scripts": {
     "dev": "tsx watch src/server",
+    "prod": "tsx src/server",
     "check-types": "tsc",
     "gen-types": "node ./scripts/gen-types.js ./src/generated"
   },

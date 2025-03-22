@@ -17,6 +17,12 @@
       "interactive": false,
       "cache": false
     },
+    "prod": {
+      "passThroughEnv": ["*"],
+      "persistent": true,
+      "interactive": false,
+      "cache": false
+    },
     "test": {}
   }
 }
