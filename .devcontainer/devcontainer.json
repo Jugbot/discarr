@@ -32,10 +32,7 @@
   // Configure tool-specific properties.
   "customizations": {
     "vscode": {
-      "extensions": [
-        "actboy168.tasks",
-        "esbenp.prettier-vscode"
-      ]
+      "extensions": ["actboy168.tasks", "esbenp.prettier-vscode"]
     }
   }
 
