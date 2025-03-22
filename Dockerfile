@@ -44,12 +44,19 @@ RUN adduser --system --uid 1001 nodejs
 RUN mkdir -p /var/lib/postgresql/data && \
     chown -R nodejs:nodejs /var/lib/postgresql
 
+RUN mkdir -p /var/run/postgresql && \
+    chown -R nodejs:nodejs /var/run/postgresql
+
 USER nodejs
 
 COPY --from=installer --chown=nodejs:nodejs /app ./
 
-ENV PGDATA=/var/lib/postgresql/data
+ENV PGDATA="/var/lib/postgresql/data"
 
-RUN pg_ctl init
+RUN pg_ctl init && \
+    pg_ctl start && \
+    createuser -s user && \
+    createdb -O user dbname && \
+    pg_ctl stop
 
-CMD ["pnpm", "run", "prod"]
+CMD pnpm run prod

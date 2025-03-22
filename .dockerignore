@@ -9,3 +9,5 @@ Dockerfile
 .pnpm-store
 .turbo
 .vscode
+
+# .env.local
