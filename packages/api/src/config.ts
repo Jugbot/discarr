@@ -1,13 +1,9 @@
 import { config } from 'dotenv'
 import { z } from 'zod'
 
-const result = config({
+config({
   path: ['.env.local', '.env.development'],
 })
-
-if (result.error) {
-  throw result.error
-}
 
 const envSchema = z.object({
   DISCORD_TOKEN: z.string().min(1),
@@ -41,7 +37,10 @@ const envSchema = z.object({
 const parsedEnv = envSchema.safeParse(process.env)
 
 if (!parsedEnv.success) {
-  throw new Error(`Environment validation error: ${parsedEnv.error.message}`)
+  const errorMessages = parsedEnv.error.issues
+    .map((issue) => `\t${issue.path.join('.')}:\t ${issue.message}`)
+    .join('\n')
+  throw new Error(`Invalid environment variables:\n${errorMessages}`)
 }
 
 export default parsedEnv.data
