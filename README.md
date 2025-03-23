@@ -9,8 +9,8 @@ services:
     image: ghcr.io/jugbot/discarr:latest
     ports:
       # All ports are optional
-      - "3000:3000" # expose api
-      - "5432:5432" # expose database
+      - '3000:3000' # expose api
+      - '5432:5432' # expose database
     environment:
       - DISCORD_TOKEN=
       - DISCORD_GUILD_ID=

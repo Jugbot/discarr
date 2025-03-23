@@ -1,5 +1,5 @@
 services:
-  app:
+  discarr:
     build:
       context: .
       dockerfile: Dockerfile
@@ -8,3 +8,11 @@ services:
         required: false
       - path: packages/api/.env.local
         required: true
+#     volumes:
+#       - db-data:/var/lib/postgresql/data
+# ports:
+#   - "3000:3000"
+#   - "5432:5432"
+
+# volumes:
+#   db-data:

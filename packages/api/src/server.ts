@@ -7,14 +7,26 @@ import { createTRPCContext } from './trpc'
 import * as cron from 'node-cron'
 
 console.log('Running a task every minute')
+
+let threadLock = false
 cron.schedule(
   '* * * * *',
   () => {
+    if (threadLock) {
+      console.log('Skipping cron job, last job still running.')
+      return
+    }
+    threadLock = true
     const trpc = createCaller(createTRPCContext())
-    void trpc.post.hook().catch((error) => {
-      console.error('Error running cron job:')
-      console.error(error)
-    })
+    trpc.post
+      .hook()
+      .catch((error) => {
+        console.error('Error running cron job:')
+        console.error(error)
+      })
+      .finally(() => {
+        threadLock = false
+      })
   },
   {
     runOnInit: true,

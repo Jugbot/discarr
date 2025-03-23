@@ -31,7 +31,6 @@ export const postRouter = createTRPCRouter({
     await Promise.all(
       result.data.results.map(async (media) => {
         const mediaDetails = await getDetails(media)
-        console.log(`processing media ${mediaDetails.title}`)
         await processMediaUpdate(ctx)(mediaDetails)
       }),
     )

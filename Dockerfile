@@ -1,5 +1,7 @@
 FROM node:22-alpine AS base
 
+ENV DO_NOT_TRACK="1"
+ENV NODE_ENV="production"
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
 RUN corepack enable
@@ -24,8 +26,8 @@ WORKDIR /app
 # First install the dependencies (as they change less often)
 COPY --from=builder /app/out/json/ .
 
-RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm fetch --frozen-lockfile
-RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile
+RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm fetch --frozen-lockfile --prod=false
+RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile --prod=false --offline
 
 # Build the project
 COPY --from=builder /app/out/full/ .
@@ -41,17 +43,19 @@ WORKDIR /app
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nodejs
 
-RUN mkdir -p /var/lib/postgresql/data && \
-    chown -R nodejs:nodejs /var/lib/postgresql
+ENV PGDATA="/var/lib/postgresql/data"
 
-RUN mkdir -p /var/run/postgresql && \
-    chown -R nodejs:nodejs /var/run/postgresql
+VOLUME ["${PGDATA}"]
+
+RUN install -v -d -o nodejs -g nodejs \
+    /var/lib/postgresql \
+    /var/lib/postgresql/data \
+    /var/run/postgresql
 
 USER nodejs
 
 COPY --from=installer --chown=nodejs:nodejs /app ./
-
-ENV PGDATA="/var/lib/postgresql/data"
+COPY --chown=nodejs:nodejs /docker-entrypoint.sh .
 
 RUN pg_ctl init && \
     pg_ctl start && \
@@ -59,4 +63,9 @@ RUN pg_ctl init && \
     createdb -O user dbname && \
     pg_ctl stop
 
-CMD pnpm run prod
+ENTRYPOINT ["sh", "docker-entrypoint.sh"]
+
+CMD ["pnpm", "run", "prod"]
+
+EXPOSE 3000
+EXPOSE 5432

@@ -15,8 +15,6 @@
     }
   },
   "scripts": {
-    "prod": "pg_ctl start",
-    "postprod": "pnpm push",
     "push": "drizzle-kit push",
     "studio": "drizzle-kit studio",
     "check-types": "tsc"
