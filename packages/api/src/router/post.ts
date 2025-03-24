@@ -11,72 +11,79 @@ import {
 import { client as jellyseerrClient } from '../api/jellyseer'
 import { components } from '../generated/overseerrAPI'
 import { fromMovie, fromSeries, MediaInfo } from '../model/Media'
+import { getUsers, UserMap } from '../model/User'
 import { createTRPCRouter, publicProcedure } from '../trpc'
 
 export const postRouter = createTRPCRouter({
+  ping: publicProcedure.query(() => 'pong'),
   hook: publicProcedure.mutation(async ({ ctx }) => {
     console.log('running media sync hook')
-    const result = await jellyseerrClient.GET('/media', {
-      params: {
-        query: {
-          take: 99999,
-        },
-      },
-    })
-
-    if (!result.data) {
-      throw new Error(`Error fetching media: ${result.response.statusText}`)
-    }
+    const users = await getUsers()
+    const medias = await getMedia(users)
 
     await Promise.all(
-      result.data.results.map(async (media) => {
-        const mediaDetails = await getDetails(media)
-        await processMediaUpdate(ctx)(mediaDetails)
-      }),
+      medias.map((media) => media.then(processMediaUpdate(ctx))),
     )
     console.log('media sync hook complete')
   }),
 })
 
-function getDetails(media: components['schemas']['MediaInfo']) {
-  const handleBadResponse = <T>(res: {
-    data?: T
-    response: Response
-    error?: unknown
-  }) => {
-    if (!res.data) {
-      return Promise.reject(
-        Error(`Error fetching media details: ${res.response.status}`, {
-          cause: res.error,
-        }),
-      )
-    }
-    return res.data
+async function getMedia(users: UserMap) {
+  const result = await jellyseerrClient.GET('/media', {
+    params: {
+      query: {
+        take: 9999,
+      },
+    },
+  })
+
+  if (!result.data) {
+    throw new Error(`Error fetching media: ${result.response.statusText}`)
   }
 
-  if (media.mediaType === 'movie') {
+  return result.data.results.map(getDetails(users))
+}
+
+const getDetails =
+  (users: UserMap) => (media: components['schemas']['MediaInfo']) => {
+    const handleBadResponse = <T>(res: {
+      data?: T
+      response: Response
+      error?: unknown
+    }) => {
+      if (!res.data) {
+        return Promise.reject(
+          Error(`Error fetching media details: ${res.response.status}`, {
+            cause: res.error,
+          }),
+        )
+      }
+      return res.data
+    }
+
+    if (media.mediaType === 'movie') {
+      return jellyseerrClient
+        .GET('/movie/{movieId}', {
+          params: {
+            path: {
+              movieId: media.tmdbId,
+            },
+          },
+        })
+        .then(handleBadResponse)
+        .then(fromMovie(users))
+    }
     return jellyseerrClient
-      .GET('/movie/{movieId}', {
+      .GET('/tv/{tvId}', {
         params: {
           path: {
-            movieId: media.tmdbId,
+            tvId: media.tmdbId,
           },
         },
       })
       .then(handleBadResponse)
-      .then(fromMovie(media))
+      .then(fromSeries(users))
   }
-  return jellyseerrClient
-    .GET('/tv/{tvId}', {
-      params: {
-        path: {
-          tvId: media.tmdbId,
-        },
-      },
-    })
-    .then(handleBadResponse)
-    .then(fromSeries(media))
-}
 
 function discordMessagePayload(media: MediaInfo): BaseMessageOptions {
   function getLinks() {
@@ -194,9 +201,20 @@ const upsertThread =
     )
   }
 
+function watchCondition(media: MediaInfo) {
+  // TODO: Jellyseerr doesn't expose whether the media is being watched in sonarr or radarr
+  return (
+    !['Unknown', 'Blacklisted'].includes(media.status) ||
+    media.requests.length > 0
+  )
+}
+
 const processMediaUpdate =
   (ctx: inferRouterContext<typeof postRouter>) =>
   async (extraInfo: MediaInfo) => {
+    if (!watchCondition(extraInfo)) {
+      return
+    }
     await upsertThread(ctx)(extraInfo)
 
     // TODO: trigger faux-events

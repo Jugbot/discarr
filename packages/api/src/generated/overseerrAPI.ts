@@ -8176,6 +8176,7 @@ export interface components {
       readonly updatedAt: string
       /** @example 5 */
       readonly requestCount?: number
+      readonly displayName: string
     }
     UserSettings: {
       locale: string

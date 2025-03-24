@@ -12,7 +12,7 @@ const radarrConnection = {
 const radarrInfo = await jellyseerClient.GET('/settings/radarr')
 const firstResult = radarrInfo?.data?.at(0)
 if (firstResult) {
-  radarrConnection.baseUrl = firstResult.baseUrl
+  radarrConnection.baseUrl = `http${firstResult.useSsl ? 's' : ''}://${firstResult.hostname}:${firstResult.port}/api/v3/`
   radarrConnection.apiKey = firstResult.apiKey
 }
 

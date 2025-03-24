@@ -15,6 +15,7 @@
     }
   },
   "scripts": {
+    "dev": "docker run -p 5432:5432 --env-file .env.development postgres",
     "push": "drizzle-kit push",
     "studio": "drizzle-kit studio",
     "check-types": "tsc"

@@ -1,5 +1,6 @@
 import { components } from '../generated/overseerrAPI'
 import config from '../config'
+import { User, UserMap } from './User'
 
 interface Epsiode {
   season: number
@@ -10,6 +11,10 @@ interface Epsiode {
 interface DownloadStatus {
   completion: number
   timeEstimate: string
+}
+
+interface Request {
+  user: User
 }
 
 export interface MediaInfo<Type extends 'movie' | 'tv' = 'movie' | 'tv'> {
@@ -28,6 +33,7 @@ export interface MediaInfo<Type extends 'movie' | 'tv' = 'movie' | 'tv'> {
   episodes: Epsiode[]
   downloadStatus: DownloadStatus
   link: string
+  requests: Request[]
 }
 
 const imageUrlFromPath = (path: string) =>
@@ -92,28 +98,51 @@ const downloadStatusSummary = (
   }
 }
 
+const requestAdapter =
+  (users: UserMap) =>
+  (request: components['schemas']['MediaRequest']): Request => {
+    if (!request.requestedBy) {
+      throw new Error(`Request ${request.id} has no user associated with it`)
+    }
+
+    const user = users[request.requestedBy.id]
+    if (!user) {
+      throw new Error(
+        `User ${request.requestedBy.id} on request ${request.id} not found`,
+      )
+    }
+
+    return {
+      user,
+    }
+  }
+
 export const fromSeries =
-  (media: components['schemas']['MediaInfo']) =>
+  (users: UserMap) =>
   (series: components['schemas']['TvDetails']): MediaInfo<'tv'> => ({
     id: series.id,
     title: series.name,
     type: 'tv',
     overview: series.overview,
     image: imageUrlFromPath(series.posterPath),
-    status: statusTextFromCode(media.status),
-    link: media.mediaUrl ?? `${config.JELLYSEER_URL}/tv/${media.tmdbId}`,
-    ...downloadStatusSummary(media.downloadStatus),
+    status: statusTextFromCode(series.mediaInfo.status),
+    link:
+      series.mediaInfo.mediaUrl ?? `${config.JELLYSEER_URL}/tv/${series.id}`,
+    requests: series.mediaInfo.requests.map(requestAdapter(users)),
+    ...downloadStatusSummary(series.mediaInfo.downloadStatus),
   })
 
 export const fromMovie =
-  (media: components['schemas']['MediaInfo']) =>
+  (users: UserMap) =>
   (movie: components['schemas']['MovieDetails']): MediaInfo<'movie'> => ({
     id: movie.id,
     title: movie.title,
     type: 'movie',
     overview: movie.overview,
     image: imageUrlFromPath(movie.posterPath),
-    status: statusTextFromCode(media.status),
-    link: media.mediaUrl ?? `${config.JELLYSEER_URL}/movie/${media.tmdbId}`,
-    ...downloadStatusSummary(media.downloadStatus),
+    status: statusTextFromCode(movie.mediaInfo.status),
+    link:
+      movie.mediaInfo.mediaUrl ?? `${config.JELLYSEER_URL}/movie/${movie.id}`,
+    requests: movie.mediaInfo.requests.map(requestAdapter(users)),
+    ...downloadStatusSummary(movie.mediaInfo.downloadStatus),
   })

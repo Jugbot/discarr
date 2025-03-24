@@ -9,6 +9,7 @@ import * as cron from 'node-cron'
 console.log('Running a task every minute')
 
 let threadLock = false
+const trpc = createCaller(createTRPCContext())
 cron.schedule(
   '* * * * *',
   () => {
@@ -17,7 +18,6 @@ cron.schedule(
       return
     }
     threadLock = true
-    const trpc = createCaller(createTRPCContext())
     trpc.post
       .hook()
       .catch((error) => {

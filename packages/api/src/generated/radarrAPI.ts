@@ -5115,6 +5115,7 @@ export interface paths {
       cookie?: never
     }
     get?: never
+    /** @deprecated */
     put: {
       parameters: {
         query?: never
@@ -5152,7 +5153,28 @@ export interface paths {
       cookie?: never
     }
     get?: never
-    put?: never
+    put: {
+      parameters: {
+        query?: never
+        header?: never
+        path?: never
+        cookie?: never
+      }
+      requestBody?: {
+        content: {
+          'application/json': components['schemas']['MovieFileResource'][]
+        }
+      }
+      responses: {
+        /** @description OK */
+        200: {
+          headers: {
+            [name: string]: unknown
+          }
+          content?: never
+        }
+      }
+    }
     post?: never
     delete: {
       parameters: {

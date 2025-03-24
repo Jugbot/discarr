@@ -17,7 +17,7 @@ type Story = StoryObj<typeof meta>
 export const MainPage: Story = {
   parameters: {
     msw: [
-      trpcMsw.ping.ping.query((_req, res, ctx) => {
+      trpcMsw.post.ping.query((_req, res, ctx) => {
         return res(ctx.status(200), ctx.data('pong'))
       }),
     ],
@@ -27,7 +27,7 @@ export const MainPage: Story = {
 export const MainPageLoading: Story = {
   parameters: {
     msw: [
-      trpcMsw.ping.ping.query((_req, res, ctx) => {
+      trpcMsw.post.ping.query((_req, res, ctx) => {
         return res(ctx.delay('infinite'))
       }),
     ],

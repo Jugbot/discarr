@@ -12,7 +12,7 @@ const sonarrConnection = {
 const sonarrInfo = await jellyseerClient.GET('/settings/sonarr')
 const firstResult = sonarrInfo?.data?.at(0)
 if (firstResult) {
-  sonarrConnection.baseUrl = firstResult.baseUrl
+  sonarrConnection.baseUrl = `http${firstResult.useSsl ? 's' : ''}://${firstResult.hostname}:${firstResult.port}/api/v3/`
   sonarrConnection.apiKey = firstResult.apiKey
 }
 

@@ -21,7 +21,7 @@ const Logo = styled('img', {
 })
 
 export const Main = () => {
-  const pong = trpc.ping.ping.useQuery()
+  const pong = trpc.post.ping.useQuery()
 
   const pongDisplay = pong.isFetching ? 'loading...' : pong.data
 
