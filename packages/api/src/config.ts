@@ -15,6 +15,13 @@ const envSchema = z.object({
     .refine((url) => !url.endsWith('/'), {
       message: "URL should not end with '/'",
     }),
+  JELLYSEER_PUBLIC_URL: z
+    .string()
+    .url()
+    .refine((url) => !url.endsWith('/'), {
+      message: "URL should not end with '/'",
+    })
+    .optional(),
   JELLYSEER_API_KEY: z.string().min(1),
   SONARR_URL: z
     .string()
@@ -43,4 +50,8 @@ if (!parsedEnv.success) {
   throw new Error(`Invalid environment variables:\n${errorMessages}`)
 }
 
-export default parsedEnv.data
+export default {
+  ...parsedEnv.data,
+  JELLYSEER_PUBLIC_URL:
+    parsedEnv.data.JELLYSEER_PUBLIC_URL ?? parsedEnv.data.JELLYSEER_URL,
+}

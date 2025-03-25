@@ -1,11 +1,18 @@
-import { integer, pgTable, primaryKey, varchar } from 'drizzle-orm/pg-core'
+import {
+  integer,
+  pgTable,
+  primaryKey,
+  varchar,
+  json,
+} from 'drizzle-orm/pg-core'
 
 export const Media = pgTable(
   'media',
   {
     jellyseerr_id: integer('jellyseerr_id').notNull().unique(),
-    // TODO: check if this is the right size
     thread_id: varchar('thread_id', { length: 255 }).notNull().unique(),
+    // Last known state of media so we can generate faux-events
+    last_state: json('last_state').$type<Record<string, unknown>>().default({}),
   },
   (media) => ({
     compoundKey: primaryKey({

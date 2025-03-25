@@ -68,17 +68,17 @@ const downloadStatusSummary = (
         season: download.episode.seasonNumber,
         episode: download.episode.absoluteEpisodeNumber,
         downloadStatus: {
-          completion: download.size / download.sizeLeft,
+          completion: (download.size - download.sizeLeft) / download.size,
           timeEstimate: download.estimatedCompletionTime,
         },
       },
     ]
   }, [])
 
-  const completionFraction = downloads.reduce(
+  const totalCompletionFraction = downloads.reduce(
     (acc, status) => ({
-      numerator: acc.numerator + status.size,
-      denominator: acc.denominator + status.sizeLeft,
+      numerator: acc.numerator + status.size - status.sizeLeft,
+      denominator: acc.denominator + status.size,
     }),
     { numerator: 0, denominator: 0 },
   )
@@ -90,9 +90,10 @@ const downloadStatusSummary = (
   return {
     episodes,
     downloadStatus: {
-      completion: completionFraction.denominator
-        ? completionFraction.numerator / completionFraction.denominator
-        : 1,
+      completion: totalCompletionFraction.denominator
+        ? totalCompletionFraction.numerator /
+          totalCompletionFraction.denominator
+        : 0,
       timeEstimate,
     },
   }
@@ -126,8 +127,7 @@ export const fromSeries =
     overview: series.overview,
     image: imageUrlFromPath(series.posterPath),
     status: statusTextFromCode(series.mediaInfo.status),
-    link:
-      series.mediaInfo.mediaUrl ?? `${config.JELLYSEER_URL}/tv/${series.id}`,
+    link: `${config.JELLYSEER_PUBLIC_URL}/tv/${series.id}`,
     requests: series.mediaInfo.requests.map(requestAdapter(users)),
     ...downloadStatusSummary(series.mediaInfo.downloadStatus),
   })
@@ -141,8 +141,7 @@ export const fromMovie =
     overview: movie.overview,
     image: imageUrlFromPath(movie.posterPath),
     status: statusTextFromCode(movie.mediaInfo.status),
-    link:
-      movie.mediaInfo.mediaUrl ?? `${config.JELLYSEER_URL}/movie/${movie.id}`,
+    link: `${config.JELLYSEER_PUBLIC_URL}/movie/${movie.id}`,
     requests: movie.mediaInfo.requests.map(requestAdapter(users)),
     ...downloadStatusSummary(movie.mediaInfo.downloadStatus),
   })

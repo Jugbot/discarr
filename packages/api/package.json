@@ -27,6 +27,7 @@
   },
   "devDependencies": {
     "@acme/tsconfig": "workspace:*",
+    "@types/ansi-escape-sequences": "catalog:",
     "@types/cors": "catalog:",
     "@types/node-cron": "catalog:",
     "eslint": "catalog:",

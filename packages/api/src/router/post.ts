@@ -1,7 +1,14 @@
 import { eq } from '@acme/db'
 import { Media } from '@acme/db/schema'
 import { inferRouterContext } from '@trpc/server'
-import { BaseMessageOptions } from 'discord.js'
+import ansi from 'ansi-escape-sequences'
+import {
+  AttachmentPayload,
+  Message,
+  MessageCreateOptions,
+  MessageEditOptions,
+  PublicThreadChannel,
+} from 'discord.js'
 import {
   getClient,
   getServer,
@@ -13,6 +20,8 @@ import { components } from '../generated/overseerrAPI'
 import { fromMovie, fromSeries, MediaInfo } from '../model/Media'
 import { getUsers, UserMap } from '../model/User'
 import { createTRPCRouter, publicProcedure } from '../trpc'
+
+const formatANSI = ansi.format
 
 export const postRouter = createTRPCRouter({
   ping: publicProcedure.query(() => 'pong'),
@@ -85,85 +94,147 @@ const getDetails =
       .then(fromSeries(users))
   }
 
-function discordMessagePayload(media: MediaInfo): BaseMessageOptions {
-  function getLinks() {
-    if (media.type === 'movie') {
-      return [`[${media.title}](${media.link})`]
-    }
-    return media.episodes.map(
-      (episode) => `[S${episode.season}E${episode.episode}](${media.link})`,
-    )
-  }
-  function colorFromStatus(status: MediaInfo['status']) {
-    switch (status) {
-      case 'Partially Available':
-      case 'Available':
-        return 3066993
-      case 'Blacklisted':
-        return 15158332
-      case 'Pending':
-        return 15105570
-      case 'Processing':
-        return 3447003
-      default:
-        return undefined
-    }
-  }
+type StatusMeta = {
+  /** hex rgb number */
+  color: number
+  /** png image 1x1 pixel */
+  base64: string
+  ansi: keyof typeof ansi.style
+}
 
-  const links = getLinks()
+function colorFromStatus(status: MediaInfo['status']): StatusMeta {
+  switch (status) {
+    case 'Partially Available':
+    case 'Available':
+      return {
+        color: 0x2ecc71,
+        base64:
+          'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAA1JREFUGFdj0DtT+B8ABQICa3znZ2oAAAAASUVORK5CYII=',
+        ansi: 'green',
+      }
+    case 'Blacklisted':
+      return {
+        color: 0xe74c3c,
+        base64:
+          'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAA1JREFUGFdjeO5j8x8ABfwCb6cFtH0AAAAASUVORK5CYII=',
+        ansi: 'red',
+      }
+    case 'Pending':
+      return {
+        color: 0xe67e22,
+        base64:
+          'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAA1JREFUGFdjeFan9B8ABloChnlkdVsAAAAASUVORK5CYII=',
+        ansi: 'yellow',
+      }
+    case 'Processing':
+      return {
+        color: 0x3498db,
+        base64:
+          'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAA1JREFUGFdjMJlx+z8ABVICp/IuGtoAAAAASUVORK5CYII=',
+        ansi: 'blue',
+      }
+    default:
+      return {
+        color: 0x95a5a6,
+        base64:
+          'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAA1JREFUGFdjmLp02X8ABpMC4IYnRY4AAAAASUVORK5CYII=',
+        ansi: 'white',
+      }
+  }
+}
+function mainMessagePayload(
+  media: MediaInfo,
+): MessageCreateOptions & MessageEditOptions {
+  const requests = `*Requested by* ${media.requests
+    .map((r) => (r.user.discordId ? `<@${r.user.discordId}>` : r.user.name))
+    .join(' ')}`
+  const statusText =
+    media.status === 'Processing'
+      ? `Processing — ${(media.downloadStatus.completion * 100).toFixed()}%`
+      : media.status
 
   return {
     embeds: [
       {
         title: media.title,
-        description: `${media.overview}\n${links.join(' ')}`,
+        url: media.link,
+        description: media.overview,
         thumbnail: {
           url: media.image,
         },
-        color: colorFromStatus(media.status),
+        color: colorFromStatus(media.status).color,
         fields: [
           {
-            name: 'Download Status',
-            value: `${media.downloadStatus.completion * 100}%`,
+            name: '',
+            value: requests,
             inline: true,
           },
-          {
-            name: 'touched',
-            value: new Date().toISOString(),
-          },
-          {
-            name: 'status',
-            value: media.status,
-          },
         ],
+        footer: {
+          text: statusText,
+          icon_url: 'attachment://status',
+        },
       },
+    ],
+    files: [
+      {
+        name: 'status',
+        attachment: Buffer.from(colorFromStatus(media.status).base64, 'base64'),
+      } satisfies AttachmentPayload,
     ],
   }
 }
 
-// TODO: Update existing message
 const upsertThread =
-  (ctx: inferRouterContext<typeof postRouter>) => async (media: MediaInfo) => {
+  (ctx: inferRouterContext<typeof postRouter>) =>
+  async (media: MediaInfo, thread_id?: string) => {
     const discordClient = await getClient()
     const guild = await getServer(discordClient)
     const channel = await getTextChannel(guild)
 
-    const threadRow = await ctx.db.query.Media.findFirst({
-      where: eq(Media.jellyseerr_id, media.id),
-    })
+    async function deleteBadThread(thread_id: string) {
+      await ctx.db.delete(Media).where(eq(Media.thread_id, thread_id))
+    }
 
-    async function fetchThreadStarterMessage(thread_id?: string) {
+    async function makeNewThread() {
+      const newThread = await makeThread(channel)(mainMessagePayload(media), {
+        name: media.title,
+      })
+      await ctx.db.insert(Media).values({
+        jellyseerr_id: media.id,
+        thread_id: newThread.id,
+        last_state: {
+          status: media.status,
+        },
+      })
+      return newThread
+    }
+
+    async function updateThreadMessage(message: Message<true>) {
+      await message.edit(mainMessagePayload(media))
+      await ctx.db
+        .update(Media)
+        .set({
+          last_state: {
+            status: media.status,
+          },
+        })
+        .where(eq(Media.thread_id, message.id))
+      return message
+    }
+
+    async function fetchExistingThread(thread_id?: string) {
       if (!thread_id) {
         return null
       }
       const handleBadThread = async (thread_id: string) => {
-        await ctx.db.delete(Media).where(eq(Media.thread_id, thread_id))
+        await deleteBadThread(thread_id)
         return null
       }
       const message = channel.messages
         .fetch(thread_id)
         .then((r) => {
-          if (!r) {
+          if (!r.hasThread) {
             return handleBadThread(thread_id)
           }
           return r
@@ -174,31 +245,15 @@ const upsertThread =
       return message
     }
 
-    async function makeNewThread() {
-      const newThread = await makeThread(channel)(
-        discordMessagePayload(media),
-        {
-          name: media.title,
-        },
-      )
-      await ctx.db.insert(Media).values({
-        jellyseerr_id: media.id,
-        thread_id: newThread.id,
-      })
-      return newThread
-    }
-
-    return await fetchThreadStarterMessage(threadRow?.thread_id).then(
-      async (thread) => {
-        if (!thread) {
-          console.log(
-            `thread not found for ${media.title}, creating new thread`,
-          )
-          return makeNewThread()
-        }
-        return thread
-      },
-    )
+    return await fetchExistingThread(thread_id).then(async (thread) => {
+      if (!thread || !thread.thread) {
+        console.log(`thread not found for ${media.title}, creating new thread`)
+        return makeNewThread()
+      } else {
+        await updateThreadMessage(thread)
+      }
+      return thread.thread as PublicThreadChannel<false>
+    })
   }
 
 function watchCondition(media: MediaInfo) {
@@ -209,13 +264,36 @@ function watchCondition(media: MediaInfo) {
   )
 }
 
+function eventMessagePayload(media: MediaInfo): MessageCreateOptions {
+  return {
+    content: `\`\`\`ansi\nStatus 🡆 ${formatANSI(media.status, [colorFromStatus(media.status).ansi, 'bold'])}\n\`\`\``,
+  }
+}
+
 const processMediaUpdate =
-  (ctx: inferRouterContext<typeof postRouter>) =>
-  async (extraInfo: MediaInfo) => {
-    if (!watchCondition(extraInfo)) {
+  (ctx: inferRouterContext<typeof postRouter>) => async (media: MediaInfo) => {
+    if (!watchCondition(media)) {
       return
     }
-    await upsertThread(ctx)(extraInfo)
 
-    // TODO: trigger faux-events
+    const threadRow = await ctx.db.query.Media.findFirst({
+      where: eq(Media.jellyseerr_id, media.id),
+    })
+
+    // Update or create thread
+    const thread = await upsertThread(ctx)(media, threadRow?.thread_id)
+
+    // Skip faux events if thread is new
+    if (!threadRow?.last_state) {
+      return
+    }
+
+    const lastState = threadRow.last_state
+
+    // Skip if field hasn't been set, which means it's from an old version of the app
+    const isMigrated = (val: unknown) => val !== undefined
+
+    if (isMigrated(lastState.status) && lastState.status !== media.status) {
+      await thread.send(eventMessagePayload(media))
+    }
   }

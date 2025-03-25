@@ -5,6 +5,7 @@ import {
   Guild,
   GuildBasedChannel,
   MessageCreateOptions,
+  PublicThreadChannel,
   StartThreadOptions,
 } from 'discord.js'
 
@@ -48,9 +49,9 @@ export function makeThread(channel: GuildBasedChannel) {
   return (message: MessageCreateOptions, thread: StartThreadOptions) =>
     channel.send(message).then(async (result) => {
       if (!result.thread) {
-        await result.startThread(thread)
+        return await result.startThread(thread)
       }
-      return result
+      return result.thread as PublicThreadChannel<false>
     })
 }
 
