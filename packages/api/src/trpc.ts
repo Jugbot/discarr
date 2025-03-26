@@ -13,6 +13,7 @@ import superjson from 'superjson'
 // import type { Session } from "@acme/auth";
 // import { auth, validateToken } from "@acme/auth";
 import { db } from '@acme/db/client'
+import { logger } from './logger'
 
 /**
  * Isomorphic Session getter for API requests
@@ -42,7 +43,7 @@ export const createTRPCContext = () => {
   // const session = await isomorphicGetSession(opts.headers);
 
   // const source = opts.headers.get("x-trpc-source") ?? "unknown";
-  // console.log(">>> tRPC Request from", source, "by", session?.user);
+  // logger.info(">>> tRPC Request from", source, "by", session?.user);
 
   return {
     db,
@@ -105,7 +106,7 @@ const timingMiddleware = t.middleware(async ({ next, path }) => {
   const result = await next()
 
   const end = Date.now()
-  console.log(`[TRPC] ${path} took ${String(end - start)}ms to execute`)
+  logger.info(`[TRPC] ${path} took ${String(end - start)}ms to execute`)
 
   return result
 })

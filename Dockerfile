@@ -45,7 +45,6 @@ RUN adduser --system --uid 1001 nodejs
 
 ENV PGDATA="/var/lib/postgresql/data"
 
-VOLUME ["${PGDATA}"]
 
 RUN install -v -d -o nodejs -g nodejs \
     /var/lib/postgresql \
@@ -62,6 +61,8 @@ RUN pg_ctl init && \
     createuser -s user && \
     createdb -O user dbname && \
     pg_ctl stop
+    
+VOLUME ["${PGDATA}"]
 
 ENTRYPOINT ["sh", "docker-entrypoint.sh"]
 

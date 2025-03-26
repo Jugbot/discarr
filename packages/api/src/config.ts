@@ -1,5 +1,6 @@
 import { config } from 'dotenv'
 import { z } from 'zod'
+import { validate } from 'node-cron'
 
 config({
   path: ['.env.local', '.env.development'],
@@ -40,6 +41,12 @@ const envSchema = z
         message: "URL should not end with '/'",
       }),
     RADARR_API_KEY: z.string().min(1).optional(),
+    CRON_SCHEDULE: z.string().default('* * * * *').refine(validate, {
+      message: 'Invalid cron schedule',
+    }),
+    LOG_LEVEL: z
+      .enum(['error', 'warn', 'info', 'verbose', 'debug'])
+      .default('info'),
   })
   .transform((obj) => ({
     ...obj,
@@ -55,4 +62,4 @@ if (!parsedEnv.success) {
   throw new Error(`Invalid environment variables:\n${errorMessages}`)
 }
 
-export default parsedEnv
+export default parsedEnv.data

@@ -46,6 +46,7 @@ export default tseslint.config(
       ],
       '@typescript-eslint/no-unused-vars': 'warn',
       'turbo/no-undeclared-env-vars': 'error',
+      'no-console': 'warn',
     },
   },
 )

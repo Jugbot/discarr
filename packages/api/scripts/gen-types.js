@@ -3,7 +3,7 @@ import path from 'path'
 import fs from 'fs'
 
 if (process.argv.length < 3) {
-  console.error('Usage: node gen-types.js <output-folder>')
+  logger.error('Usage: node gen-types.js <output-folder>')
   process.exit(1)
 }
 
@@ -33,9 +33,9 @@ const runCommand = (cmd) => {
 
 Promise.all(commands.map(runCommand))
   .then((results) => {
-    results.forEach((result) => console.log(result))
+    results.forEach((result) => logger.info(result))
   })
   .catch((error) => {
-    console.error(error)
+    logger.error(error)
     process.exit(1)
   })

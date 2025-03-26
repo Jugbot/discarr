@@ -20,20 +20,25 @@ import { components } from '../generated/overseerrAPI'
 import { fromMovie, fromSeries, MediaInfo } from '../model/Media'
 import { getUsers, UserMap } from '../model/User'
 import { createTRPCRouter, publicProcedure } from '../trpc'
+import { logger } from '../logger'
 
 const formatANSI = ansi.format
 
 export const postRouter = createTRPCRouter({
   ping: publicProcedure.query(() => 'pong'),
   hook: publicProcedure.mutation(async ({ ctx }) => {
-    console.log('running media sync hook')
+    logger.info('running media sync hook')
     const users = await getUsers()
     const medias = await getMedia(users)
 
-    await Promise.all(
-      medias.map((media) => media.then(processMediaUpdate(ctx))),
-    )
-    console.log('media sync hook complete')
+    // TODO: Re-enable parallel processing when contextual logging is added
+    for (const mediaPromise of medias) {
+      const media = await mediaPromise
+      await processMediaUpdate(ctx)(media)
+      logger.verbose(`done processing ${media.title}`)
+    }
+
+    logger.info('media sync hook complete')
   }),
 })
 
@@ -42,6 +47,7 @@ async function getMedia(users: UserMap) {
     params: {
       query: {
         take: 9999,
+        sort: 'added',
       },
     },
   })
@@ -193,13 +199,16 @@ const upsertThread =
     const channel = await getTextChannel(guild)
 
     async function deleteBadThread(thread_id: string) {
+      logger.verbose(`deleting bad thread ${thread_id}`)
       await ctx.db.delete(Media).where(eq(Media.thread_id, thread_id))
     }
 
     async function makeNewThread() {
+      logger.info(`creating new thread for ${media.title}`)
       const newThread = await makeThread(channel)(mainMessagePayload(media), {
         name: media.title,
       })
+      logger.verbose(`created thread ${newThread.id}`)
       await ctx.db.insert(Media).values({
         jellyseerr_id: media.id,
         thread_id: newThread.id,
@@ -245,14 +254,20 @@ const upsertThread =
       return message
     }
 
-    return await fetchExistingThread(thread_id).then(async (thread) => {
-      if (!thread || !thread.thread) {
-        console.log(`thread not found for ${media.title}, creating new thread`)
+    return await fetchExistingThread(thread_id).then(async (message) => {
+      if (!message || !message.thread) {
+        if (!thread_id) {
+          logger.verbose(`no existing thread for media`)
+        } else if (!message) {
+          logger.warn(`thread id doesn't match any message!`)
+        } else if (!message.thread) {
+          logger.warn(`message is not a thread!`)
+        }
         return makeNewThread()
       } else {
-        await updateThreadMessage(thread)
+        await updateThreadMessage(message)
       }
-      return thread.thread as PublicThreadChannel<false>
+      return message.thread as PublicThreadChannel<false>
     })
   }
 
@@ -272,7 +287,9 @@ function eventMessagePayload(media: MediaInfo): MessageCreateOptions {
 
 const processMediaUpdate =
   (ctx: inferRouterContext<typeof postRouter>) => async (media: MediaInfo) => {
+    logger.verbose(`processing ${media.title}`)
     if (!watchCondition(media)) {
+      logger.verbose(`skipping ${media.title}`)
       return
     }
 
@@ -287,6 +304,8 @@ const processMediaUpdate =
     if (!threadRow?.last_state) {
       return
     }
+
+    logger.verbose(`processing changes for ${media.title}`)
 
     const lastState = threadRow.last_state
 

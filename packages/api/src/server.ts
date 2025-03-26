@@ -1,37 +1,10 @@
 import { createHTTPServer } from '@trpc/server/adapters/standalone'
 import cors from 'cors'
-import { createCaller } from '.'
 import { appRouter } from './root'
 import { createTRPCContext } from './trpc'
+import { scheduleCron } from './cron'
 
-import * as cron from 'node-cron'
-
-console.log('Running a task every minute')
-
-let threadLock = false
-const trpc = createCaller(createTRPCContext())
-cron.schedule(
-  '* * * * *',
-  () => {
-    if (threadLock) {
-      console.log('Skipping cron job, last job still running.')
-      return
-    }
-    threadLock = true
-    trpc.post
-      .hook()
-      .catch((error) => {
-        console.error('Error running cron job:')
-        console.error(error)
-      })
-      .finally(() => {
-        threadLock = false
-      })
-  },
-  {
-    runOnInit: true,
-  },
-)
+scheduleCron()
 
 const server = createHTTPServer({
   router: appRouter,

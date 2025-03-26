@@ -10,6 +10,7 @@ import {
 } from 'discord.js'
 
 import config from '../config'
+import { logger } from '../logger'
 
 const client = new Client({ intents: [GatewayIntentBits.Guilds] })
 
@@ -56,7 +57,7 @@ export function makeThread(channel: GuildBasedChannel) {
 }
 
 client.once(Events.ClientReady, (readyClient) => {
-  console.log(`Ready! Logged in as ${readyClient.user.tag}`)
+  logger.info(`Ready! Logged in as ${readyClient.user.tag}`)
   getServer(readyClient)
     .then(getTextChannel)
     .catch((error) => {
@@ -78,7 +79,7 @@ export const getClient = () => {
   pendingLogin = client
     .login(config.DISCORD_TOKEN)
     .then(() => {
-      console.log('Discord client logged in')
+      logger.info('Discord client logged in')
       return client
     })
     .catch((error) => {

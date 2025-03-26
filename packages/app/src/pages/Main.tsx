@@ -47,9 +47,7 @@ export const Main = () => {
         <Flex align="center" direction="column" gap="2">
           <Button
             onClick={() => {
-              pong.refetch().catch((e: unknown) => {
-                console.error(e)
-              })
+              void pong.refetch()
             }}
           >
             ping: {pongDisplay}

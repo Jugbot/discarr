@@ -11,6 +11,7 @@ initialize({
   onUnhandledRequest: ({ url, method }) => {
     const port = new URL(url).port
     if (port === '3000') {
+      // eslint-disable-next-line no-console
       console.warn(`Unhandled ${method} request to ${url.toString()}.`)
     }
   },

@@ -34,6 +34,7 @@
     "node-cron": "catalog:",
     "prettier": "catalog:",
     "tsx": "catalog:",
-    "typescript": "catalog:"
+    "typescript": "catalog:",
+    "winston": "catalog:"
   }
 }
