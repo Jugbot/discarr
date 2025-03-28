@@ -13,17 +13,26 @@ import turbo from 'eslint-plugin-turbo'
 // @ts-ignore
 import react from 'eslint-plugin-react'
 
+import { includeIgnoreFile } from '@eslint/compat'
+
+import path from 'path'
+import { fileURLToPath } from 'url'
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
+const gitignorePath = path.resolve(__dirname, '.gitignore')
+
 export default tseslint.config(
+  includeIgnoreFile(gitignorePath),
   { ignores: ['dist'] },
   {
     extends: [
       js.configs.recommended,
       ...tseslint.configs.recommendedTypeChecked,
-      eslintConfigPrettier,
     ],
     files: ['**/*.{ts,tsx}'],
     languageOptions: {
-      ecmaVersion: 2020,
+      ecmaVersion: 2022,
       globals: globals.browser,
       parserOptions: {
         projectService: true,
