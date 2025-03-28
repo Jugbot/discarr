@@ -1,7 +1,7 @@
 import * as cron from 'node-cron'
 import { createTRPCContext } from './trpc'
 import { createCaller } from '.'
-import config from './config'
+import { config } from './config'
 import { logger } from './logger'
 
 export function scheduleCron() {

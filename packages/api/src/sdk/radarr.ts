@@ -2,7 +2,7 @@ import createClient from 'openapi-fetch'
 import { paths } from '../generated/radarrAPI'
 import { client as jellyseerClient } from './jellyseer'
 
-import config from '../config'
+import { config } from '../config'
 
 const radarrConnection = {
   baseUrl: config.RADARR_URL ? `${config.RADARR_URL}/api/v3/` : undefined,

@@ -1,7 +1,7 @@
 import createClient from 'openapi-fetch'
 import { paths } from '../generated/overseerrAPI'
 
-import config from '../config'
+import { config } from '../config'
 
 const baseUrl = `${config.JELLYSEER_URL}/api/v1/`
 

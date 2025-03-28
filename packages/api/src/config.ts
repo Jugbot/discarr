@@ -1,8 +1,8 @@
-import { config } from 'dotenv'
+import { config as dotEnvConfig } from 'dotenv'
 import { z } from 'zod'
 import { validate } from 'node-cron'
 
-config({
+dotEnvConfig({
   path: ['.env.local', '.env.development'],
 })
 
@@ -62,4 +62,4 @@ if (!parsedEnv.success) {
   throw new Error(`Invalid environment variables:\n${errorMessages}`)
 }
 
-export default parsedEnv.data
+export const config = parsedEnv.data

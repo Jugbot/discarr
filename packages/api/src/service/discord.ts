@@ -1,7 +1,5 @@
 import {
   Client,
-  Events,
-  GatewayIntentBits,
   Guild,
   GuildBasedChannel,
   MessageCreateOptions,
@@ -9,10 +7,7 @@ import {
   StartThreadOptions,
 } from 'discord.js'
 
-import config from '../config'
-import { logger } from '../logger'
-
-const client = new Client({ intents: [GatewayIntentBits.Guilds] })
+import { config } from '../config'
 
 export function getServer(readyClient: Client) {
   return readyClient.guilds.fetch(config.DISCORD_GUILD_ID).catch((error) => {
@@ -54,39 +49,4 @@ export function makeThread(channel: GuildBasedChannel) {
       }
       return result.thread as PublicThreadChannel<false>
     })
-}
-
-client.once(Events.ClientReady, (readyClient) => {
-  logger.info(`Ready! Logged in as ${readyClient.user.tag}`)
-  getServer(readyClient)
-    .then(getTextChannel)
-    .catch((error) => {
-      throw error
-    })
-})
-
-let pendingLogin: Promise<Client<boolean>> | null = null
-
-export const getClient = () => {
-  if (client.isReady()) {
-    return Promise.resolve(client)
-  }
-
-  if (pendingLogin) {
-    return pendingLogin
-  }
-
-  pendingLogin = client
-    .login(config.DISCORD_TOKEN)
-    .then(() => {
-      logger.info('Discord client logged in')
-      return client
-    })
-    .catch((error) => {
-      throw new Error('Error logging in to Discord', {
-        cause: error,
-      })
-    })
-
-  return pendingLogin
 }

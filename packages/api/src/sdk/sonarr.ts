@@ -2,7 +2,7 @@ import createClient from 'openapi-fetch'
 import { paths } from '../generated/sonarrAPI'
 import { client as jellyseerClient } from './jellyseer'
 
-import config from '../config'
+import { config } from '../config'
 
 const sonarrConnection = {
   baseUrl: config.SONARR_URL ? `${config.SONARR_URL}/api/v3/` : undefined,
