@@ -191,7 +191,7 @@ const upsertThread =
     const channel = await getTextChannel(guild)
 
     async function deleteBadMessage(thread_id: string) {
-      logger.verbose(`deleting bad thread ${thread_id}`)
+      logger.debug(`deleting bad message record ${thread_id}`)
       await ctx.db.delete(Media).where(eq(Media.thread_id, thread_id))
     }
 
@@ -245,7 +245,7 @@ const upsertThread =
         if (!thread_id) {
           logger.verbose(`no existing thread for media`)
         } else if (!message) {
-          logger.warn(`thread id doesn't match any message!`)
+          logger.warn(`thread id doesn't match any known message!`)
           await deleteBadMessage(thread_id)
         }
         return makeNewMessage().then(startThread)
