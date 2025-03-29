@@ -272,7 +272,7 @@ function watchCondition(media: MediaInfo) {
 }
 function eventMessagePayload(media: MediaInfo): MessageCreateOptions {
   return {
-    content: `\`\`\`ansi\nStatus 🡆 ${formatANSI(media.status, [colorFromStatus(media.status).ansi, 'bold'])}\n\`\`\``,
+    content: `\`\`\`ansi\nStatus → ${formatANSI(media.status, [colorFromStatus(media.status).ansi, 'bold'])}\n\`\`\``,
   }
 }
 export const processMediaUpdate =
@@ -289,6 +289,13 @@ export const processMediaUpdate =
 
     // Update or create thread
     const thread = await upsertThread(ctx)(media, threadRow?.thread_id)
+
+    await Promise.allSettled(
+      media.requests
+        .map((r) => r.user.discordId)
+        .filter((s): s is string => !!s)
+        .map((s) => thread.members.add(s)),
+    )
 
     // Skip faux events if thread is new
     if (!threadRow?.last_state) {
