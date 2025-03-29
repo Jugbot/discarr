@@ -13,7 +13,8 @@ const statusTextFromCode = (code: number) => {
     case 3:
       return 'Processing'
     case 4:
-      return 'Partially Available'
+      // Partially available
+      return 'Available'
     case 5:
       return 'Available'
     case 6:

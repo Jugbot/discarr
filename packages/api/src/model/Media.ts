@@ -21,13 +21,7 @@ export interface MediaInfo<Type extends 'movie' | 'tv' = 'movie' | 'tv'> {
   type: Type
   overview: string
   image: string
-  status:
-    | 'Pending'
-    | 'Processing'
-    | 'Partially Available'
-    | 'Available'
-    | 'Blacklisted'
-    | 'Unknown'
+  status: 'Pending' | 'Processing' | 'Available' | 'Blacklisted' | 'Unknown'
   episodes: Epsiode[]
   downloadStatus: DownloadStatus
   link: string

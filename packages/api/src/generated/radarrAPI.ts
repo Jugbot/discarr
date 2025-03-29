@@ -156,9 +156,9 @@ export interface paths {
       requestBody?: {
         content: {
           'multipart/form-data': {
-            username?: string
-            password?: string
-            rememberMe?: string
+            username: string
+            password: string
+            rememberMe: string
           }
         }
       }
@@ -7839,24 +7839,24 @@ export interface components {
     /** @enum {string} */
     AddMovieMethod: 'manual' | 'list' | 'collection'
     AddMovieOptions: {
-      ignoreEpisodesWithFiles?: boolean
-      ignoreEpisodesWithoutFiles?: boolean
-      monitor?: components['schemas']['MonitorTypes']
-      searchForMovie?: boolean
-      addMethod?: components['schemas']['AddMovieMethod']
+      ignoreEpisodesWithFiles: boolean
+      ignoreEpisodesWithoutFiles: boolean
+      monitor: components['schemas']['MonitorTypes']
+      searchForMovie: boolean
+      addMethod: components['schemas']['AddMovieMethod']
     }
     AlternativeTitleResource: {
       /** Format: int32 */
-      id?: number
-      sourceType?: components['schemas']['SourceType']
+      id: number
+      sourceType: components['schemas']['SourceType']
       /** Format: int32 */
-      movieMetadataId?: number
-      title?: string | null
-      cleanTitle?: string | null
+      movieMetadataId: number
+      title: string | null
+      cleanTitle: string | null
     }
     ApiInfoResource: {
-      current?: string | null
-      deprecated?: string[] | null
+      current: string | null
+      deprecated: string[] | null
     }
     /** @enum {string} */
     ApplyTags: 'add' | 'remove' | 'replace'
@@ -7866,66 +7866,66 @@ export interface components {
     AuthenticationType: 'none' | 'basic' | 'forms' | 'external'
     AutoTaggingResource: {
       /** Format: int32 */
-      id?: number
-      name?: string | null
-      removeTagsAutomatically?: boolean
-      tags?: number[] | null
-      specifications?:
+      id: number
+      name: string | null
+      removeTagsAutomatically: boolean
+      tags: number[] | null
+      specifications:
         | components['schemas']['AutoTaggingSpecificationSchema'][]
         | null
     }
     AutoTaggingSpecificationSchema: {
       /** Format: int32 */
-      id?: number
-      name?: string | null
-      implementation?: string | null
-      implementationName?: string | null
-      negate?: boolean
-      required?: boolean
-      fields?: components['schemas']['Field'][] | null
+      id: number
+      name: string | null
+      implementation: string | null
+      implementationName: string | null
+      negate: boolean
+      required: boolean
+      fields: components['schemas']['Field'][] | null
     }
     BackupResource: {
       /** Format: int32 */
-      id?: number
-      name?: string | null
-      path?: string | null
-      type?: components['schemas']['BackupType']
+      id: number
+      name: string | null
+      path: string | null
+      type: components['schemas']['BackupType']
       /** Format: int64 */
-      size?: number
+      size: number
       /** Format: date-time */
-      time?: string
+      time: string
     }
     /** @enum {string} */
     BackupType: 'scheduled' | 'manual' | 'update'
     BlocklistBulkResource: {
-      ids?: number[] | null
+      ids: number[] | null
     }
     BlocklistResource: {
       /** Format: int32 */
-      id?: number
+      id: number
       /** Format: int32 */
-      movieId?: number
-      sourceTitle?: string | null
-      languages?: components['schemas']['Language'][] | null
-      quality?: components['schemas']['QualityModel']
-      customFormats?: components['schemas']['CustomFormatResource'][] | null
+      movieId: number
+      sourceTitle: string | null
+      languages: components['schemas']['Language'][] | null
+      quality: components['schemas']['QualityModel']
+      customFormats: components['schemas']['CustomFormatResource'][] | null
       /** Format: date-time */
-      date?: string
-      protocol?: components['schemas']['DownloadProtocol']
-      indexer?: string | null
-      message?: string | null
-      movie?: components['schemas']['MovieResource']
+      date: string
+      protocol: components['schemas']['DownloadProtocol']
+      indexer: string | null
+      message: string | null
+      movie: components['schemas']['MovieResource']
     }
     BlocklistResourcePagingResource: {
       /** Format: int32 */
-      page?: number
+      page: number
       /** Format: int32 */
-      pageSize?: number
-      sortKey?: string | null
-      sortDirection?: components['schemas']['SortDirection']
+      pageSize: number
+      sortKey: string | null
+      sortDirection: components['schemas']['SortDirection']
       /** Format: int32 */
-      totalRecords?: number
-      records?: components['schemas']['BlocklistResource'][] | null
+      totalRecords: number
+      records: components['schemas']['BlocklistResource'][] | null
     }
     /** @enum {string} */
     CertificateValidationType:
@@ -7934,53 +7934,53 @@ export interface components {
       | 'disabled'
     CollectionMovieResource: {
       /** Format: int32 */
-      tmdbId?: number
-      imdbId?: string | null
-      title?: string | null
-      cleanTitle?: string | null
-      sortTitle?: string | null
-      status?: components['schemas']['MovieStatusType']
-      overview?: string | null
+      tmdbId: number
+      imdbId: string | null
+      title: string | null
+      cleanTitle: string | null
+      sortTitle: string | null
+      status: components['schemas']['MovieStatusType']
+      overview: string | null
       /** Format: int32 */
-      runtime?: number
-      images?: components['schemas']['MediaCover'][] | null
+      runtime: number
+      images: components['schemas']['MediaCover'][] | null
       /** Format: int32 */
-      year?: number
-      ratings?: components['schemas']['Ratings']
-      genres?: string[] | null
-      folder?: string | null
-      isExisting?: boolean
-      isExcluded?: boolean
+      year: number
+      ratings: components['schemas']['Ratings']
+      genres: string[] | null
+      folder: string | null
+      isExisting: boolean
+      isExcluded: boolean
     }
     CollectionResource: {
       /** Format: int32 */
-      id?: number
-      title?: string | null
-      sortTitle?: string | null
+      id: number
+      title: string | null
+      sortTitle: string | null
       /** Format: int32 */
-      tmdbId?: number
-      images?: components['schemas']['MediaCover'][] | null
-      overview?: string | null
-      monitored?: boolean
-      rootFolderPath?: string | null
+      tmdbId: number
+      images: components['schemas']['MediaCover'][] | null
+      overview: string | null
+      monitored: boolean
+      rootFolderPath: string | null
       /** Format: int32 */
-      qualityProfileId?: number
-      searchOnAdd?: boolean
-      minimumAvailability?: components['schemas']['MovieStatusType']
-      movies?: components['schemas']['CollectionMovieResource'][] | null
+      qualityProfileId: number
+      searchOnAdd: boolean
+      minimumAvailability: components['schemas']['MovieStatusType']
+      movies: components['schemas']['CollectionMovieResource'][] | null
       /** Format: int32 */
-      missingMovies?: number
-      tags?: number[] | null
+      missingMovies: number
+      tags: number[] | null
     }
     CollectionUpdateResource: {
-      collectionIds?: number[] | null
-      monitored?: boolean | null
-      monitorMovies?: boolean | null
-      searchOnAdd?: boolean | null
+      collectionIds: number[] | null
+      monitored: boolean | null
+      monitorMovies: boolean | null
+      searchOnAdd: boolean | null
       /** Format: int32 */
-      qualityProfileId?: number | null
-      rootFolderPath?: string | null
-      minimumAvailability?: components['schemas']['MovieStatusType']
+      qualityProfileId: number | null
+      rootFolderPath: string | null
+      minimumAvailability: components['schemas']['MovieStatusType']
     }
     /** @enum {string} */
     ColonReplacementFormat:
@@ -7990,51 +7990,51 @@ export interface components {
       | 'spaceDashSpace'
       | 'smart'
     Command: {
-      sendUpdatesToClient?: boolean
-      readonly updateScheduledTask?: boolean
-      readonly completionMessage?: string | null
-      readonly requiresDiskAccess?: boolean
-      readonly isExclusive?: boolean
-      readonly isTypeExclusive?: boolean
-      readonly isLongRunning?: boolean
-      readonly name?: string | null
+      sendUpdatesToClient: boolean
+      readonly updateScheduledTask: boolean
+      readonly completionMessage: string | null
+      readonly requiresDiskAccess: boolean
+      readonly isExclusive: boolean
+      readonly isTypeExclusive: boolean
+      readonly isLongRunning: boolean
+      readonly name: string | null
       /** Format: date-time */
-      lastExecutionTime?: string | null
+      lastExecutionTime: string | null
       /** Format: date-time */
-      lastStartTime?: string | null
-      trigger?: components['schemas']['CommandTrigger']
-      suppressMessages?: boolean
-      clientUserAgent?: string | null
+      lastStartTime: string | null
+      trigger: components['schemas']['CommandTrigger']
+      suppressMessages: boolean
+      clientUserAgent: string | null
     }
     /** @enum {string} */
     CommandPriority: 'normal' | 'high' | 'low'
     CommandResource: {
       /** Format: int32 */
-      id?: number
-      name?: string | null
-      commandName?: string | null
-      message?: string | null
-      body?: components['schemas']['Command']
-      priority?: components['schemas']['CommandPriority']
-      status?: components['schemas']['CommandStatus']
-      result?: components['schemas']['CommandResult']
+      id: number
+      name: string | null
+      commandName: string | null
+      message: string | null
+      body: components['schemas']['Command']
+      priority: components['schemas']['CommandPriority']
+      status: components['schemas']['CommandStatus']
+      result: components['schemas']['CommandResult']
       /** Format: date-time */
-      queued?: string
+      queued: string
       /** Format: date-time */
-      started?: string | null
+      started: string | null
       /** Format: date-time */
-      ended?: string | null
+      ended: string | null
       /** Format: date-span */
-      duration?: string | null
-      exception?: string | null
-      trigger?: components['schemas']['CommandTrigger']
-      clientUserAgent?: string | null
+      duration: string | null
+      exception: string | null
+      trigger: components['schemas']['CommandTrigger']
+      clientUserAgent: string | null
       /** Format: date-time */
-      stateChangeTime?: string | null
-      sendUpdatesToClient?: boolean
-      updateScheduledTask?: boolean
+      stateChangeTime: string | null
+      sendUpdatesToClient: boolean
+      updateScheduledTask: boolean
       /** Format: date-time */
-      lastExecutionTime?: string | null
+      lastExecutionTime: string | null
     }
     /** @enum {string} */
     CommandResult: 'unknown' | 'successful' | 'unsuccessful'
@@ -8051,166 +8051,164 @@ export interface components {
     CommandTrigger: 'unspecified' | 'manual' | 'scheduled'
     CreditResource: {
       /** Format: int32 */
-      id?: number
-      personName?: string | null
-      creditTmdbId?: string | null
+      id: number
+      personName: string | null
+      creditTmdbId: string | null
       /** Format: int32 */
-      personTmdbId?: number
+      personTmdbId: number
       /** Format: int32 */
-      movieMetadataId?: number
-      images?: components['schemas']['MediaCover'][] | null
-      department?: string | null
-      job?: string | null
-      character?: string | null
+      movieMetadataId: number
+      images: components['schemas']['MediaCover'][] | null
+      department: string | null
+      job: string | null
+      character: string | null
       /** Format: int32 */
-      order?: number
-      type?: components['schemas']['CreditType']
+      order: number
+      type: components['schemas']['CreditType']
     }
     /** @enum {string} */
     CreditType: 'cast' | 'crew'
     CustomFilterResource: {
       /** Format: int32 */
-      id?: number
-      type?: string | null
-      label?: string | null
-      filters?:
+      id: number
+      type: string | null
+      label: string | null
+      filters:
         | {
             [key: string]: unknown
           }[]
         | null
     }
     CustomFormatBulkResource: {
-      ids?: number[] | null
-      includeCustomFormatWhenRenaming?: boolean | null
+      ids: number[] | null
+      includeCustomFormatWhenRenaming: boolean | null
     }
     CustomFormatResource: {
       /** Format: int32 */
-      id?: number
-      name?: string | null
-      includeCustomFormatWhenRenaming?: boolean | null
-      specifications?:
+      id: number
+      name: string | null
+      includeCustomFormatWhenRenaming: boolean | null
+      specifications:
         | components['schemas']['CustomFormatSpecificationSchema'][]
         | null
     }
     CustomFormatSpecificationSchema: {
       /** Format: int32 */
-      id?: number
-      name?: string | null
-      implementation?: string | null
-      implementationName?: string | null
-      infoLink?: string | null
-      negate?: boolean
-      required?: boolean
-      fields?: components['schemas']['Field'][] | null
-      presets?:
-        | components['schemas']['CustomFormatSpecificationSchema'][]
-        | null
+      id: number
+      name: string | null
+      implementation: string | null
+      implementationName: string | null
+      infoLink: string | null
+      negate: boolean
+      required: boolean
+      fields: components['schemas']['Field'][] | null
+      presets: components['schemas']['CustomFormatSpecificationSchema'][] | null
     }
     /** @enum {string} */
     DatabaseType: 'sqLite' | 'postgreSQL'
     DelayProfileResource: {
       /** Format: int32 */
-      id?: number
-      enableUsenet?: boolean
-      enableTorrent?: boolean
-      preferredProtocol?: components['schemas']['DownloadProtocol']
+      id: number
+      enableUsenet: boolean
+      enableTorrent: boolean
+      preferredProtocol: components['schemas']['DownloadProtocol']
       /** Format: int32 */
-      usenetDelay?: number
+      usenetDelay: number
       /** Format: int32 */
-      torrentDelay?: number
-      bypassIfHighestQuality?: boolean
-      bypassIfAboveCustomFormatScore?: boolean
+      torrentDelay: number
+      bypassIfHighestQuality: boolean
+      bypassIfAboveCustomFormatScore: boolean
       /** Format: int32 */
-      minimumCustomFormatScore?: number
+      minimumCustomFormatScore: number
       /** Format: int32 */
-      order?: number
-      tags?: number[] | null
+      order: number
+      tags: number[] | null
     }
     DiskSpaceResource: {
       /** Format: int32 */
-      id?: number
-      path?: string | null
-      label?: string | null
+      id: number
+      path: string | null
+      label: string | null
       /** Format: int64 */
-      freeSpace?: number
+      freeSpace: number
       /** Format: int64 */
-      totalSpace?: number
+      totalSpace: number
     }
     DownloadClientBulkResource: {
-      ids?: number[] | null
-      tags?: number[] | null
-      applyTags?: components['schemas']['ApplyTags']
-      enable?: boolean | null
+      ids: number[] | null
+      tags: number[] | null
+      applyTags: components['schemas']['ApplyTags']
+      enable: boolean | null
       /** Format: int32 */
-      priority?: number | null
-      removeCompletedDownloads?: boolean | null
-      removeFailedDownloads?: boolean | null
+      priority: number | null
+      removeCompletedDownloads: boolean | null
+      removeFailedDownloads: boolean | null
     }
     DownloadClientConfigResource: {
       /** Format: int32 */
-      id?: number
-      downloadClientWorkingFolders?: string | null
-      enableCompletedDownloadHandling?: boolean
+      id: number
+      downloadClientWorkingFolders: string | null
+      enableCompletedDownloadHandling: boolean
       /** Format: int32 */
-      checkForFinishedDownloadInterval?: number
-      autoRedownloadFailed?: boolean
-      autoRedownloadFailedFromInteractiveSearch?: boolean
+      checkForFinishedDownloadInterval: number
+      autoRedownloadFailed: boolean
+      autoRedownloadFailedFromInteractiveSearch: boolean
     }
     DownloadClientResource: {
       /** Format: int32 */
-      id?: number
-      name?: string | null
-      fields?: components['schemas']['Field'][] | null
-      implementationName?: string | null
-      implementation?: string | null
-      configContract?: string | null
-      infoLink?: string | null
-      message?: components['schemas']['ProviderMessage']
-      tags?: number[] | null
-      presets?: components['schemas']['DownloadClientResource'][] | null
-      enable?: boolean
-      protocol?: components['schemas']['DownloadProtocol']
+      id: number
+      name: string | null
+      fields: components['schemas']['Field'][] | null
+      implementationName: string | null
+      implementation: string | null
+      configContract: string | null
+      infoLink: string | null
+      message: components['schemas']['ProviderMessage']
+      tags: number[] | null
+      presets: components['schemas']['DownloadClientResource'][] | null
+      enable: boolean
+      protocol: components['schemas']['DownloadProtocol']
       /** Format: int32 */
-      priority?: number
-      removeCompletedDownloads?: boolean
-      removeFailedDownloads?: boolean
+      priority: number
+      removeCompletedDownloads: boolean
+      removeFailedDownloads: boolean
     }
     /** @enum {string} */
     DownloadProtocol: 'unknown' | 'usenet' | 'torrent'
     ExtraFileResource: {
       /** Format: int32 */
-      id?: number
+      id: number
       /** Format: int32 */
-      movieId?: number
+      movieId: number
       /** Format: int32 */
-      movieFileId?: number | null
-      relativePath?: string | null
-      extension?: string | null
-      languageTags?: string[] | null
-      title?: string | null
-      type?: components['schemas']['ExtraFileType']
+      movieFileId: number | null
+      relativePath: string | null
+      extension: string | null
+      languageTags: string[] | null
+      title: string | null
+      type: components['schemas']['ExtraFileType']
     }
     /** @enum {string} */
     ExtraFileType: 'subtitle' | 'metadata' | 'other'
     Field: {
       /** Format: int32 */
-      order?: number
-      name?: string | null
-      label?: string | null
-      unit?: string | null
-      helpText?: string | null
-      helpTextWarning?: string | null
-      helpLink?: string | null
-      value?: unknown
-      type?: string | null
-      advanced?: boolean
-      selectOptions?: components['schemas']['SelectOption'][] | null
-      selectOptionsProviderAction?: string | null
-      section?: string | null
-      hidden?: string | null
-      privacy?: components['schemas']['PrivacyLevel']
-      placeholder?: string | null
-      isFloat?: boolean
+      order: number
+      name: string | null
+      label: string | null
+      unit: string | null
+      helpText: string | null
+      helpTextWarning: string | null
+      helpLink: string | null
+      value: unknown
+      type: string | null
+      advanced: boolean
+      selectOptions: components['schemas']['SelectOption'][] | null
+      selectOptionsProviderAction: string | null
+      section: string | null
+      hidden: string | null
+      privacy: components['schemas']['PrivacyLevel']
+      placeholder: string | null
+      isFloat: boolean
     }
     /** @enum {string} */
     FileDateType: 'none' | 'cinemas' | 'release'
@@ -8218,174 +8216,174 @@ export interface components {
     HealthCheckResult: 'ok' | 'notice' | 'warning' | 'error'
     HealthResource: {
       /** Format: int32 */
-      id?: number
-      source?: string | null
-      type?: components['schemas']['HealthCheckResult']
-      message?: string | null
-      wikiUrl?: components['schemas']['HttpUri']
+      id: number
+      source: string | null
+      type: components['schemas']['HealthCheckResult']
+      message: string | null
+      wikiUrl: components['schemas']['HttpUri']
     }
     HistoryResource: {
       /** Format: int32 */
-      id?: number
+      id: number
       /** Format: int32 */
-      movieId?: number
-      sourceTitle?: string | null
-      languages?: components['schemas']['Language'][] | null
-      quality?: components['schemas']['QualityModel']
-      customFormats?: components['schemas']['CustomFormatResource'][] | null
+      movieId: number
+      sourceTitle: string | null
+      languages: components['schemas']['Language'][] | null
+      quality: components['schemas']['QualityModel']
+      customFormats: components['schemas']['CustomFormatResource'][] | null
       /** Format: int32 */
-      customFormatScore?: number
-      qualityCutoffNotMet?: boolean
+      customFormatScore: number
+      qualityCutoffNotMet: boolean
       /** Format: date-time */
-      date?: string
-      downloadId?: string | null
-      eventType?: components['schemas']['MovieHistoryEventType']
-      data?: {
+      date: string
+      downloadId: string | null
+      eventType: components['schemas']['MovieHistoryEventType']
+      data: {
         [key: string]: string | null
       } | null
-      movie?: components['schemas']['MovieResource']
+      movie: components['schemas']['MovieResource']
     }
     HistoryResourcePagingResource: {
       /** Format: int32 */
-      page?: number
+      page: number
       /** Format: int32 */
-      pageSize?: number
-      sortKey?: string | null
-      sortDirection?: components['schemas']['SortDirection']
+      pageSize: number
+      sortKey: string | null
+      sortDirection: components['schemas']['SortDirection']
       /** Format: int32 */
-      totalRecords?: number
-      records?: components['schemas']['HistoryResource'][] | null
+      totalRecords: number
+      records: components['schemas']['HistoryResource'][] | null
     }
     HostConfigResource: {
       /** Format: int32 */
-      id?: number
-      bindAddress?: string | null
+      id: number
+      bindAddress: string | null
       /** Format: int32 */
-      port?: number
+      port: number
       /** Format: int32 */
-      sslPort?: number
-      enableSsl?: boolean
-      launchBrowser?: boolean
-      authenticationMethod?: components['schemas']['AuthenticationType']
-      authenticationRequired?: components['schemas']['AuthenticationRequiredType']
-      analyticsEnabled?: boolean
-      username?: string | null
-      password?: string | null
-      passwordConfirmation?: string | null
-      logLevel?: string | null
+      sslPort: number
+      enableSsl: boolean
+      launchBrowser: boolean
+      authenticationMethod: components['schemas']['AuthenticationType']
+      authenticationRequired: components['schemas']['AuthenticationRequiredType']
+      analyticsEnabled: boolean
+      username: string | null
+      password: string | null
+      passwordConfirmation: string | null
+      logLevel: string | null
       /** Format: int32 */
-      logSizeLimit?: number
-      consoleLogLevel?: string | null
-      branch?: string | null
-      apiKey?: string | null
-      sslCertPath?: string | null
-      sslCertPassword?: string | null
-      urlBase?: string | null
-      instanceName?: string | null
-      applicationUrl?: string | null
-      updateAutomatically?: boolean
-      updateMechanism?: components['schemas']['UpdateMechanism']
-      updateScriptPath?: string | null
-      proxyEnabled?: boolean
-      proxyType?: components['schemas']['ProxyType']
-      proxyHostname?: string | null
+      logSizeLimit: number
+      consoleLogLevel: string | null
+      branch: string | null
+      apiKey: string | null
+      sslCertPath: string | null
+      sslCertPassword: string | null
+      urlBase: string | null
+      instanceName: string | null
+      applicationUrl: string | null
+      updateAutomatically: boolean
+      updateMechanism: components['schemas']['UpdateMechanism']
+      updateScriptPath: string | null
+      proxyEnabled: boolean
+      proxyType: components['schemas']['ProxyType']
+      proxyHostname: string | null
       /** Format: int32 */
-      proxyPort?: number
-      proxyUsername?: string | null
-      proxyPassword?: string | null
-      proxyBypassFilter?: string | null
-      proxyBypassLocalAddresses?: boolean
-      certificateValidation?: components['schemas']['CertificateValidationType']
-      backupFolder?: string | null
+      proxyPort: number
+      proxyUsername: string | null
+      proxyPassword: string | null
+      proxyBypassFilter: string | null
+      proxyBypassLocalAddresses: boolean
+      certificateValidation: components['schemas']['CertificateValidationType']
+      backupFolder: string | null
       /** Format: int32 */
-      backupInterval?: number
+      backupInterval: number
       /** Format: int32 */
-      backupRetention?: number
-      trustCgnatIpAddresses?: boolean
+      backupRetention: number
+      trustCgnatIpAddresses: boolean
     }
     HttpUri: {
-      readonly fullUri?: string | null
-      readonly scheme?: string | null
-      readonly host?: string | null
+      readonly fullUri: string | null
+      readonly scheme: string | null
+      readonly host: string | null
       /** Format: int32 */
-      readonly port?: number | null
-      readonly path?: string | null
-      readonly query?: string | null
-      readonly fragment?: string | null
+      readonly port: number | null
+      readonly path: string | null
+      readonly query: string | null
+      readonly fragment: string | null
     }
     ImportListBulkResource: {
-      ids?: number[] | null
-      tags?: number[] | null
-      applyTags?: components['schemas']['ApplyTags']
-      enabled?: boolean | null
-      enableAuto?: boolean | null
-      rootFolderPath?: string | null
+      ids: number[] | null
+      tags: number[] | null
+      applyTags: components['schemas']['ApplyTags']
+      enabled: boolean | null
+      enableAuto: boolean | null
+      rootFolderPath: string | null
       /** Format: int32 */
-      qualityProfileId?: number | null
-      minimumAvailability?: components['schemas']['MovieStatusType']
+      qualityProfileId: number | null
+      minimumAvailability: components['schemas']['MovieStatusType']
     }
     ImportListConfigResource: {
       /** Format: int32 */
-      id?: number
-      listSyncLevel?: string | null
+      id: number
+      listSyncLevel: string | null
     }
     ImportListExclusionBulkResource: {
-      ids?: number[] | null
+      ids: number[] | null
     }
     ImportListExclusionResource: {
       /** Format: int32 */
-      id?: number
-      name?: string | null
-      fields?: components['schemas']['Field'][] | null
-      implementationName?: string | null
-      implementation?: string | null
-      configContract?: string | null
-      infoLink?: string | null
-      message?: components['schemas']['ProviderMessage']
-      tags?: number[] | null
-      presets?: components['schemas']['ImportListExclusionResource'][] | null
+      id: number
+      name: string | null
+      fields: components['schemas']['Field'][] | null
+      implementationName: string | null
+      implementation: string | null
+      configContract: string | null
+      infoLink: string | null
+      message: components['schemas']['ProviderMessage']
+      tags: number[] | null
+      presets: components['schemas']['ImportListExclusionResource'][] | null
       /** Format: int32 */
-      tmdbId?: number
-      movieTitle?: string | null
+      tmdbId: number
+      movieTitle: string | null
       /** Format: int32 */
-      movieYear?: number
+      movieYear: number
     }
     ImportListExclusionResourcePagingResource: {
       /** Format: int32 */
-      page?: number
+      page: number
       /** Format: int32 */
-      pageSize?: number
-      sortKey?: string | null
-      sortDirection?: components['schemas']['SortDirection']
+      pageSize: number
+      sortKey: string | null
+      sortDirection: components['schemas']['SortDirection']
       /** Format: int32 */
-      totalRecords?: number
-      records?: components['schemas']['ImportListExclusionResource'][] | null
+      totalRecords: number
+      records: components['schemas']['ImportListExclusionResource'][] | null
     }
     ImportListResource: {
       /** Format: int32 */
-      id?: number
-      name?: string | null
-      fields?: components['schemas']['Field'][] | null
-      implementationName?: string | null
-      implementation?: string | null
-      configContract?: string | null
-      infoLink?: string | null
-      message?: components['schemas']['ProviderMessage']
-      tags?: number[] | null
-      presets?: components['schemas']['ImportListResource'][] | null
-      enabled?: boolean
-      enableAuto?: boolean
-      monitor?: components['schemas']['MonitorTypes']
-      rootFolderPath?: string | null
+      id: number
+      name: string | null
+      fields: components['schemas']['Field'][] | null
+      implementationName: string | null
+      implementation: string | null
+      configContract: string | null
+      infoLink: string | null
+      message: components['schemas']['ProviderMessage']
+      tags: number[] | null
+      presets: components['schemas']['ImportListResource'][] | null
+      enabled: boolean
+      enableAuto: boolean
+      monitor: components['schemas']['MonitorTypes']
+      rootFolderPath: string | null
       /** Format: int32 */
-      qualityProfileId?: number
-      searchOnAdd?: boolean
-      minimumAvailability?: components['schemas']['MovieStatusType']
-      listType?: components['schemas']['ImportListType']
+      qualityProfileId: number
+      searchOnAdd: boolean
+      minimumAvailability: components['schemas']['MovieStatusType']
+      listType: components['schemas']['ImportListType']
       /** Format: int32 */
-      listOrder?: number
+      listOrder: number
       /** Format: date-span */
-      minRefreshInterval?: string
+      minRefreshInterval: string
     }
     /** @enum {string} */
     ImportListType:
@@ -8397,158 +8395,158 @@ export interface components {
       | 'other'
       | 'advanced'
     ImportRejectionResource: {
-      reason?: string | null
-      type?: components['schemas']['RejectionType']
+      reason: string | null
+      type: components['schemas']['RejectionType']
     }
     IndexerBulkResource: {
-      ids?: number[] | null
-      tags?: number[] | null
-      applyTags?: components['schemas']['ApplyTags']
-      enableRss?: boolean | null
-      enableAutomaticSearch?: boolean | null
-      enableInteractiveSearch?: boolean | null
+      ids: number[] | null
+      tags: number[] | null
+      applyTags: components['schemas']['ApplyTags']
+      enableRss: boolean | null
+      enableAutomaticSearch: boolean | null
+      enableInteractiveSearch: boolean | null
       /** Format: int32 */
-      priority?: number | null
+      priority: number | null
     }
     IndexerConfigResource: {
       /** Format: int32 */
-      id?: number
+      id: number
       /** Format: int32 */
-      minimumAge?: number
+      minimumAge: number
       /** Format: int32 */
-      maximumSize?: number
+      maximumSize: number
       /** Format: int32 */
-      retention?: number
+      retention: number
       /** Format: int32 */
-      rssSyncInterval?: number
-      preferIndexerFlags?: boolean
+      rssSyncInterval: number
+      preferIndexerFlags: boolean
       /** Format: int32 */
-      availabilityDelay?: number
-      allowHardcodedSubs?: boolean
-      whitelistedHardcodedSubs?: string | null
+      availabilityDelay: number
+      allowHardcodedSubs: boolean
+      whitelistedHardcodedSubs: string | null
     }
     IndexerFlagResource: {
       /** Format: int32 */
-      id?: number
-      name?: string | null
-      readonly nameLower?: string | null
+      id: number
+      name: string | null
+      readonly nameLower: string | null
     }
     IndexerResource: {
       /** Format: int32 */
-      id?: number
-      name?: string | null
-      fields?: components['schemas']['Field'][] | null
-      implementationName?: string | null
-      implementation?: string | null
-      configContract?: string | null
-      infoLink?: string | null
-      message?: components['schemas']['ProviderMessage']
-      tags?: number[] | null
-      presets?: components['schemas']['IndexerResource'][] | null
-      enableRss?: boolean
-      enableAutomaticSearch?: boolean
-      enableInteractiveSearch?: boolean
-      supportsRss?: boolean
-      supportsSearch?: boolean
-      protocol?: components['schemas']['DownloadProtocol']
+      id: number
+      name: string | null
+      fields: components['schemas']['Field'][] | null
+      implementationName: string | null
+      implementation: string | null
+      configContract: string | null
+      infoLink: string | null
+      message: components['schemas']['ProviderMessage']
+      tags: number[] | null
+      presets: components['schemas']['IndexerResource'][] | null
+      enableRss: boolean
+      enableAutomaticSearch: boolean
+      enableInteractiveSearch: boolean
+      supportsRss: boolean
+      supportsSearch: boolean
+      protocol: components['schemas']['DownloadProtocol']
       /** Format: int32 */
-      priority?: number
+      priority: number
       /** Format: int32 */
-      downloadClientId?: number
+      downloadClientId: number
     }
     Language: {
       /** Format: int32 */
-      id?: number
-      name?: string | null
+      id: number
+      name: string | null
     }
     LanguageResource: {
       /** Format: int32 */
-      id?: number
-      name?: string | null
-      readonly nameLower?: string | null
+      id: number
+      name: string | null
+      readonly nameLower: string | null
     }
     LocalizationLanguageResource: {
-      identifier?: string | null
+      identifier: string | null
     }
     LogFileResource: {
       /** Format: int32 */
-      id?: number
-      filename?: string | null
+      id: number
+      filename: string | null
       /** Format: date-time */
-      lastWriteTime?: string
-      contentsUrl?: string | null
-      downloadUrl?: string | null
+      lastWriteTime: string
+      contentsUrl: string | null
+      downloadUrl: string | null
     }
     LogResource: {
       /** Format: int32 */
-      id?: number
+      id: number
       /** Format: date-time */
-      time?: string
-      exception?: string | null
-      exceptionType?: string | null
-      level?: string | null
-      logger?: string | null
-      message?: string | null
-      method?: string | null
+      time: string
+      exception: string | null
+      exceptionType: string | null
+      level: string | null
+      logger: string | null
+      message: string | null
+      method: string | null
     }
     LogResourcePagingResource: {
       /** Format: int32 */
-      page?: number
+      page: number
       /** Format: int32 */
-      pageSize?: number
-      sortKey?: string | null
-      sortDirection?: components['schemas']['SortDirection']
+      pageSize: number
+      sortKey: string | null
+      sortDirection: components['schemas']['SortDirection']
       /** Format: int32 */
-      totalRecords?: number
-      records?: components['schemas']['LogResource'][] | null
+      totalRecords: number
+      records: components['schemas']['LogResource'][] | null
     }
     ManualImportReprocessResource: {
       /** Format: int32 */
-      id?: number
-      path?: string | null
+      id: number
+      path: string | null
       /** Format: int32 */
-      movieId?: number
-      movie?: components['schemas']['MovieResource']
-      quality?: components['schemas']['QualityModel']
-      languages?: components['schemas']['Language'][] | null
-      releaseGroup?: string | null
-      downloadId?: string | null
-      customFormats?: components['schemas']['CustomFormatResource'][] | null
+      movieId: number
+      movie: components['schemas']['MovieResource']
+      quality: components['schemas']['QualityModel']
+      languages: components['schemas']['Language'][] | null
+      releaseGroup: string | null
+      downloadId: string | null
+      customFormats: components['schemas']['CustomFormatResource'][] | null
       /** Format: int32 */
-      customFormatScore?: number
+      customFormatScore: number
       /** Format: int32 */
-      indexerFlags?: number
-      rejections?: components['schemas']['ImportRejectionResource'][] | null
+      indexerFlags: number
+      rejections: components['schemas']['ImportRejectionResource'][] | null
     }
     ManualImportResource: {
       /** Format: int32 */
-      id?: number
-      path?: string | null
-      relativePath?: string | null
-      folderName?: string | null
-      name?: string | null
+      id: number
+      path: string | null
+      relativePath: string | null
+      folderName: string | null
+      name: string | null
       /** Format: int64 */
-      size?: number
-      movie?: components['schemas']['MovieResource']
+      size: number
+      movie: components['schemas']['MovieResource']
       /** Format: int32 */
-      movieFileId?: number | null
-      releaseGroup?: string | null
-      quality?: components['schemas']['QualityModel']
-      languages?: components['schemas']['Language'][] | null
+      movieFileId: number | null
+      releaseGroup: string | null
+      quality: components['schemas']['QualityModel']
+      languages: components['schemas']['Language'][] | null
       /** Format: int32 */
-      qualityWeight?: number
-      downloadId?: string | null
-      customFormats?: components['schemas']['CustomFormatResource'][] | null
+      qualityWeight: number
+      downloadId: string | null
+      customFormats: components['schemas']['CustomFormatResource'][] | null
       /** Format: int32 */
-      customFormatScore?: number
+      customFormatScore: number
       /** Format: int32 */
-      indexerFlags?: number
-      rejections?: components['schemas']['ImportRejectionResource'][] | null
+      indexerFlags: number
+      rejections: components['schemas']['ImportRejectionResource'][] | null
     }
     MediaCover: {
-      coverType?: components['schemas']['MediaCoverTypes']
-      url?: string | null
-      remoteUrl?: string | null
+      coverType: components['schemas']['MediaCoverTypes']
+      url: string | null
+      remoteUrl: string | null
     }
     /** @enum {string} */
     MediaCoverTypes:
@@ -8561,131 +8559,131 @@ export interface components {
       | 'clearlogo'
     MediaInfoResource: {
       /** Format: int32 */
-      id?: number
+      id: number
       /** Format: int64 */
-      audioBitrate?: number
+      audioBitrate: number
       /** Format: double */
-      audioChannels?: number
-      audioCodec?: string | null
-      audioLanguages?: string | null
+      audioChannels: number
+      audioCodec: string | null
+      audioLanguages: string | null
       /** Format: int32 */
-      audioStreamCount?: number
+      audioStreamCount: number
       /** Format: int32 */
-      videoBitDepth?: number
+      videoBitDepth: number
       /** Format: int64 */
-      videoBitrate?: number
-      videoCodec?: string | null
+      videoBitrate: number
+      videoCodec: string | null
       /** Format: double */
-      videoFps?: number
-      videoDynamicRange?: string | null
-      videoDynamicRangeType?: string | null
-      resolution?: string | null
-      runTime?: string | null
-      scanType?: string | null
-      subtitles?: string | null
+      videoFps: number
+      videoDynamicRange: string | null
+      videoDynamicRangeType: string | null
+      resolution: string | null
+      runTime: string | null
+      scanType: string | null
+      subtitles: string | null
     }
     MediaManagementConfigResource: {
       /** Format: int32 */
-      id?: number
-      autoUnmonitorPreviouslyDownloadedMovies?: boolean
-      recycleBin?: string | null
+      id: number
+      autoUnmonitorPreviouslyDownloadedMovies: boolean
+      recycleBin: string | null
       /** Format: int32 */
-      recycleBinCleanupDays?: number
-      downloadPropersAndRepacks?: components['schemas']['ProperDownloadTypes']
-      createEmptyMovieFolders?: boolean
-      deleteEmptyFolders?: boolean
-      fileDate?: components['schemas']['FileDateType']
-      rescanAfterRefresh?: components['schemas']['RescanAfterRefreshType']
-      autoRenameFolders?: boolean
-      pathsDefaultStatic?: boolean
-      setPermissionsLinux?: boolean
-      chmodFolder?: string | null
-      chownGroup?: string | null
-      skipFreeSpaceCheckWhenImporting?: boolean
+      recycleBinCleanupDays: number
+      downloadPropersAndRepacks: components['schemas']['ProperDownloadTypes']
+      createEmptyMovieFolders: boolean
+      deleteEmptyFolders: boolean
+      fileDate: components['schemas']['FileDateType']
+      rescanAfterRefresh: components['schemas']['RescanAfterRefreshType']
+      autoRenameFolders: boolean
+      pathsDefaultStatic: boolean
+      setPermissionsLinux: boolean
+      chmodFolder: string | null
+      chownGroup: string | null
+      skipFreeSpaceCheckWhenImporting: boolean
       /** Format: int32 */
-      minimumFreeSpaceWhenImporting?: number
-      copyUsingHardlinks?: boolean
-      useScriptImport?: boolean
-      scriptImportPath?: string | null
-      importExtraFiles?: boolean
-      extraFileExtensions?: string | null
-      enableMediaInfo?: boolean
+      minimumFreeSpaceWhenImporting: number
+      copyUsingHardlinks: boolean
+      useScriptImport: boolean
+      scriptImportPath: string | null
+      importExtraFiles: boolean
+      extraFileExtensions: string | null
+      enableMediaInfo: boolean
     }
     MetadataConfigResource: {
       /** Format: int32 */
-      id?: number
-      certificationCountry?: components['schemas']['TMDbCountryCode']
+      id: number
+      certificationCountry: components['schemas']['TMDbCountryCode']
     }
     MetadataResource: {
       /** Format: int32 */
-      id?: number
-      name?: string | null
-      fields?: components['schemas']['Field'][] | null
-      implementationName?: string | null
-      implementation?: string | null
-      configContract?: string | null
-      infoLink?: string | null
-      message?: components['schemas']['ProviderMessage']
-      tags?: number[] | null
-      presets?: components['schemas']['MetadataResource'][] | null
-      enable?: boolean
+      id: number
+      name: string | null
+      fields: components['schemas']['Field'][] | null
+      implementationName: string | null
+      implementation: string | null
+      configContract: string | null
+      infoLink: string | null
+      message: components['schemas']['ProviderMessage']
+      tags: number[] | null
+      presets: components['schemas']['MetadataResource'][] | null
+      enable: boolean
     }
     /** @enum {string} */
     Modifier: 'none' | 'regional' | 'screener' | 'rawhd' | 'brdisk' | 'remux'
     /** @enum {string} */
     MonitorTypes: 'movieOnly' | 'movieAndCollection' | 'none'
     MovieCollectionResource: {
-      title?: string | null
+      title: string | null
       /** Format: int32 */
-      tmdbId?: number
+      tmdbId: number
     }
     MovieEditorResource: {
-      movieIds?: number[] | null
-      monitored?: boolean | null
+      movieIds: number[] | null
+      monitored: boolean | null
       /** Format: int32 */
-      qualityProfileId?: number | null
-      minimumAvailability?: components['schemas']['MovieStatusType']
-      rootFolderPath?: string | null
-      tags?: number[] | null
-      applyTags?: components['schemas']['ApplyTags']
-      moveFiles?: boolean
-      deleteFiles?: boolean
-      addImportExclusion?: boolean
+      qualityProfileId: number | null
+      minimumAvailability: components['schemas']['MovieStatusType']
+      rootFolderPath: string | null
+      tags: number[] | null
+      applyTags: components['schemas']['ApplyTags']
+      moveFiles: boolean
+      deleteFiles: boolean
+      addImportExclusion: boolean
     }
     MovieFileListResource: {
-      movieFileIds?: number[] | null
-      languages?: components['schemas']['Language'][] | null
-      quality?: components['schemas']['QualityModel']
-      edition?: string | null
-      releaseGroup?: string | null
-      sceneName?: string | null
+      movieFileIds: number[] | null
+      languages: components['schemas']['Language'][] | null
+      quality: components['schemas']['QualityModel']
+      edition: string | null
+      releaseGroup: string | null
+      sceneName: string | null
       /** Format: int32 */
-      indexerFlags?: number | null
+      indexerFlags: number | null
     }
     MovieFileResource: {
       /** Format: int32 */
-      id?: number
+      id: number
       /** Format: int32 */
-      movieId?: number
-      relativePath?: string | null
-      path?: string | null
+      movieId: number
+      relativePath: string | null
+      path: string | null
       /** Format: int64 */
-      size?: number
+      size: number
       /** Format: date-time */
-      dateAdded?: string
-      sceneName?: string | null
-      releaseGroup?: string | null
-      edition?: string | null
-      languages?: components['schemas']['Language'][] | null
-      quality?: components['schemas']['QualityModel']
-      customFormats?: components['schemas']['CustomFormatResource'][] | null
+      dateAdded: string
+      sceneName: string | null
+      releaseGroup: string | null
+      edition: string | null
+      languages: components['schemas']['Language'][] | null
+      quality: components['schemas']['QualityModel']
+      customFormats: components['schemas']['CustomFormatResource'][] | null
       /** Format: int32 */
-      customFormatScore?: number
+      customFormatScore: number
       /** Format: int32 */
-      indexerFlags?: number | null
-      mediaInfo?: components['schemas']['MediaInfoResource']
-      originalFilePath?: string | null
-      qualityCutoffNotMet?: boolean
+      indexerFlags: number | null
+      mediaInfo: components['schemas']['MediaInfoResource']
+      originalFilePath: string | null
+      qualityCutoffNotMet: boolean
     }
     /** @enum {string} */
     MovieHistoryEventType:
@@ -8699,192 +8697,192 @@ export interface components {
       | 'downloadIgnored'
     MovieResource: {
       /** Format: int32 */
-      id?: number
-      title?: string | null
-      originalTitle?: string | null
-      originalLanguage?: components['schemas']['Language']
-      alternateTitles?:
+      id: number
+      title: string | null
+      originalTitle: string | null
+      originalLanguage: components['schemas']['Language']
+      alternateTitles:
         | components['schemas']['AlternativeTitleResource'][]
         | null
       /** Format: int32 */
-      secondaryYear?: number | null
+      secondaryYear: number | null
       /** Format: int32 */
-      secondaryYearSourceId?: number
-      sortTitle?: string | null
+      secondaryYearSourceId: number
+      sortTitle: string | null
       /** Format: int64 */
-      sizeOnDisk?: number | null
-      status?: components['schemas']['MovieStatusType']
-      overview?: string | null
+      sizeOnDisk: number | null
+      status: components['schemas']['MovieStatusType']
+      overview: string | null
       /** Format: date-time */
-      inCinemas?: string | null
+      inCinemas: string | null
       /** Format: date-time */
-      physicalRelease?: string | null
+      physicalRelease: string | null
       /** Format: date-time */
-      digitalRelease?: string | null
+      digitalRelease: string | null
       /** Format: date-time */
-      releaseDate?: string | null
-      physicalReleaseNote?: string | null
-      images?: components['schemas']['MediaCover'][] | null
-      website?: string | null
-      remotePoster?: string | null
+      releaseDate: string | null
+      physicalReleaseNote: string | null
+      images: components['schemas']['MediaCover'][] | null
+      website: string | null
+      remotePoster: string | null
       /** Format: int32 */
-      year?: number
-      youTubeTrailerId?: string | null
-      studio?: string | null
-      path?: string | null
+      year: number
+      youTubeTrailerId: string | null
+      studio: string | null
+      path: string | null
       /** Format: int32 */
-      qualityProfileId?: number
-      hasFile?: boolean | null
+      qualityProfileId: number
+      hasFile: boolean | null
       /** Format: int32 */
-      movieFileId?: number
-      monitored?: boolean
-      minimumAvailability?: components['schemas']['MovieStatusType']
-      isAvailable?: boolean
-      folderName?: string | null
+      movieFileId: number
+      monitored: boolean
+      minimumAvailability: components['schemas']['MovieStatusType']
+      isAvailable: boolean
+      folderName: string | null
       /** Format: int32 */
-      runtime?: number
-      cleanTitle?: string | null
-      imdbId?: string | null
+      runtime: number
+      cleanTitle: string | null
+      imdbId: string | null
       /** Format: int32 */
-      tmdbId?: number
-      titleSlug?: string | null
-      rootFolderPath?: string | null
-      folder?: string | null
-      certification?: string | null
-      genres?: string[] | null
-      tags?: number[] | null
+      tmdbId: number
+      titleSlug: string | null
+      rootFolderPath: string | null
+      folder: string | null
+      certification: string | null
+      genres: string[] | null
+      tags: number[] | null
       /** Format: date-time */
-      added?: string
-      addOptions?: components['schemas']['AddMovieOptions']
-      ratings?: components['schemas']['Ratings']
-      movieFile?: components['schemas']['MovieFileResource']
-      collection?: components['schemas']['MovieCollectionResource']
+      added: string
+      addOptions: components['schemas']['AddMovieOptions']
+      ratings: components['schemas']['Ratings']
+      movieFile: components['schemas']['MovieFileResource']
+      collection: components['schemas']['MovieCollectionResource']
       /** Format: float */
-      popularity?: number
+      popularity: number
       /** Format: date-time */
-      lastSearchTime?: string | null
-      statistics?: components['schemas']['MovieStatisticsResource']
+      lastSearchTime: string | null
+      statistics: components['schemas']['MovieStatisticsResource']
     }
     MovieResourcePagingResource: {
       /** Format: int32 */
-      page?: number
+      page: number
       /** Format: int32 */
-      pageSize?: number
-      sortKey?: string | null
-      sortDirection?: components['schemas']['SortDirection']
+      pageSize: number
+      sortKey: string | null
+      sortDirection: components['schemas']['SortDirection']
       /** Format: int32 */
-      totalRecords?: number
-      records?: components['schemas']['MovieResource'][] | null
+      totalRecords: number
+      records: components['schemas']['MovieResource'][] | null
     }
     /** @enum {string} */
     MovieRuntimeFormatType: 'hoursMinutes' | 'minutes'
     MovieStatisticsResource: {
       /** Format: int32 */
-      movieFileCount?: number
+      movieFileCount: number
       /** Format: int64 */
-      sizeOnDisk?: number
-      releaseGroups?: string[] | null
+      sizeOnDisk: number
+      releaseGroups: string[] | null
     }
     /** @enum {string} */
     MovieStatusType: 'tba' | 'announced' | 'inCinemas' | 'released' | 'deleted'
     NamingConfigResource: {
       /** Format: int32 */
-      id?: number
-      renameMovies?: boolean
-      replaceIllegalCharacters?: boolean
-      colonReplacementFormat?: components['schemas']['ColonReplacementFormat']
-      standardMovieFormat?: string | null
-      movieFolderFormat?: string | null
+      id: number
+      renameMovies: boolean
+      replaceIllegalCharacters: boolean
+      colonReplacementFormat: components['schemas']['ColonReplacementFormat']
+      standardMovieFormat: string | null
+      movieFolderFormat: string | null
     }
     NotificationResource: {
       /** Format: int32 */
-      id?: number
-      name?: string | null
-      fields?: components['schemas']['Field'][] | null
-      implementationName?: string | null
-      implementation?: string | null
-      configContract?: string | null
-      infoLink?: string | null
-      message?: components['schemas']['ProviderMessage']
-      tags?: number[] | null
-      presets?: components['schemas']['NotificationResource'][] | null
-      link?: string | null
-      onGrab?: boolean
-      onDownload?: boolean
-      onUpgrade?: boolean
-      onRename?: boolean
-      onMovieAdded?: boolean
-      onMovieDelete?: boolean
-      onMovieFileDelete?: boolean
-      onMovieFileDeleteForUpgrade?: boolean
-      onHealthIssue?: boolean
-      includeHealthWarnings?: boolean
-      onHealthRestored?: boolean
-      onApplicationUpdate?: boolean
-      onManualInteractionRequired?: boolean
-      supportsOnGrab?: boolean
-      supportsOnDownload?: boolean
-      supportsOnUpgrade?: boolean
-      supportsOnRename?: boolean
-      supportsOnMovieAdded?: boolean
-      supportsOnMovieDelete?: boolean
-      supportsOnMovieFileDelete?: boolean
-      supportsOnMovieFileDeleteForUpgrade?: boolean
-      supportsOnHealthIssue?: boolean
-      supportsOnHealthRestored?: boolean
-      supportsOnApplicationUpdate?: boolean
-      supportsOnManualInteractionRequired?: boolean
-      testCommand?: string | null
+      id: number
+      name: string | null
+      fields: components['schemas']['Field'][] | null
+      implementationName: string | null
+      implementation: string | null
+      configContract: string | null
+      infoLink: string | null
+      message: components['schemas']['ProviderMessage']
+      tags: number[] | null
+      presets: components['schemas']['NotificationResource'][] | null
+      link: string | null
+      onGrab: boolean
+      onDownload: boolean
+      onUpgrade: boolean
+      onRename: boolean
+      onMovieAdded: boolean
+      onMovieDelete: boolean
+      onMovieFileDelete: boolean
+      onMovieFileDeleteForUpgrade: boolean
+      onHealthIssue: boolean
+      includeHealthWarnings: boolean
+      onHealthRestored: boolean
+      onApplicationUpdate: boolean
+      onManualInteractionRequired: boolean
+      supportsOnGrab: boolean
+      supportsOnDownload: boolean
+      supportsOnUpgrade: boolean
+      supportsOnRename: boolean
+      supportsOnMovieAdded: boolean
+      supportsOnMovieDelete: boolean
+      supportsOnMovieFileDelete: boolean
+      supportsOnMovieFileDeleteForUpgrade: boolean
+      supportsOnHealthIssue: boolean
+      supportsOnHealthRestored: boolean
+      supportsOnApplicationUpdate: boolean
+      supportsOnManualInteractionRequired: boolean
+      testCommand: string | null
     }
     ParseResource: {
       /** Format: int32 */
-      id?: number
-      title?: string | null
-      parsedMovieInfo?: components['schemas']['ParsedMovieInfo']
-      movie?: components['schemas']['MovieResource']
-      languages?: components['schemas']['Language'][] | null
-      customFormats?: components['schemas']['CustomFormatResource'][] | null
+      id: number
+      title: string | null
+      parsedMovieInfo: components['schemas']['ParsedMovieInfo']
+      movie: components['schemas']['MovieResource']
+      languages: components['schemas']['Language'][] | null
+      customFormats: components['schemas']['CustomFormatResource'][] | null
       /** Format: int32 */
-      customFormatScore?: number
+      customFormatScore: number
     }
     ParsedMovieInfo: {
-      movieTitles?: string[] | null
-      originalTitle?: string | null
-      releaseTitle?: string | null
-      simpleReleaseTitle?: string | null
-      quality?: components['schemas']['QualityModel']
-      languages?: components['schemas']['Language'][] | null
-      releaseGroup?: string | null
-      releaseHash?: string | null
-      edition?: string | null
+      movieTitles: string[] | null
+      originalTitle: string | null
+      releaseTitle: string | null
+      simpleReleaseTitle: string | null
+      quality: components['schemas']['QualityModel']
+      languages: components['schemas']['Language'][] | null
+      releaseGroup: string | null
+      releaseHash: string | null
+      edition: string | null
       /** Format: int32 */
-      year?: number
-      imdbId?: string | null
+      year: number
+      imdbId: string | null
       /** Format: int32 */
-      tmdbId?: number
-      hardcodedSubs?: string | null
-      readonly movieTitle?: string | null
-      readonly primaryMovieTitle?: string | null
+      tmdbId: number
+      hardcodedSubs: string | null
+      readonly movieTitle: string | null
+      readonly primaryMovieTitle: string | null
     }
     PingResource: {
-      status?: string | null
+      status: string | null
     }
     /** @enum {string} */
     PrivacyLevel: 'normal' | 'password' | 'apiKey' | 'userName'
     ProfileFormatItemResource: {
       /** Format: int32 */
-      id?: number
+      id: number
       /** Format: int32 */
-      format?: number
-      name?: string | null
+      format: number
+      name: string | null
       /** Format: int32 */
-      score?: number
+      score: number
     }
     /** @enum {string} */
     ProperDownloadTypes: 'preferAndUpgrade' | 'doNotUpgrade' | 'doNotPrefer'
     ProviderMessage: {
-      message?: string | null
-      type?: components['schemas']['ProviderMessageType']
+      message: string | null
+      type: components['schemas']['ProviderMessageType']
     }
     /** @enum {string} */
     ProviderMessageType: 'info' | 'warning' | 'error'
@@ -8892,59 +8890,55 @@ export interface components {
     ProxyType: 'http' | 'socks4' | 'socks5'
     Quality: {
       /** Format: int32 */
-      id?: number
-      name?: string | null
-      source?: components['schemas']['QualitySource']
+      id: number
+      name: string | null
+      source: components['schemas']['QualitySource']
       /** Format: int32 */
-      resolution?: number
-      modifier?: components['schemas']['Modifier']
+      resolution: number
+      modifier: components['schemas']['Modifier']
     }
     QualityDefinitionResource: {
       /** Format: int32 */
-      id?: number
-      quality?: components['schemas']['Quality']
-      title?: string | null
+      id: number
+      quality: components['schemas']['Quality']
+      title: string | null
       /** Format: int32 */
-      weight?: number
+      weight: number
       /** Format: double */
-      minSize?: number | null
+      minSize: number | null
       /** Format: double */
-      maxSize?: number | null
+      maxSize: number | null
       /** Format: double */
-      preferredSize?: number | null
+      preferredSize: number | null
     }
     QualityModel: {
-      quality?: components['schemas']['Quality']
-      revision?: components['schemas']['Revision']
+      quality: components['schemas']['Quality']
+      revision: components['schemas']['Revision']
     }
     QualityProfileQualityItemResource: {
       /** Format: int32 */
-      id?: number
-      name?: string | null
-      quality?: components['schemas']['Quality']
-      items?:
-        | components['schemas']['QualityProfileQualityItemResource'][]
-        | null
-      allowed?: boolean
+      id: number
+      name: string | null
+      quality: components['schemas']['Quality']
+      items: components['schemas']['QualityProfileQualityItemResource'][] | null
+      allowed: boolean
     }
     QualityProfileResource: {
       /** Format: int32 */
-      id?: number
-      name?: string | null
-      upgradeAllowed?: boolean
+      id: number
+      name: string | null
+      upgradeAllowed: boolean
       /** Format: int32 */
-      cutoff?: number
-      items?:
-        | components['schemas']['QualityProfileQualityItemResource'][]
-        | null
+      cutoff: number
+      items: components['schemas']['QualityProfileQualityItemResource'][] | null
       /** Format: int32 */
-      minFormatScore?: number
+      minFormatScore: number
       /** Format: int32 */
-      cutoffFormatScore?: number
+      cutoffFormatScore: number
       /** Format: int32 */
-      minUpgradeFormatScore?: number
-      formatItems?: components['schemas']['ProfileFormatItemResource'][] | null
-      language?: components['schemas']['Language']
+      minUpgradeFormatScore: number
+      formatItems: components['schemas']['ProfileFormatItemResource'][] | null
+      language: components['schemas']['Language']
     }
     /** @enum {string} */
     QualitySource:
@@ -8959,60 +8953,60 @@ export interface components {
       | 'webrip'
       | 'bluray'
     QueueBulkResource: {
-      ids?: number[] | null
+      ids: number[] | null
     }
     QueueResource: {
       /** Format: int32 */
-      id?: number
+      id: number
       /** Format: int32 */
-      movieId?: number | null
-      movie?: components['schemas']['MovieResource']
-      languages?: components['schemas']['Language'][] | null
-      quality?: components['schemas']['QualityModel']
-      customFormats?: components['schemas']['CustomFormatResource'][] | null
+      movieId: number | null
+      movie: components['schemas']['MovieResource']
+      languages: components['schemas']['Language'][] | null
+      quality: components['schemas']['QualityModel']
+      customFormats: components['schemas']['CustomFormatResource'][] | null
       /** Format: int32 */
-      customFormatScore?: number
+      customFormatScore: number
       /** Format: double */
-      size?: number
-      title?: string | null
+      size: number
+      title: string | null
       /** Format: date-time */
-      estimatedCompletionTime?: string | null
+      estimatedCompletionTime: string | null
       /** Format: date-time */
-      added?: string | null
-      status?: components['schemas']['QueueStatus']
-      trackedDownloadStatus?: components['schemas']['TrackedDownloadStatus']
-      trackedDownloadState?: components['schemas']['TrackedDownloadState']
-      statusMessages?:
+      added: string | null
+      status: components['schemas']['QueueStatus']
+      trackedDownloadStatus: components['schemas']['TrackedDownloadStatus']
+      trackedDownloadState: components['schemas']['TrackedDownloadState']
+      statusMessages:
         | components['schemas']['TrackedDownloadStatusMessage'][]
         | null
-      errorMessage?: string | null
-      downloadId?: string | null
-      protocol?: components['schemas']['DownloadProtocol']
-      downloadClient?: string | null
-      downloadClientHasPostImportCategory?: boolean
-      indexer?: string | null
-      outputPath?: string | null
+      errorMessage: string | null
+      downloadId: string | null
+      protocol: components['schemas']['DownloadProtocol']
+      downloadClient: string | null
+      downloadClientHasPostImportCategory: boolean
+      indexer: string | null
+      outputPath: string | null
       /**
        * Format: double
        * @deprecated
        */
-      sizeleft?: number
+      sizeleft: number
       /**
        * Format: date-span
        * @deprecated
        */
-      timeleft?: string | null
+      timeleft: string | null
     }
     QueueResourcePagingResource: {
       /** Format: int32 */
-      page?: number
+      page: number
       /** Format: int32 */
-      pageSize?: number
-      sortKey?: string | null
-      sortDirection?: components['schemas']['SortDirection']
+      pageSize: number
+      sortKey: string | null
+      sortDirection: components['schemas']['SortDirection']
       /** Format: int32 */
-      totalRecords?: number
-      records?: components['schemas']['QueueResource'][] | null
+      totalRecords: number
+      records: components['schemas']['QueueResource'][] | null
     }
     /** @enum {string} */
     QueueStatus:
@@ -9028,195 +9022,195 @@ export interface components {
       | 'fallback'
     QueueStatusResource: {
       /** Format: int32 */
-      id?: number
+      id: number
       /** Format: int32 */
-      totalCount?: number
+      totalCount: number
       /** Format: int32 */
-      count?: number
+      count: number
       /** Format: int32 */
-      unknownCount?: number
-      errors?: boolean
-      warnings?: boolean
-      unknownErrors?: boolean
-      unknownWarnings?: boolean
+      unknownCount: number
+      errors: boolean
+      warnings: boolean
+      unknownErrors: boolean
+      unknownWarnings: boolean
     }
     RatingChild: {
       /** Format: int32 */
-      votes?: number
+      votes: number
       /** Format: double */
-      value?: number
-      type?: components['schemas']['RatingType']
+      value: number
+      type: components['schemas']['RatingType']
     }
     /** @enum {string} */
     RatingType: 'user' | 'critic'
     Ratings: {
-      imdb?: components['schemas']['RatingChild']
-      tmdb?: components['schemas']['RatingChild']
-      metacritic?: components['schemas']['RatingChild']
-      rottenTomatoes?: components['schemas']['RatingChild']
-      trakt?: components['schemas']['RatingChild']
+      imdb: components['schemas']['RatingChild']
+      tmdb: components['schemas']['RatingChild']
+      metacritic: components['schemas']['RatingChild']
+      rottenTomatoes: components['schemas']['RatingChild']
+      trakt: components['schemas']['RatingChild']
     }
     /** @enum {string} */
     RejectionType: 'permanent' | 'temporary'
     ReleaseProfileResource: {
       /** Format: int32 */
-      id?: number
-      name?: string | null
-      enabled?: boolean
-      required?: unknown
-      ignored?: unknown
+      id: number
+      name: string | null
+      enabled: boolean
+      required: unknown
+      ignored: unknown
       /** Format: int32 */
-      indexerId?: number
-      tags?: number[] | null
+      indexerId: number
+      tags: number[] | null
     }
     ReleaseResource: {
       /** Format: int32 */
-      id?: number
-      guid?: string | null
-      quality?: components['schemas']['QualityModel']
-      customFormats?: components['schemas']['CustomFormatResource'][] | null
+      id: number
+      guid: string | null
+      quality: components['schemas']['QualityModel']
+      customFormats: components['schemas']['CustomFormatResource'][] | null
       /** Format: int32 */
-      customFormatScore?: number
+      customFormatScore: number
       /** Format: int32 */
-      qualityWeight?: number
+      qualityWeight: number
       /** Format: int32 */
-      age?: number
+      age: number
       /** Format: double */
-      ageHours?: number
+      ageHours: number
       /** Format: double */
-      ageMinutes?: number
+      ageMinutes: number
       /** Format: int64 */
-      size?: number
+      size: number
       /** Format: int32 */
-      indexerId?: number
-      indexer?: string | null
-      releaseGroup?: string | null
-      subGroup?: string | null
-      releaseHash?: string | null
-      title?: string | null
-      sceneSource?: boolean
-      movieTitles?: string[] | null
-      languages?: components['schemas']['Language'][] | null
+      indexerId: number
+      indexer: string | null
+      releaseGroup: string | null
+      subGroup: string | null
+      releaseHash: string | null
+      title: string | null
+      sceneSource: boolean
+      movieTitles: string[] | null
+      languages: components['schemas']['Language'][] | null
       /** Format: int32 */
-      mappedMovieId?: number | null
-      approved?: boolean
-      temporarilyRejected?: boolean
-      rejected?: boolean
+      mappedMovieId: number | null
+      approved: boolean
+      temporarilyRejected: boolean
+      rejected: boolean
       /** Format: int32 */
-      tmdbId?: number
+      tmdbId: number
       /** Format: int32 */
-      imdbId?: number
-      rejections?: string[] | null
+      imdbId: number
+      rejections: string[] | null
       /** Format: date-time */
-      publishDate?: string
-      commentUrl?: string | null
-      downloadUrl?: string | null
-      infoUrl?: string | null
-      movieRequested?: boolean
-      downloadAllowed?: boolean
+      publishDate: string
+      commentUrl: string | null
+      downloadUrl: string | null
+      infoUrl: string | null
+      movieRequested: boolean
+      downloadAllowed: boolean
       /** Format: int32 */
-      releaseWeight?: number
-      edition?: string | null
-      magnetUrl?: string | null
-      infoHash?: string | null
+      releaseWeight: number
+      edition: string | null
+      magnetUrl: string | null
+      infoHash: string | null
       /** Format: int32 */
-      seeders?: number | null
+      seeders: number | null
       /** Format: int32 */
-      leechers?: number | null
-      protocol?: components['schemas']['DownloadProtocol']
-      indexerFlags?: unknown
+      leechers: number | null
+      protocol: components['schemas']['DownloadProtocol']
+      indexerFlags: unknown
       /** Format: int32 */
-      movieId?: number | null
+      movieId: number | null
       /** Format: int32 */
-      downloadClientId?: number | null
-      downloadClient?: string | null
-      shouldOverride?: boolean | null
+      downloadClientId: number | null
+      downloadClient: string | null
+      shouldOverride: boolean | null
     }
     RemotePathMappingResource: {
       /** Format: int32 */
-      id?: number
-      host?: string | null
-      remotePath?: string | null
-      localPath?: string | null
+      id: number
+      host: string | null
+      remotePath: string | null
+      localPath: string | null
     }
     RenameMovieResource: {
       /** Format: int32 */
-      id?: number
+      id: number
       /** Format: int32 */
-      movieId?: number
+      movieId: number
       /** Format: int32 */
-      movieFileId?: number
-      existingPath?: string | null
-      newPath?: string | null
+      movieFileId: number
+      existingPath: string | null
+      newPath: string | null
     }
     /** @enum {string} */
     RescanAfterRefreshType: 'always' | 'afterManual' | 'never'
     Revision: {
       /** Format: int32 */
-      version?: number
+      version: number
       /** Format: int32 */
-      real?: number
-      isRepack?: boolean
+      real: number
+      isRepack: boolean
     }
     RootFolderResource: {
       /** Format: int32 */
-      id?: number
-      path?: string | null
-      accessible?: boolean
+      id: number
+      path: string | null
+      accessible: boolean
       /** Format: int64 */
-      freeSpace?: number | null
-      unmappedFolders?: components['schemas']['UnmappedFolder'][] | null
+      freeSpace: number | null
+      unmappedFolders: components['schemas']['UnmappedFolder'][] | null
     }
     /** @enum {string} */
     RuntimeMode: 'console' | 'service' | 'tray'
     SelectOption: {
       /** Format: int32 */
-      value?: number
-      name?: string | null
+      value: number
+      name: string | null
       /** Format: int32 */
-      order?: number
-      hint?: string | null
-      dividerAfter?: boolean
+      order: number
+      hint: string | null
+      dividerAfter: boolean
     }
     /** @enum {string} */
     SortDirection: 'default' | 'ascending' | 'descending'
     /** @enum {string} */
     SourceType: 'tmdb' | 'mappings' | 'user' | 'indexer'
     SystemResource: {
-      appName?: string | null
-      instanceName?: string | null
-      version?: string | null
+      appName: string | null
+      instanceName: string | null
+      version: string | null
       /** Format: date-time */
-      buildTime?: string
-      isDebug?: boolean
-      isProduction?: boolean
-      isAdmin?: boolean
-      isUserInteractive?: boolean
-      startupPath?: string | null
-      appData?: string | null
-      osName?: string | null
-      osVersion?: string | null
-      isNetCore?: boolean
-      isLinux?: boolean
-      isOsx?: boolean
-      isWindows?: boolean
-      isDocker?: boolean
-      mode?: components['schemas']['RuntimeMode']
-      branch?: string | null
-      databaseType?: components['schemas']['DatabaseType']
-      databaseVersion?: string | null
-      authentication?: components['schemas']['AuthenticationType']
+      buildTime: string
+      isDebug: boolean
+      isProduction: boolean
+      isAdmin: boolean
+      isUserInteractive: boolean
+      startupPath: string | null
+      appData: string | null
+      osName: string | null
+      osVersion: string | null
+      isNetCore: boolean
+      isLinux: boolean
+      isOsx: boolean
+      isWindows: boolean
+      isDocker: boolean
+      mode: components['schemas']['RuntimeMode']
+      branch: string | null
+      databaseType: components['schemas']['DatabaseType']
+      databaseVersion: string | null
+      authentication: components['schemas']['AuthenticationType']
       /** Format: int32 */
-      migrationVersion?: number
-      urlBase?: string | null
-      runtimeVersion?: string | null
-      runtimeName?: string | null
+      migrationVersion: number
+      urlBase: string | null
+      runtimeVersion: string | null
+      runtimeName: string | null
       /** Format: date-time */
-      startTime?: string
-      packageVersion?: string | null
-      packageAuthor?: string | null
-      packageUpdateMechanism?: components['schemas']['UpdateMechanism']
-      packageUpdateMechanismMessage?: string | null
+      startTime: string
+      packageVersion: string | null
+      packageAuthor: string | null
+      packageUpdateMechanism: components['schemas']['UpdateMechanism']
+      packageUpdateMechanismMessage: string | null
     }
     /** @enum {string} */
     TMDbCountryCode:
@@ -9235,37 +9229,37 @@ export interface components {
       | 'us'
     TagDetailsResource: {
       /** Format: int32 */
-      id?: number
-      label?: string | null
-      delayProfileIds?: number[] | null
-      importListIds?: number[] | null
-      notificationIds?: number[] | null
-      releaseProfileIds?: number[] | null
-      indexerIds?: number[] | null
-      downloadClientIds?: number[] | null
-      autoTagIds?: number[] | null
-      movieIds?: number[] | null
+      id: number
+      label: string | null
+      delayProfileIds: number[] | null
+      importListIds: number[] | null
+      notificationIds: number[] | null
+      releaseProfileIds: number[] | null
+      indexerIds: number[] | null
+      downloadClientIds: number[] | null
+      autoTagIds: number[] | null
+      movieIds: number[] | null
     }
     TagResource: {
       /** Format: int32 */
-      id?: number
-      label?: string | null
+      id: number
+      label: string | null
     }
     TaskResource: {
       /** Format: int32 */
-      id?: number
-      name?: string | null
-      taskName?: string | null
+      id: number
+      name: string | null
+      taskName: string | null
       /** Format: int32 */
-      interval?: number
+      interval: number
       /** Format: date-time */
-      lastExecution?: string
+      lastExecution: string
       /** Format: date-time */
-      lastStartTime?: string
+      lastStartTime: string
       /** Format: date-time */
-      nextExecution?: string
+      nextExecution: string
       /** Format: date-span */
-      readonly lastDuration?: string
+      readonly lastDuration: string
     }
     /** @enum {string} */
     TrackedDownloadState:
@@ -9280,54 +9274,54 @@ export interface components {
     /** @enum {string} */
     TrackedDownloadStatus: 'ok' | 'warning' | 'error'
     TrackedDownloadStatusMessage: {
-      title?: string | null
-      messages?: string[] | null
+      title: string | null
+      messages: string[] | null
     }
     UiConfigResource: {
       /** Format: int32 */
-      id?: number
+      id: number
       /** Format: int32 */
-      firstDayOfWeek?: number
-      calendarWeekColumnHeader?: string | null
-      movieRuntimeFormat?: components['schemas']['MovieRuntimeFormatType']
-      shortDateFormat?: string | null
-      longDateFormat?: string | null
-      timeFormat?: string | null
-      showRelativeDates?: boolean
-      enableColorImpairedMode?: boolean
+      firstDayOfWeek: number
+      calendarWeekColumnHeader: string | null
+      movieRuntimeFormat: components['schemas']['MovieRuntimeFormatType']
+      shortDateFormat: string | null
+      longDateFormat: string | null
+      timeFormat: string | null
+      showRelativeDates: boolean
+      enableColorImpairedMode: boolean
       /** Format: int32 */
-      movieInfoLanguage?: number
+      movieInfoLanguage: number
       /** Format: int32 */
-      uiLanguage?: number
-      theme?: string | null
+      uiLanguage: number
+      theme: string | null
     }
     UnmappedFolder: {
-      name?: string | null
-      path?: string | null
-      relativePath?: string | null
+      name: string | null
+      path: string | null
+      relativePath: string | null
     }
     UpdateChanges: {
-      new?: string[] | null
-      fixed?: string[] | null
+      new: string[] | null
+      fixed: string[] | null
     }
     /** @enum {string} */
     UpdateMechanism: 'builtIn' | 'script' | 'external' | 'apt' | 'docker'
     UpdateResource: {
       /** Format: int32 */
-      id?: number
-      version?: string | null
-      branch?: string | null
+      id: number
+      version: string | null
+      branch: string | null
       /** Format: date-time */
-      releaseDate?: string
-      fileName?: string | null
-      url?: string | null
-      installed?: boolean
+      releaseDate: string
+      fileName: string | null
+      url: string | null
+      installed: boolean
       /** Format: date-time */
-      installedOn?: string | null
-      installable?: boolean
-      latest?: boolean
-      changes?: components['schemas']['UpdateChanges']
-      hash?: string | null
+      installedOn: string | null
+      installable: boolean
+      latest: boolean
+      changes: components['schemas']['UpdateChanges']
+      hash: string | null
     }
   }
   responses: never

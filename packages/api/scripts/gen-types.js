@@ -15,8 +15,8 @@ if (fs.existsSync(OUTPUT_FOLDER)) {
 
 const commands = [
   `pnpx openapi-typescript "https://raw.githubusercontent.com/Jugbot/jellyseerr/refs/heads/develop/jellyseerr-api.yml" -o "${OUTPUT_FOLDER}/overseerrAPI.ts" --properties-required-by-default`,
-  `pnpx openapi-typescript "https://raw.githubusercontent.com/Sonarr/Sonarr/develop/src/Sonarr.Api.V3/openapi.json" -o "${OUTPUT_FOLDER}/sonarrAPI.ts"`,
-  `pnpx openapi-typescript "https://raw.githubusercontent.com/Radarr/Radarr/develop/src/Radarr.Api.V3/openapi.json" -o "${OUTPUT_FOLDER}/radarrAPI.ts"`,
+  `pnpx openapi-typescript "https://raw.githubusercontent.com/Sonarr/Sonarr/develop/src/Sonarr.Api.V3/openapi.json" -o "${OUTPUT_FOLDER}/sonarrAPI.ts" --properties-required-by-default`,
+  `pnpx openapi-typescript "https://raw.githubusercontent.com/Radarr/Radarr/develop/src/Radarr.Api.V3/openapi.json" -o "${OUTPUT_FOLDER}/radarrAPI.ts" --properties-required-by-default`,
 ]
 
 const runCommand = (cmd) => {
@@ -33,9 +33,9 @@ const runCommand = (cmd) => {
 
 Promise.all(commands.map(runCommand))
   .then((results) => {
-    results.forEach((result) => logger.info(result))
+    results.forEach((result) => console.info(result))
   })
   .catch((error) => {
-    logger.error(error)
+    console.error(error)
     process.exit(1)
   })

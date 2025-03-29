@@ -3,6 +3,7 @@ export interface User {
   name: string
 }
 
+/** In-memory collection of all users */
 export type UserMap = {
   [userId: number]: User
 }

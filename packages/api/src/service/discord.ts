@@ -8,6 +8,7 @@ import {
 } from 'discord.js'
 
 import { config } from '../config'
+import { logger } from '../logger'
 
 export function getServer(readyClient: Client) {
   return readyClient.guilds.fetch(config.DISCORD_GUILD_ID).catch((error) => {
@@ -45,7 +46,8 @@ export function makeThread(channel: GuildBasedChannel) {
   return (message: MessageCreateOptions, thread: StartThreadOptions) =>
     channel.send(message).then(async (result) => {
       if (!result.thread) {
-        return await result.startThread(thread)
+        logger.verbose(`Starting thread for message ${result.id}`)
+        return result.startThread(thread)
       }
       return result.thread as PublicThreadChannel<false>
     })

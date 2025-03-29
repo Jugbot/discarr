@@ -14,8 +14,7 @@ export const postRouter = createTRPCRouter({
     const medias = await getMedia(users)
 
     // TODO: Re-enable parallel processing when contextual logging is added
-    for (const mediaPromise of medias) {
-      const media = await mediaPromise
+    for (const media of medias) {
       await processMediaUpdate(ctx)(media)
       logger.verbose(`done processing ${media.title}`)
     }

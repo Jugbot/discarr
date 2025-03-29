@@ -3,78 +3,94 @@ import { Media } from '@acme/db/schema'
 import { inferRouterContext } from '@trpc/server'
 import ansi from 'ansi-escape-sequences'
 import {
-  MessageCreateOptions,
-  MessageEditOptions,
   AttachmentPayload,
   Message,
+  MessageCreateOptions,
+  MessageEditOptions,
   PublicThreadChannel,
 } from 'discord.js'
 import { fromMovie, fromSeries } from '../adapter/media'
-import { components } from '../generated/overseerrAPI'
 import { logger } from '../logger'
 import { MediaInfo } from '../model/Media'
 import { UserMap } from '../model/User'
-import { postRouter, formatANSI } from '../router/post'
+import { formatANSI, postRouter } from '../router/post'
 import { getClient } from '../sdk/discord'
 import { client as jellyseerrClient } from '../sdk/jellyseer'
+import { client as radarrClient } from '../sdk/radarr'
+import { client as sonarrClient } from '../sdk/sonarr'
 import { getServer, getTextChannel, makeThread } from '../service/discord'
 
-export async function getMedia(users: UserMap) {
-  const result = await jellyseerrClient.GET('/media', {
-    params: {
-      query: {
-        take: 9999,
-        sort: 'added',
-      },
-    },
-  })
-
-  if (!result.data) {
-    throw new Error(`Error fetching media: ${result.response.statusText}`)
+const handleBadResponse =
+  (errorMessage: string) =>
+  <T>(res: { data?: T; response: Response; error?: unknown }) => {
+    if (!res.data) {
+      return Promise.reject(
+        Error(errorMessage, {
+          cause: res.error,
+        }),
+      )
+    }
+    return Promise.resolve(res.data)
   }
 
-  return result.data.results.map(getDetails(users))
-}
-const getDetails =
-  (users: UserMap) => (media: components['schemas']['MediaInfo']) => {
-    const handleBadResponse = <T>(res: {
-      data?: T
-      response: Response
-      error?: unknown
-    }) => {
-      if (!res.data) {
-        return Promise.reject(
-          Error(`Error fetching media details: ${res.response.status}`, {
-            cause: res.error,
-          }),
-        )
-      }
-      return res.data
-    }
-
-    if (media.mediaType === 'movie') {
-      return jellyseerrClient
-        .GET('/movie/{movieId}', {
-          params: {
-            path: {
-              movieId: media.tmdbId,
-            },
-          },
-        })
-        .then(handleBadResponse)
-        .then(fromMovie(users))
-    }
-    return jellyseerrClient
-      .GET('/tv/{tvId}', {
-        params: {
-          path: {
-            tvId: media.tmdbId,
-          },
+const fetchSerie = (tmdbId: number) =>
+  jellyseerrClient
+    .GET('/tv/{tvId}', {
+      params: {
+        path: {
+          tvId: tmdbId,
         },
-      })
-      .then(handleBadResponse)
-      .then(fromSeries(users))
+      },
+    })
+    .then(handleBadResponse('Error fetching jellyseerr series'))
+
+const fetchMovie = (tmdbId: number) =>
+  jellyseerrClient
+    .GET('/movie/{movieId}', {
+      params: {
+        path: {
+          movieId: tmdbId,
+        },
+      },
+    })
+    .then(handleBadResponse('Error fetching jellyseerr movie'))
+
+export async function getMedia(users: UserMap) {
+  const sonarrMedia = await sonarrClient
+    .GET('/api/v3/series')
+    .then(handleBadResponse('Error fetching sonarr series collection'))
+  const radarrMedia = await radarrClient
+    .GET('/api/v3/movie')
+    .then(handleBadResponse('Error fetching radarr movies collection'))
+
+  const tvMediaInfo = await Promise.allSettled(
+    sonarrMedia.map((media) =>
+      fetchSerie(media.tmdbId).then(fromSeries(users)),
+    ),
+  )
+  const movieMediaInfo = await Promise.allSettled(
+    radarrMedia.map((media) => fetchMovie(media.tmdbId).then(fromMovie(users))),
+  )
+
+  const [resolved, rejected] = [...tvMediaInfo, ...movieMediaInfo].reduce(
+    (acc, next) => {
+      if (next.status === 'fulfilled') {
+        acc[0].push(next.value)
+      } else {
+        acc[1].push(next.reason)
+      }
+      return acc
+    },
+    [[], []] as [MediaInfo[], unknown[]],
+  )
+
+  for (const error of rejected) {
+    logger.error(error)
   }
+
+  return resolved
+}
+
 type StatusMeta = {
   /** hex rgb number */
   color: number
@@ -82,9 +98,9 @@ type StatusMeta = {
   base64: string
   ansi: keyof typeof ansi.style
 }
+
 function colorFromStatus(status: MediaInfo['status']): StatusMeta {
   switch (status) {
-    case 'Partially Available':
     case 'Available':
       return {
         color: 0x2ecc71,
@@ -224,7 +240,7 @@ const upsertThread =
           return r
         })
         .catch((err) => {
-          logger.warn(err)
+          logger.debug(`Error fetching message: ${err}`)
           return handleBadThread(thread_id)
         })
       return message

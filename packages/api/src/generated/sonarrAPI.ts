@@ -75,9 +75,9 @@ export interface paths {
       requestBody?: {
         content: {
           'multipart/form-data': {
-            username?: string
-            password?: string
-            rememberMe?: string
+            username: string
+            password: string
+            rememberMe: string
           }
         }
       }
@@ -7736,20 +7736,20 @@ export type webhooks = Record<string, never>
 export interface components {
   schemas: {
     AddSeriesOptions: {
-      ignoreEpisodesWithFiles?: boolean
-      ignoreEpisodesWithoutFiles?: boolean
-      monitor?: components['schemas']['MonitorTypes']
-      searchForMissingEpisodes?: boolean
-      searchForCutoffUnmetEpisodes?: boolean
+      ignoreEpisodesWithFiles: boolean
+      ignoreEpisodesWithoutFiles: boolean
+      monitor: components['schemas']['MonitorTypes']
+      searchForMissingEpisodes: boolean
+      searchForCutoffUnmetEpisodes: boolean
     }
     AlternateTitleResource: {
-      title?: string | null
+      title: string | null
       /** Format: int32 */
-      seasonNumber?: number | null
+      seasonNumber: number | null
       /** Format: int32 */
-      sceneSeasonNumber?: number | null
-      sceneOrigin?: string | null
-      comment?: string | null
+      sceneSeasonNumber: number | null
+      sceneOrigin: string | null
+      comment: string | null
     }
     /** @enum {string} */
     ApplyTags: 'add' | 'remove' | 'replace'
@@ -7759,67 +7759,67 @@ export interface components {
     AuthenticationType: 'none' | 'basic' | 'forms' | 'external'
     AutoTaggingResource: {
       /** Format: int32 */
-      id?: number
-      name?: string | null
-      removeTagsAutomatically?: boolean
-      tags?: number[] | null
-      specifications?:
+      id: number
+      name: string | null
+      removeTagsAutomatically: boolean
+      tags: number[] | null
+      specifications:
         | components['schemas']['AutoTaggingSpecificationSchema'][]
         | null
     }
     AutoTaggingSpecificationSchema: {
       /** Format: int32 */
-      id?: number
-      name?: string | null
-      implementation?: string | null
-      implementationName?: string | null
-      negate?: boolean
-      required?: boolean
-      fields?: components['schemas']['Field'][] | null
+      id: number
+      name: string | null
+      implementation: string | null
+      implementationName: string | null
+      negate: boolean
+      required: boolean
+      fields: components['schemas']['Field'][] | null
     }
     BackupResource: {
       /** Format: int32 */
-      id?: number
-      name?: string | null
-      path?: string | null
-      type?: components['schemas']['BackupType']
+      id: number
+      name: string | null
+      path: string | null
+      type: components['schemas']['BackupType']
       /** Format: int64 */
-      size?: number
+      size: number
       /** Format: date-time */
-      time?: string
+      time: string
     }
     /** @enum {string} */
     BackupType: 'scheduled' | 'manual' | 'update'
     BlocklistBulkResource: {
-      ids?: number[] | null
+      ids: number[] | null
     }
     BlocklistResource: {
       /** Format: int32 */
-      id?: number
+      id: number
       /** Format: int32 */
-      seriesId?: number
-      episodeIds?: number[] | null
-      sourceTitle?: string | null
-      languages?: components['schemas']['Language'][] | null
-      quality?: components['schemas']['QualityModel']
-      customFormats?: components['schemas']['CustomFormatResource'][] | null
+      seriesId: number
+      episodeIds: number[] | null
+      sourceTitle: string | null
+      languages: components['schemas']['Language'][] | null
+      quality: components['schemas']['QualityModel']
+      customFormats: components['schemas']['CustomFormatResource'][] | null
       /** Format: date-time */
-      date?: string
-      protocol?: components['schemas']['DownloadProtocol']
-      indexer?: string | null
-      message?: string | null
-      series?: components['schemas']['SeriesResource']
+      date: string
+      protocol: components['schemas']['DownloadProtocol']
+      indexer: string | null
+      message: string | null
+      series: components['schemas']['SeriesResource']
     }
     BlocklistResourcePagingResource: {
       /** Format: int32 */
-      page?: number
+      page: number
       /** Format: int32 */
-      pageSize?: number
-      sortKey?: string | null
-      sortDirection?: components['schemas']['SortDirection']
+      pageSize: number
+      sortKey: string | null
+      sortDirection: components['schemas']['SortDirection']
       /** Format: int32 */
-      totalRecords?: number
-      records?: components['schemas']['BlocklistResource'][] | null
+      totalRecords: number
+      records: components['schemas']['BlocklistResource'][] | null
     }
     /** @enum {string} */
     CertificateValidationType:
@@ -7827,50 +7827,50 @@ export interface components {
       | 'disabledForLocalAddresses'
       | 'disabled'
     Command: {
-      sendUpdatesToClient?: boolean
-      readonly updateScheduledTask?: boolean
-      readonly completionMessage?: string | null
-      readonly requiresDiskAccess?: boolean
-      readonly isExclusive?: boolean
-      readonly isLongRunning?: boolean
-      readonly name?: string | null
+      sendUpdatesToClient: boolean
+      readonly updateScheduledTask: boolean
+      readonly completionMessage: string | null
+      readonly requiresDiskAccess: boolean
+      readonly isExclusive: boolean
+      readonly isLongRunning: boolean
+      readonly name: string | null
       /** Format: date-time */
-      lastExecutionTime?: string | null
+      lastExecutionTime: string | null
       /** Format: date-time */
-      lastStartTime?: string | null
-      trigger?: components['schemas']['CommandTrigger']
-      suppressMessages?: boolean
-      clientUserAgent?: string | null
+      lastStartTime: string | null
+      trigger: components['schemas']['CommandTrigger']
+      suppressMessages: boolean
+      clientUserAgent: string | null
     }
     /** @enum {string} */
     CommandPriority: 'normal' | 'high' | 'low'
     CommandResource: {
       /** Format: int32 */
-      id?: number
-      name?: string | null
-      commandName?: string | null
-      message?: string | null
-      body?: components['schemas']['Command']
-      priority?: components['schemas']['CommandPriority']
-      status?: components['schemas']['CommandStatus']
-      result?: components['schemas']['CommandResult']
+      id: number
+      name: string | null
+      commandName: string | null
+      message: string | null
+      body: components['schemas']['Command']
+      priority: components['schemas']['CommandPriority']
+      status: components['schemas']['CommandStatus']
+      result: components['schemas']['CommandResult']
       /** Format: date-time */
-      queued?: string
+      queued: string
       /** Format: date-time */
-      started?: string | null
+      started: string | null
       /** Format: date-time */
-      ended?: string | null
+      ended: string | null
       /** Format: date-span */
-      duration?: string | null
-      exception?: string | null
-      trigger?: components['schemas']['CommandTrigger']
-      clientUserAgent?: string | null
+      duration: string | null
+      exception: string | null
+      trigger: components['schemas']['CommandTrigger']
+      clientUserAgent: string | null
       /** Format: date-time */
-      stateChangeTime?: string | null
-      sendUpdatesToClient?: boolean
-      updateScheduledTask?: boolean
+      stateChangeTime: string | null
+      sendUpdatesToClient: boolean
+      updateScheduledTask: boolean
       /** Format: date-time */
-      lastExecutionTime?: string | null
+      lastExecutionTime: string | null
     }
     /** @enum {string} */
     CommandResult: 'unknown' | 'successful' | 'unsuccessful'
@@ -7887,143 +7887,141 @@ export interface components {
     CommandTrigger: 'unspecified' | 'manual' | 'scheduled'
     CustomFilterResource: {
       /** Format: int32 */
-      id?: number
-      type?: string | null
-      label?: string | null
-      filters?:
+      id: number
+      type: string | null
+      label: string | null
+      filters:
         | {
             [key: string]: unknown
           }[]
         | null
     }
     CustomFormatBulkResource: {
-      ids?: number[] | null
-      includeCustomFormatWhenRenaming?: boolean | null
+      ids: number[] | null
+      includeCustomFormatWhenRenaming: boolean | null
     }
     CustomFormatResource: {
       /** Format: int32 */
-      id?: number
-      name?: string | null
-      includeCustomFormatWhenRenaming?: boolean | null
-      specifications?:
+      id: number
+      name: string | null
+      includeCustomFormatWhenRenaming: boolean | null
+      specifications:
         | components['schemas']['CustomFormatSpecificationSchema'][]
         | null
     }
     CustomFormatSpecificationSchema: {
       /** Format: int32 */
-      id?: number
-      name?: string | null
-      implementation?: string | null
-      implementationName?: string | null
-      infoLink?: string | null
-      negate?: boolean
-      required?: boolean
-      fields?: components['schemas']['Field'][] | null
-      presets?:
-        | components['schemas']['CustomFormatSpecificationSchema'][]
-        | null
+      id: number
+      name: string | null
+      implementation: string | null
+      implementationName: string | null
+      infoLink: string | null
+      negate: boolean
+      required: boolean
+      fields: components['schemas']['Field'][] | null
+      presets: components['schemas']['CustomFormatSpecificationSchema'][] | null
     }
     /** @enum {string} */
     DatabaseType: 'sqLite' | 'postgreSQL'
     DelayProfileResource: {
       /** Format: int32 */
-      id?: number
-      enableUsenet?: boolean
-      enableTorrent?: boolean
-      preferredProtocol?: components['schemas']['DownloadProtocol']
+      id: number
+      enableUsenet: boolean
+      enableTorrent: boolean
+      preferredProtocol: components['schemas']['DownloadProtocol']
       /** Format: int32 */
-      usenetDelay?: number
+      usenetDelay: number
       /** Format: int32 */
-      torrentDelay?: number
-      bypassIfHighestQuality?: boolean
-      bypassIfAboveCustomFormatScore?: boolean
+      torrentDelay: number
+      bypassIfHighestQuality: boolean
+      bypassIfAboveCustomFormatScore: boolean
       /** Format: int32 */
-      minimumCustomFormatScore?: number
+      minimumCustomFormatScore: number
       /** Format: int32 */
-      order?: number
-      tags?: number[] | null
+      order: number
+      tags: number[] | null
     }
     DiskSpaceResource: {
       /** Format: int32 */
-      id?: number
-      path?: string | null
-      label?: string | null
+      id: number
+      path: string | null
+      label: string | null
       /** Format: int64 */
-      freeSpace?: number
+      freeSpace: number
       /** Format: int64 */
-      totalSpace?: number
+      totalSpace: number
     }
     DownloadClientBulkResource: {
-      ids?: number[] | null
-      tags?: number[] | null
-      applyTags?: components['schemas']['ApplyTags']
-      enable?: boolean | null
+      ids: number[] | null
+      tags: number[] | null
+      applyTags: components['schemas']['ApplyTags']
+      enable: boolean | null
       /** Format: int32 */
-      priority?: number | null
-      removeCompletedDownloads?: boolean | null
-      removeFailedDownloads?: boolean | null
+      priority: number | null
+      removeCompletedDownloads: boolean | null
+      removeFailedDownloads: boolean | null
     }
     DownloadClientConfigResource: {
       /** Format: int32 */
-      id?: number
-      downloadClientWorkingFolders?: string | null
-      enableCompletedDownloadHandling?: boolean
-      autoRedownloadFailed?: boolean
-      autoRedownloadFailedFromInteractiveSearch?: boolean
+      id: number
+      downloadClientWorkingFolders: string | null
+      enableCompletedDownloadHandling: boolean
+      autoRedownloadFailed: boolean
+      autoRedownloadFailedFromInteractiveSearch: boolean
     }
     DownloadClientResource: {
       /** Format: int32 */
-      id?: number
-      name?: string | null
-      fields?: components['schemas']['Field'][] | null
-      implementationName?: string | null
-      implementation?: string | null
-      configContract?: string | null
-      infoLink?: string | null
-      message?: components['schemas']['ProviderMessage']
-      tags?: number[] | null
-      presets?: components['schemas']['DownloadClientResource'][] | null
-      enable?: boolean
-      protocol?: components['schemas']['DownloadProtocol']
+      id: number
+      name: string | null
+      fields: components['schemas']['Field'][] | null
+      implementationName: string | null
+      implementation: string | null
+      configContract: string | null
+      infoLink: string | null
+      message: components['schemas']['ProviderMessage']
+      tags: number[] | null
+      presets: components['schemas']['DownloadClientResource'][] | null
+      enable: boolean
+      protocol: components['schemas']['DownloadProtocol']
       /** Format: int32 */
-      priority?: number
-      removeCompletedDownloads?: boolean
-      removeFailedDownloads?: boolean
+      priority: number
+      removeCompletedDownloads: boolean
+      removeFailedDownloads: boolean
     }
     /** @enum {string} */
     DownloadProtocol: 'unknown' | 'usenet' | 'torrent'
     EpisodeFileListResource: {
-      episodeFileIds?: number[] | null
-      languages?: components['schemas']['Language'][] | null
-      quality?: components['schemas']['QualityModel']
-      sceneName?: string | null
-      releaseGroup?: string | null
+      episodeFileIds: number[] | null
+      languages: components['schemas']['Language'][] | null
+      quality: components['schemas']['QualityModel']
+      sceneName: string | null
+      releaseGroup: string | null
     }
     EpisodeFileResource: {
       /** Format: int32 */
-      id?: number
+      id: number
       /** Format: int32 */
-      seriesId?: number
+      seriesId: number
       /** Format: int32 */
-      seasonNumber?: number
-      relativePath?: string | null
-      path?: string | null
+      seasonNumber: number
+      relativePath: string | null
+      path: string | null
       /** Format: int64 */
-      size?: number
+      size: number
       /** Format: date-time */
-      dateAdded?: string
-      sceneName?: string | null
-      releaseGroup?: string | null
-      languages?: components['schemas']['Language'][] | null
-      quality?: components['schemas']['QualityModel']
-      customFormats?: components['schemas']['CustomFormatResource'][] | null
+      dateAdded: string
+      sceneName: string | null
+      releaseGroup: string | null
+      languages: components['schemas']['Language'][] | null
+      quality: components['schemas']['QualityModel']
+      customFormats: components['schemas']['CustomFormatResource'][] | null
       /** Format: int32 */
-      customFormatScore?: number
+      customFormatScore: number
       /** Format: int32 */
-      indexerFlags?: number | null
-      releaseType?: components['schemas']['ReleaseType']
-      mediaInfo?: components['schemas']['MediaInfoResource']
-      qualityCutoffNotMet?: boolean
+      indexerFlags: number | null
+      releaseType: components['schemas']['ReleaseType']
+      mediaInfo: components['schemas']['MediaInfoResource']
+      qualityCutoffNotMet: boolean
     }
     /** @enum {string} */
     EpisodeHistoryEventType:
@@ -8037,82 +8035,82 @@ export interface components {
       | 'downloadIgnored'
     EpisodeResource: {
       /** Format: int32 */
-      id?: number
+      id: number
       /** Format: int32 */
-      seriesId?: number
+      seriesId: number
       /** Format: int32 */
-      tvdbId?: number
+      tvdbId: number
       /** Format: int32 */
-      episodeFileId?: number
+      episodeFileId: number
       /** Format: int32 */
-      seasonNumber?: number
+      seasonNumber: number
       /** Format: int32 */
-      episodeNumber?: number
-      title?: string | null
-      airDate?: string | null
+      episodeNumber: number
+      title: string | null
+      airDate: string | null
       /** Format: date-time */
-      airDateUtc?: string | null
+      airDateUtc: string | null
       /** Format: date-time */
-      lastSearchTime?: string | null
+      lastSearchTime: string | null
       /** Format: int32 */
-      runtime?: number
-      finaleType?: string | null
-      overview?: string | null
-      episodeFile?: components['schemas']['EpisodeFileResource']
-      hasFile?: boolean
-      monitored?: boolean
+      runtime: number
+      finaleType: string | null
+      overview: string | null
+      episodeFile: components['schemas']['EpisodeFileResource']
+      hasFile: boolean
+      monitored: boolean
       /** Format: int32 */
-      absoluteEpisodeNumber?: number | null
+      absoluteEpisodeNumber: number | null
       /** Format: int32 */
-      sceneAbsoluteEpisodeNumber?: number | null
+      sceneAbsoluteEpisodeNumber: number | null
       /** Format: int32 */
-      sceneEpisodeNumber?: number | null
+      sceneEpisodeNumber: number | null
       /** Format: int32 */
-      sceneSeasonNumber?: number | null
-      unverifiedSceneNumbering?: boolean
+      sceneSeasonNumber: number | null
+      unverifiedSceneNumbering: boolean
       /** Format: date-time */
-      endTime?: string | null
+      endTime: string | null
       /** Format: date-time */
-      grabDate?: string | null
-      series?: components['schemas']['SeriesResource']
-      images?: components['schemas']['MediaCover'][] | null
+      grabDate: string | null
+      series: components['schemas']['SeriesResource']
+      images: components['schemas']['MediaCover'][] | null
     }
     EpisodeResourcePagingResource: {
       /** Format: int32 */
-      page?: number
+      page: number
       /** Format: int32 */
-      pageSize?: number
-      sortKey?: string | null
-      sortDirection?: components['schemas']['SortDirection']
+      pageSize: number
+      sortKey: string | null
+      sortDirection: components['schemas']['SortDirection']
       /** Format: int32 */
-      totalRecords?: number
-      records?: components['schemas']['EpisodeResource'][] | null
+      totalRecords: number
+      records: components['schemas']['EpisodeResource'][] | null
     }
     /** @enum {string} */
     EpisodeTitleRequiredType: 'always' | 'bulkSeasonReleases' | 'never'
     EpisodesMonitoredResource: {
-      episodeIds?: number[] | null
-      monitored?: boolean
+      episodeIds: number[] | null
+      monitored: boolean
     }
     Field: {
       /** Format: int32 */
-      order?: number
-      name?: string | null
-      label?: string | null
-      unit?: string | null
-      helpText?: string | null
-      helpTextWarning?: string | null
-      helpLink?: string | null
-      value?: unknown
-      type?: string | null
-      advanced?: boolean
-      selectOptions?: components['schemas']['SelectOption'][] | null
-      selectOptionsProviderAction?: string | null
-      section?: string | null
-      hidden?: string | null
-      privacy?: components['schemas']['PrivacyLevel']
-      placeholder?: string | null
-      isFloat?: boolean
+      order: number
+      name: string | null
+      label: string | null
+      unit: string | null
+      helpText: string | null
+      helpTextWarning: string | null
+      helpLink: string | null
+      value: unknown
+      type: string | null
+      advanced: boolean
+      selectOptions: components['schemas']['SelectOption'][] | null
+      selectOptionsProviderAction: string | null
+      section: string | null
+      hidden: string | null
+      privacy: components['schemas']['PrivacyLevel']
+      placeholder: string | null
+      isFloat: boolean
     }
     /** @enum {string} */
     FileDateType: 'none' | 'localAirDate' | 'utcAirDate'
@@ -8120,167 +8118,167 @@ export interface components {
     HealthCheckResult: 'ok' | 'notice' | 'warning' | 'error'
     HealthResource: {
       /** Format: int32 */
-      id?: number
-      source?: string | null
-      type?: components['schemas']['HealthCheckResult']
-      message?: string | null
-      wikiUrl?: components['schemas']['HttpUri']
+      id: number
+      source: string | null
+      type: components['schemas']['HealthCheckResult']
+      message: string | null
+      wikiUrl: components['schemas']['HttpUri']
     }
     HistoryResource: {
       /** Format: int32 */
-      id?: number
+      id: number
       /** Format: int32 */
-      episodeId?: number
+      episodeId: number
       /** Format: int32 */
-      seriesId?: number
-      sourceTitle?: string | null
-      languages?: components['schemas']['Language'][] | null
-      quality?: components['schemas']['QualityModel']
-      customFormats?: components['schemas']['CustomFormatResource'][] | null
+      seriesId: number
+      sourceTitle: string | null
+      languages: components['schemas']['Language'][] | null
+      quality: components['schemas']['QualityModel']
+      customFormats: components['schemas']['CustomFormatResource'][] | null
       /** Format: int32 */
-      customFormatScore?: number
-      qualityCutoffNotMet?: boolean
+      customFormatScore: number
+      qualityCutoffNotMet: boolean
       /** Format: date-time */
-      date?: string
-      downloadId?: string | null
-      eventType?: components['schemas']['EpisodeHistoryEventType']
-      data?: {
+      date: string
+      downloadId: string | null
+      eventType: components['schemas']['EpisodeHistoryEventType']
+      data: {
         [key: string]: string | null
       } | null
-      episode?: components['schemas']['EpisodeResource']
-      series?: components['schemas']['SeriesResource']
+      episode: components['schemas']['EpisodeResource']
+      series: components['schemas']['SeriesResource']
     }
     HistoryResourcePagingResource: {
       /** Format: int32 */
-      page?: number
+      page: number
       /** Format: int32 */
-      pageSize?: number
-      sortKey?: string | null
-      sortDirection?: components['schemas']['SortDirection']
+      pageSize: number
+      sortKey: string | null
+      sortDirection: components['schemas']['SortDirection']
       /** Format: int32 */
-      totalRecords?: number
-      records?: components['schemas']['HistoryResource'][] | null
+      totalRecords: number
+      records: components['schemas']['HistoryResource'][] | null
     }
     HostConfigResource: {
       /** Format: int32 */
-      id?: number
-      bindAddress?: string | null
+      id: number
+      bindAddress: string | null
       /** Format: int32 */
-      port?: number
+      port: number
       /** Format: int32 */
-      sslPort?: number
-      enableSsl?: boolean
-      launchBrowser?: boolean
-      authenticationMethod?: components['schemas']['AuthenticationType']
-      authenticationRequired?: components['schemas']['AuthenticationRequiredType']
-      analyticsEnabled?: boolean
-      username?: string | null
-      password?: string | null
-      passwordConfirmation?: string | null
-      logLevel?: string | null
+      sslPort: number
+      enableSsl: boolean
+      launchBrowser: boolean
+      authenticationMethod: components['schemas']['AuthenticationType']
+      authenticationRequired: components['schemas']['AuthenticationRequiredType']
+      analyticsEnabled: boolean
+      username: string | null
+      password: string | null
+      passwordConfirmation: string | null
+      logLevel: string | null
       /** Format: int32 */
-      logSizeLimit?: number
-      consoleLogLevel?: string | null
-      branch?: string | null
-      apiKey?: string | null
-      sslCertPath?: string | null
-      sslCertPassword?: string | null
-      urlBase?: string | null
-      instanceName?: string | null
-      applicationUrl?: string | null
-      updateAutomatically?: boolean
-      updateMechanism?: components['schemas']['UpdateMechanism']
-      updateScriptPath?: string | null
-      proxyEnabled?: boolean
-      proxyType?: components['schemas']['ProxyType']
-      proxyHostname?: string | null
+      logSizeLimit: number
+      consoleLogLevel: string | null
+      branch: string | null
+      apiKey: string | null
+      sslCertPath: string | null
+      sslCertPassword: string | null
+      urlBase: string | null
+      instanceName: string | null
+      applicationUrl: string | null
+      updateAutomatically: boolean
+      updateMechanism: components['schemas']['UpdateMechanism']
+      updateScriptPath: string | null
+      proxyEnabled: boolean
+      proxyType: components['schemas']['ProxyType']
+      proxyHostname: string | null
       /** Format: int32 */
-      proxyPort?: number
-      proxyUsername?: string | null
-      proxyPassword?: string | null
-      proxyBypassFilter?: string | null
-      proxyBypassLocalAddresses?: boolean
-      certificateValidation?: components['schemas']['CertificateValidationType']
-      backupFolder?: string | null
+      proxyPort: number
+      proxyUsername: string | null
+      proxyPassword: string | null
+      proxyBypassFilter: string | null
+      proxyBypassLocalAddresses: boolean
+      certificateValidation: components['schemas']['CertificateValidationType']
+      backupFolder: string | null
       /** Format: int32 */
-      backupInterval?: number
+      backupInterval: number
       /** Format: int32 */
-      backupRetention?: number
-      trustCgnatIpAddresses?: boolean
+      backupRetention: number
+      trustCgnatIpAddresses: boolean
     }
     HttpUri: {
-      readonly fullUri?: string | null
-      readonly scheme?: string | null
-      readonly host?: string | null
+      readonly fullUri: string | null
+      readonly scheme: string | null
+      readonly host: string | null
       /** Format: int32 */
-      readonly port?: number | null
-      readonly path?: string | null
-      readonly query?: string | null
-      readonly fragment?: string | null
+      readonly port: number | null
+      readonly path: string | null
+      readonly query: string | null
+      readonly fragment: string | null
     }
     ImportListBulkResource: {
-      ids?: number[] | null
-      tags?: number[] | null
-      applyTags?: components['schemas']['ApplyTags']
-      enableAutomaticAdd?: boolean | null
-      rootFolderPath?: string | null
+      ids: number[] | null
+      tags: number[] | null
+      applyTags: components['schemas']['ApplyTags']
+      enableAutomaticAdd: boolean | null
+      rootFolderPath: string | null
       /** Format: int32 */
-      qualityProfileId?: number | null
+      qualityProfileId: number | null
     }
     ImportListConfigResource: {
       /** Format: int32 */
-      id?: number
-      listSyncLevel?: components['schemas']['ListSyncLevelType']
+      id: number
+      listSyncLevel: components['schemas']['ListSyncLevelType']
       /** Format: int32 */
-      listSyncTag?: number
+      listSyncTag: number
     }
     ImportListExclusionBulkResource: {
-      ids?: number[] | null
+      ids: number[] | null
     }
     ImportListExclusionResource: {
       /** Format: int32 */
-      id?: number
+      id: number
       /** Format: int32 */
-      tvdbId?: number
-      title?: string | null
+      tvdbId: number
+      title: string | null
     }
     ImportListExclusionResourcePagingResource: {
       /** Format: int32 */
-      page?: number
+      page: number
       /** Format: int32 */
-      pageSize?: number
-      sortKey?: string | null
-      sortDirection?: components['schemas']['SortDirection']
+      pageSize: number
+      sortKey: string | null
+      sortDirection: components['schemas']['SortDirection']
       /** Format: int32 */
-      totalRecords?: number
-      records?: components['schemas']['ImportListExclusionResource'][] | null
+      totalRecords: number
+      records: components['schemas']['ImportListExclusionResource'][] | null
     }
     ImportListResource: {
       /** Format: int32 */
-      id?: number
-      name?: string | null
-      fields?: components['schemas']['Field'][] | null
-      implementationName?: string | null
-      implementation?: string | null
-      configContract?: string | null
-      infoLink?: string | null
-      message?: components['schemas']['ProviderMessage']
-      tags?: number[] | null
-      presets?: components['schemas']['ImportListResource'][] | null
-      enableAutomaticAdd?: boolean
-      searchForMissingEpisodes?: boolean
-      shouldMonitor?: components['schemas']['MonitorTypes']
-      monitorNewItems?: components['schemas']['NewItemMonitorTypes']
-      rootFolderPath?: string | null
+      id: number
+      name: string | null
+      fields: components['schemas']['Field'][] | null
+      implementationName: string | null
+      implementation: string | null
+      configContract: string | null
+      infoLink: string | null
+      message: components['schemas']['ProviderMessage']
+      tags: number[] | null
+      presets: components['schemas']['ImportListResource'][] | null
+      enableAutomaticAdd: boolean
+      searchForMissingEpisodes: boolean
+      shouldMonitor: components['schemas']['MonitorTypes']
+      monitorNewItems: components['schemas']['NewItemMonitorTypes']
+      rootFolderPath: string | null
       /** Format: int32 */
-      qualityProfileId?: number
-      seriesType?: components['schemas']['SeriesTypes']
-      seasonFolder?: boolean
-      listType?: components['schemas']['ImportListType']
+      qualityProfileId: number
+      seriesType: components['schemas']['SeriesTypes']
+      seasonFolder: boolean
+      listType: components['schemas']['ImportListType']
       /** Format: int32 */
-      listOrder?: number
+      listOrder: number
       /** Format: date-span */
-      minRefreshInterval?: string
+      minRefreshInterval: string
     }
     /** @enum {string} */
     ImportListType:
@@ -8291,86 +8289,86 @@ export interface components {
       | 'other'
       | 'advanced'
     ImportRejectionResource: {
-      reason?: string | null
-      type?: components['schemas']['RejectionType']
+      reason: string | null
+      type: components['schemas']['RejectionType']
     }
     IndexerBulkResource: {
-      ids?: number[] | null
-      tags?: number[] | null
-      applyTags?: components['schemas']['ApplyTags']
-      enableRss?: boolean | null
-      enableAutomaticSearch?: boolean | null
-      enableInteractiveSearch?: boolean | null
+      ids: number[] | null
+      tags: number[] | null
+      applyTags: components['schemas']['ApplyTags']
+      enableRss: boolean | null
+      enableAutomaticSearch: boolean | null
+      enableInteractiveSearch: boolean | null
       /** Format: int32 */
-      priority?: number | null
+      priority: number | null
     }
     IndexerConfigResource: {
       /** Format: int32 */
-      id?: number
+      id: number
       /** Format: int32 */
-      minimumAge?: number
+      minimumAge: number
       /** Format: int32 */
-      retention?: number
+      retention: number
       /** Format: int32 */
-      maximumSize?: number
+      maximumSize: number
       /** Format: int32 */
-      rssSyncInterval?: number
+      rssSyncInterval: number
     }
     IndexerFlagResource: {
       /** Format: int32 */
-      id?: number
-      name?: string | null
-      readonly nameLower?: string | null
+      id: number
+      name: string | null
+      readonly nameLower: string | null
     }
     IndexerResource: {
       /** Format: int32 */
-      id?: number
-      name?: string | null
-      fields?: components['schemas']['Field'][] | null
-      implementationName?: string | null
-      implementation?: string | null
-      configContract?: string | null
-      infoLink?: string | null
-      message?: components['schemas']['ProviderMessage']
-      tags?: number[] | null
-      presets?: components['schemas']['IndexerResource'][] | null
-      enableRss?: boolean
-      enableAutomaticSearch?: boolean
-      enableInteractiveSearch?: boolean
-      supportsRss?: boolean
-      supportsSearch?: boolean
-      protocol?: components['schemas']['DownloadProtocol']
+      id: number
+      name: string | null
+      fields: components['schemas']['Field'][] | null
+      implementationName: string | null
+      implementation: string | null
+      configContract: string | null
+      infoLink: string | null
+      message: components['schemas']['ProviderMessage']
+      tags: number[] | null
+      presets: components['schemas']['IndexerResource'][] | null
+      enableRss: boolean
+      enableAutomaticSearch: boolean
+      enableInteractiveSearch: boolean
+      supportsRss: boolean
+      supportsSearch: boolean
+      protocol: components['schemas']['DownloadProtocol']
       /** Format: int32 */
-      priority?: number
+      priority: number
       /** Format: int32 */
-      seasonSearchMaximumSingleEpisodeAge?: number
+      seasonSearchMaximumSingleEpisodeAge: number
       /** Format: int32 */
-      downloadClientId?: number
+      downloadClientId: number
     }
     Language: {
       /** Format: int32 */
-      id?: number
-      name?: string | null
+      id: number
+      name: string | null
     }
     LanguageProfileItemResource: {
       /** Format: int32 */
-      id?: number
-      language?: components['schemas']['Language']
-      allowed?: boolean
+      id: number
+      language: components['schemas']['Language']
+      allowed: boolean
     }
     LanguageProfileResource: {
       /** Format: int32 */
-      id?: number
-      name?: string | null
-      upgradeAllowed?: boolean
-      cutoff?: components['schemas']['Language']
-      languages?: components['schemas']['LanguageProfileItemResource'][] | null
+      id: number
+      name: string | null
+      upgradeAllowed: boolean
+      cutoff: components['schemas']['Language']
+      languages: components['schemas']['LanguageProfileItemResource'][] | null
     }
     LanguageResource: {
       /** Format: int32 */
-      id?: number
-      name?: string | null
-      readonly nameLower?: string | null
+      id: number
+      name: string | null
+      readonly nameLower: string | null
     }
     /** @enum {string} */
     ListSyncLevelType:
@@ -8379,102 +8377,102 @@ export interface components {
       | 'keepAndUnmonitor'
       | 'keepAndTag'
     LocalizationLanguageResource: {
-      identifier?: string | null
+      identifier: string | null
     }
     LocalizationResource: {
       /** Format: int32 */
-      id?: number
-      strings?: {
+      id: number
+      strings: {
         [key: string]: string | null
       } | null
     }
     LogFileResource: {
       /** Format: int32 */
-      id?: number
-      filename?: string | null
+      id: number
+      filename: string | null
       /** Format: date-time */
-      lastWriteTime?: string
-      contentsUrl?: string | null
-      downloadUrl?: string | null
+      lastWriteTime: string
+      contentsUrl: string | null
+      downloadUrl: string | null
     }
     LogResource: {
       /** Format: int32 */
-      id?: number
+      id: number
       /** Format: date-time */
-      time?: string
-      exception?: string | null
-      exceptionType?: string | null
-      level?: string | null
-      logger?: string | null
-      message?: string | null
-      method?: string | null
+      time: string
+      exception: string | null
+      exceptionType: string | null
+      level: string | null
+      logger: string | null
+      message: string | null
+      method: string | null
     }
     LogResourcePagingResource: {
       /** Format: int32 */
-      page?: number
+      page: number
       /** Format: int32 */
-      pageSize?: number
-      sortKey?: string | null
-      sortDirection?: components['schemas']['SortDirection']
+      pageSize: number
+      sortKey: string | null
+      sortDirection: components['schemas']['SortDirection']
       /** Format: int32 */
-      totalRecords?: number
-      records?: components['schemas']['LogResource'][] | null
+      totalRecords: number
+      records: components['schemas']['LogResource'][] | null
     }
     ManualImportReprocessResource: {
       /** Format: int32 */
-      id?: number
-      path?: string | null
+      id: number
+      path: string | null
       /** Format: int32 */
-      seriesId?: number
+      seriesId: number
       /** Format: int32 */
-      seasonNumber?: number | null
-      episodes?: components['schemas']['EpisodeResource'][] | null
-      episodeIds?: number[] | null
-      quality?: components['schemas']['QualityModel']
-      languages?: components['schemas']['Language'][] | null
-      releaseGroup?: string | null
-      downloadId?: string | null
-      customFormats?: components['schemas']['CustomFormatResource'][] | null
+      seasonNumber: number | null
+      episodes: components['schemas']['EpisodeResource'][] | null
+      episodeIds: number[] | null
+      quality: components['schemas']['QualityModel']
+      languages: components['schemas']['Language'][] | null
+      releaseGroup: string | null
+      downloadId: string | null
+      customFormats: components['schemas']['CustomFormatResource'][] | null
       /** Format: int32 */
-      customFormatScore?: number
+      customFormatScore: number
       /** Format: int32 */
-      indexerFlags?: number
-      releaseType?: components['schemas']['ReleaseType']
-      rejections?: components['schemas']['ImportRejectionResource'][] | null
+      indexerFlags: number
+      releaseType: components['schemas']['ReleaseType']
+      rejections: components['schemas']['ImportRejectionResource'][] | null
     }
     ManualImportResource: {
       /** Format: int32 */
-      id?: number
-      path?: string | null
-      relativePath?: string | null
-      folderName?: string | null
-      name?: string | null
+      id: number
+      path: string | null
+      relativePath: string | null
+      folderName: string | null
+      name: string | null
       /** Format: int64 */
-      size?: number
-      series?: components['schemas']['SeriesResource']
+      size: number
+      series: components['schemas']['SeriesResource']
       /** Format: int32 */
-      seasonNumber?: number | null
-      episodes?: components['schemas']['EpisodeResource'][] | null
+      seasonNumber: number | null
+      episodes: components['schemas']['EpisodeResource'][] | null
       /** Format: int32 */
-      episodeFileId?: number | null
-      releaseGroup?: string | null
-      quality?: components['schemas']['QualityModel']
-      languages?: components['schemas']['Language'][] | null
+      episodeFileId: number | null
+      releaseGroup: string | null
+      quality: components['schemas']['QualityModel']
+      languages: components['schemas']['Language'][] | null
       /** Format: int32 */
-      qualityWeight?: number
-      downloadId?: string | null
-      customFormats?: components['schemas']['CustomFormatResource'][] | null
+      qualityWeight: number
+      downloadId: string | null
+      customFormats: components['schemas']['CustomFormatResource'][] | null
       /** Format: int32 */
-      customFormatScore?: number
+      customFormatScore: number
       /** Format: int32 */
-      indexerFlags?: number
-      releaseType?: components['schemas']['ReleaseType']
-      rejections?: components['schemas']['ImportRejectionResource'][] | null
+      indexerFlags: number
+      releaseType: components['schemas']['ReleaseType']
+      rejections: components['schemas']['ImportRejectionResource'][] | null
     }
     MediaCover: {
-      coverType?: components['schemas']['MediaCoverTypes']
-      url?: string | null
-      remoteUrl?: string | null
+      coverType: components['schemas']['MediaCoverTypes']
+      url: string | null
+      remoteUrl: string | null
     }
     /** @enum {string} */
     MediaCoverTypes:
@@ -8487,68 +8485,68 @@ export interface components {
       | 'clearlogo'
     MediaInfoResource: {
       /** Format: int32 */
-      id?: number
+      id: number
       /** Format: int64 */
-      audioBitrate?: number
+      audioBitrate: number
       /** Format: double */
-      audioChannels?: number
-      audioCodec?: string | null
-      audioLanguages?: string | null
+      audioChannels: number
+      audioCodec: string | null
+      audioLanguages: string | null
       /** Format: int32 */
-      audioStreamCount?: number
+      audioStreamCount: number
       /** Format: int32 */
-      videoBitDepth?: number
+      videoBitDepth: number
       /** Format: int64 */
-      videoBitrate?: number
-      videoCodec?: string | null
+      videoBitrate: number
+      videoCodec: string | null
       /** Format: double */
-      videoFps?: number
-      videoDynamicRange?: string | null
-      videoDynamicRangeType?: string | null
-      resolution?: string | null
-      runTime?: string | null
-      scanType?: string | null
-      subtitles?: string | null
+      videoFps: number
+      videoDynamicRange: string | null
+      videoDynamicRangeType: string | null
+      resolution: string | null
+      runTime: string | null
+      scanType: string | null
+      subtitles: string | null
     }
     MediaManagementConfigResource: {
       /** Format: int32 */
-      id?: number
-      autoUnmonitorPreviouslyDownloadedEpisodes?: boolean
-      recycleBin?: string | null
+      id: number
+      autoUnmonitorPreviouslyDownloadedEpisodes: boolean
+      recycleBin: string | null
       /** Format: int32 */
-      recycleBinCleanupDays?: number
-      downloadPropersAndRepacks?: components['schemas']['ProperDownloadTypes']
-      createEmptySeriesFolders?: boolean
-      deleteEmptyFolders?: boolean
-      fileDate?: components['schemas']['FileDateType']
-      rescanAfterRefresh?: components['schemas']['RescanAfterRefreshType']
-      setPermissionsLinux?: boolean
-      chmodFolder?: string | null
-      chownGroup?: string | null
-      episodeTitleRequired?: components['schemas']['EpisodeTitleRequiredType']
-      skipFreeSpaceCheckWhenImporting?: boolean
+      recycleBinCleanupDays: number
+      downloadPropersAndRepacks: components['schemas']['ProperDownloadTypes']
+      createEmptySeriesFolders: boolean
+      deleteEmptyFolders: boolean
+      fileDate: components['schemas']['FileDateType']
+      rescanAfterRefresh: components['schemas']['RescanAfterRefreshType']
+      setPermissionsLinux: boolean
+      chmodFolder: string | null
+      chownGroup: string | null
+      episodeTitleRequired: components['schemas']['EpisodeTitleRequiredType']
+      skipFreeSpaceCheckWhenImporting: boolean
       /** Format: int32 */
-      minimumFreeSpaceWhenImporting?: number
-      copyUsingHardlinks?: boolean
-      useScriptImport?: boolean
-      scriptImportPath?: string | null
-      importExtraFiles?: boolean
-      extraFileExtensions?: string | null
-      enableMediaInfo?: boolean
+      minimumFreeSpaceWhenImporting: number
+      copyUsingHardlinks: boolean
+      useScriptImport: boolean
+      scriptImportPath: string | null
+      importExtraFiles: boolean
+      extraFileExtensions: string | null
+      enableMediaInfo: boolean
     }
     MetadataResource: {
       /** Format: int32 */
-      id?: number
-      name?: string | null
-      fields?: components['schemas']['Field'][] | null
-      implementationName?: string | null
-      implementation?: string | null
-      configContract?: string | null
-      infoLink?: string | null
-      message?: components['schemas']['ProviderMessage']
-      tags?: number[] | null
-      presets?: components['schemas']['MetadataResource'][] | null
-      enable?: boolean
+      id: number
+      name: string | null
+      fields: components['schemas']['Field'][] | null
+      implementationName: string | null
+      implementation: string | null
+      configContract: string | null
+      infoLink: string | null
+      message: components['schemas']['ProviderMessage']
+      tags: number[] | null
+      presets: components['schemas']['MetadataResource'][] | null
+      enable: boolean
     }
     /** @enum {string} */
     MonitorTypes:
@@ -8567,134 +8565,134 @@ export interface components {
       | 'none'
       | 'skip'
     MonitoringOptions: {
-      ignoreEpisodesWithFiles?: boolean
-      ignoreEpisodesWithoutFiles?: boolean
-      monitor?: components['schemas']['MonitorTypes']
+      ignoreEpisodesWithFiles: boolean
+      ignoreEpisodesWithoutFiles: boolean
+      monitor: components['schemas']['MonitorTypes']
     }
     NamingConfigResource: {
       /** Format: int32 */
-      id?: number
-      renameEpisodes?: boolean
-      replaceIllegalCharacters?: boolean
+      id: number
+      renameEpisodes: boolean
+      replaceIllegalCharacters: boolean
       /** Format: int32 */
-      colonReplacementFormat?: number
-      customColonReplacementFormat?: string | null
+      colonReplacementFormat: number
+      customColonReplacementFormat: string | null
       /** Format: int32 */
-      multiEpisodeStyle?: number
-      standardEpisodeFormat?: string | null
-      dailyEpisodeFormat?: string | null
-      animeEpisodeFormat?: string | null
-      seriesFolderFormat?: string | null
-      seasonFolderFormat?: string | null
-      specialsFolderFormat?: string | null
+      multiEpisodeStyle: number
+      standardEpisodeFormat: string | null
+      dailyEpisodeFormat: string | null
+      animeEpisodeFormat: string | null
+      seriesFolderFormat: string | null
+      seasonFolderFormat: string | null
+      specialsFolderFormat: string | null
     }
     /** @enum {string} */
     NewItemMonitorTypes: 'all' | 'none'
     NotificationResource: {
       /** Format: int32 */
-      id?: number
-      name?: string | null
-      fields?: components['schemas']['Field'][] | null
-      implementationName?: string | null
-      implementation?: string | null
-      configContract?: string | null
-      infoLink?: string | null
-      message?: components['schemas']['ProviderMessage']
-      tags?: number[] | null
-      presets?: components['schemas']['NotificationResource'][] | null
-      link?: string | null
-      onGrab?: boolean
-      onDownload?: boolean
-      onUpgrade?: boolean
-      onImportComplete?: boolean
-      onRename?: boolean
-      onSeriesAdd?: boolean
-      onSeriesDelete?: boolean
-      onEpisodeFileDelete?: boolean
-      onEpisodeFileDeleteForUpgrade?: boolean
-      onHealthIssue?: boolean
-      includeHealthWarnings?: boolean
-      onHealthRestored?: boolean
-      onApplicationUpdate?: boolean
-      onManualInteractionRequired?: boolean
-      supportsOnGrab?: boolean
-      supportsOnDownload?: boolean
-      supportsOnUpgrade?: boolean
-      supportsOnImportComplete?: boolean
-      supportsOnRename?: boolean
-      supportsOnSeriesAdd?: boolean
-      supportsOnSeriesDelete?: boolean
-      supportsOnEpisodeFileDelete?: boolean
-      supportsOnEpisodeFileDeleteForUpgrade?: boolean
-      supportsOnHealthIssue?: boolean
-      supportsOnHealthRestored?: boolean
-      supportsOnApplicationUpdate?: boolean
-      supportsOnManualInteractionRequired?: boolean
-      testCommand?: string | null
+      id: number
+      name: string | null
+      fields: components['schemas']['Field'][] | null
+      implementationName: string | null
+      implementation: string | null
+      configContract: string | null
+      infoLink: string | null
+      message: components['schemas']['ProviderMessage']
+      tags: number[] | null
+      presets: components['schemas']['NotificationResource'][] | null
+      link: string | null
+      onGrab: boolean
+      onDownload: boolean
+      onUpgrade: boolean
+      onImportComplete: boolean
+      onRename: boolean
+      onSeriesAdd: boolean
+      onSeriesDelete: boolean
+      onEpisodeFileDelete: boolean
+      onEpisodeFileDeleteForUpgrade: boolean
+      onHealthIssue: boolean
+      includeHealthWarnings: boolean
+      onHealthRestored: boolean
+      onApplicationUpdate: boolean
+      onManualInteractionRequired: boolean
+      supportsOnGrab: boolean
+      supportsOnDownload: boolean
+      supportsOnUpgrade: boolean
+      supportsOnImportComplete: boolean
+      supportsOnRename: boolean
+      supportsOnSeriesAdd: boolean
+      supportsOnSeriesDelete: boolean
+      supportsOnEpisodeFileDelete: boolean
+      supportsOnEpisodeFileDeleteForUpgrade: boolean
+      supportsOnHealthIssue: boolean
+      supportsOnHealthRestored: boolean
+      supportsOnApplicationUpdate: boolean
+      supportsOnManualInteractionRequired: boolean
+      testCommand: string | null
     }
     ParseResource: {
       /** Format: int32 */
-      id?: number
-      title?: string | null
-      parsedEpisodeInfo?: components['schemas']['ParsedEpisodeInfo']
-      series?: components['schemas']['SeriesResource']
-      episodes?: components['schemas']['EpisodeResource'][] | null
-      languages?: components['schemas']['Language'][] | null
-      customFormats?: components['schemas']['CustomFormatResource'][] | null
+      id: number
+      title: string | null
+      parsedEpisodeInfo: components['schemas']['ParsedEpisodeInfo']
+      series: components['schemas']['SeriesResource']
+      episodes: components['schemas']['EpisodeResource'][] | null
+      languages: components['schemas']['Language'][] | null
+      customFormats: components['schemas']['CustomFormatResource'][] | null
       /** Format: int32 */
-      customFormatScore?: number
+      customFormatScore: number
     }
     ParsedEpisodeInfo: {
-      releaseTitle?: string | null
-      seriesTitle?: string | null
-      seriesTitleInfo?: components['schemas']['SeriesTitleInfo']
-      quality?: components['schemas']['QualityModel']
+      releaseTitle: string | null
+      seriesTitle: string | null
+      seriesTitleInfo: components['schemas']['SeriesTitleInfo']
+      quality: components['schemas']['QualityModel']
       /** Format: int32 */
-      seasonNumber?: number
-      episodeNumbers?: number[] | null
-      absoluteEpisodeNumbers?: number[] | null
-      specialAbsoluteEpisodeNumbers?: number[] | null
-      airDate?: string | null
-      languages?: components['schemas']['Language'][] | null
-      fullSeason?: boolean
-      isPartialSeason?: boolean
-      isMultiSeason?: boolean
-      isSeasonExtra?: boolean
-      isSplitEpisode?: boolean
-      isMiniSeries?: boolean
-      special?: boolean
-      releaseGroup?: string | null
-      releaseHash?: string | null
+      seasonNumber: number
+      episodeNumbers: number[] | null
+      absoluteEpisodeNumbers: number[] | null
+      specialAbsoluteEpisodeNumbers: number[] | null
+      airDate: string | null
+      languages: components['schemas']['Language'][] | null
+      fullSeason: boolean
+      isPartialSeason: boolean
+      isMultiSeason: boolean
+      isSeasonExtra: boolean
+      isSplitEpisode: boolean
+      isMiniSeries: boolean
+      special: boolean
+      releaseGroup: string | null
+      releaseHash: string | null
       /** Format: int32 */
-      seasonPart?: number
-      releaseTokens?: string | null
+      seasonPart: number
+      releaseTokens: string | null
       /** Format: int32 */
-      dailyPart?: number | null
-      readonly isDaily?: boolean
-      readonly isAbsoluteNumbering?: boolean
-      readonly isPossibleSpecialEpisode?: boolean
-      readonly isPossibleSceneSeasonSpecial?: boolean
-      releaseType?: components['schemas']['ReleaseType']
+      dailyPart: number | null
+      readonly isDaily: boolean
+      readonly isAbsoluteNumbering: boolean
+      readonly isPossibleSpecialEpisode: boolean
+      readonly isPossibleSceneSeasonSpecial: boolean
+      releaseType: components['schemas']['ReleaseType']
     }
     PingResource: {
-      status?: string | null
+      status: string | null
     }
     /** @enum {string} */
     PrivacyLevel: 'normal' | 'password' | 'apiKey' | 'userName'
     ProfileFormatItemResource: {
       /** Format: int32 */
-      id?: number
+      id: number
       /** Format: int32 */
-      format?: number
-      name?: string | null
+      format: number
+      name: string | null
       /** Format: int32 */
-      score?: number
+      score: number
     }
     /** @enum {string} */
     ProperDownloadTypes: 'preferAndUpgrade' | 'doNotUpgrade' | 'doNotPrefer'
     ProviderMessage: {
-      message?: string | null
-      type?: components['schemas']['ProviderMessageType']
+      message: string | null
+      type: components['schemas']['ProviderMessageType']
     }
     /** @enum {string} */
     ProviderMessageType: 'info' | 'warning' | 'error'
@@ -8702,63 +8700,59 @@ export interface components {
     ProxyType: 'http' | 'socks4' | 'socks5'
     Quality: {
       /** Format: int32 */
-      id?: number
-      name?: string | null
-      source?: components['schemas']['QualitySource']
+      id: number
+      name: string | null
+      source: components['schemas']['QualitySource']
       /** Format: int32 */
-      resolution?: number
+      resolution: number
     }
     QualityDefinitionLimitsResource: {
       /** Format: int32 */
-      min?: number
+      min: number
       /** Format: int32 */
-      max?: number
+      max: number
     }
     QualityDefinitionResource: {
       /** Format: int32 */
-      id?: number
-      quality?: components['schemas']['Quality']
-      title?: string | null
+      id: number
+      quality: components['schemas']['Quality']
+      title: string | null
       /** Format: int32 */
-      weight?: number
+      weight: number
       /** Format: double */
-      minSize?: number | null
+      minSize: number | null
       /** Format: double */
-      maxSize?: number | null
+      maxSize: number | null
       /** Format: double */
-      preferredSize?: number | null
+      preferredSize: number | null
     }
     QualityModel: {
-      quality?: components['schemas']['Quality']
-      revision?: components['schemas']['Revision']
+      quality: components['schemas']['Quality']
+      revision: components['schemas']['Revision']
     }
     QualityProfileQualityItemResource: {
       /** Format: int32 */
-      id?: number
-      name?: string | null
-      quality?: components['schemas']['Quality']
-      items?:
-        | components['schemas']['QualityProfileQualityItemResource'][]
-        | null
-      allowed?: boolean
+      id: number
+      name: string | null
+      quality: components['schemas']['Quality']
+      items: components['schemas']['QualityProfileQualityItemResource'][] | null
+      allowed: boolean
     }
     QualityProfileResource: {
       /** Format: int32 */
-      id?: number
-      name?: string | null
-      upgradeAllowed?: boolean
+      id: number
+      name: string | null
+      upgradeAllowed: boolean
       /** Format: int32 */
-      cutoff?: number
-      items?:
-        | components['schemas']['QualityProfileQualityItemResource'][]
-        | null
+      cutoff: number
+      items: components['schemas']['QualityProfileQualityItemResource'][] | null
       /** Format: int32 */
-      minFormatScore?: number
+      minFormatScore: number
       /** Format: int32 */
-      cutoffFormatScore?: number
+      cutoffFormatScore: number
       /** Format: int32 */
-      minUpgradeFormatScore?: number
-      formatItems?: components['schemas']['ProfileFormatItemResource'][] | null
+      minUpgradeFormatScore: number
+      formatItems: components['schemas']['ProfileFormatItemResource'][] | null
     }
     /** @enum {string} */
     QualitySource:
@@ -8771,66 +8765,66 @@ export interface components {
       | 'bluray'
       | 'blurayRaw'
     QueueBulkResource: {
-      ids?: number[] | null
+      ids: number[] | null
     }
     QueueResource: {
       /** Format: int32 */
-      id?: number
+      id: number
       /** Format: int32 */
-      seriesId?: number | null
+      seriesId: number | null
       /** Format: int32 */
-      episodeId?: number | null
+      episodeId: number | null
       /** Format: int32 */
-      seasonNumber?: number | null
-      series?: components['schemas']['SeriesResource']
-      episode?: components['schemas']['EpisodeResource']
-      languages?: components['schemas']['Language'][] | null
-      quality?: components['schemas']['QualityModel']
-      customFormats?: components['schemas']['CustomFormatResource'][] | null
+      seasonNumber: number | null
+      series: components['schemas']['SeriesResource']
+      episode: components['schemas']['EpisodeResource']
+      languages: components['schemas']['Language'][] | null
+      quality: components['schemas']['QualityModel']
+      customFormats: components['schemas']['CustomFormatResource'][] | null
       /** Format: int32 */
-      customFormatScore?: number
+      customFormatScore: number
       /** Format: double */
-      size?: number
-      title?: string | null
+      size: number
+      title: string | null
       /** Format: date-time */
-      estimatedCompletionTime?: string | null
+      estimatedCompletionTime: string | null
       /** Format: date-time */
-      added?: string | null
-      status?: components['schemas']['QueueStatus']
-      trackedDownloadStatus?: components['schemas']['TrackedDownloadStatus']
-      trackedDownloadState?: components['schemas']['TrackedDownloadState']
-      statusMessages?:
+      added: string | null
+      status: components['schemas']['QueueStatus']
+      trackedDownloadStatus: components['schemas']['TrackedDownloadStatus']
+      trackedDownloadState: components['schemas']['TrackedDownloadState']
+      statusMessages:
         | components['schemas']['TrackedDownloadStatusMessage'][]
         | null
-      errorMessage?: string | null
-      downloadId?: string | null
-      protocol?: components['schemas']['DownloadProtocol']
-      downloadClient?: string | null
-      downloadClientHasPostImportCategory?: boolean
-      indexer?: string | null
-      outputPath?: string | null
-      episodeHasFile?: boolean
+      errorMessage: string | null
+      downloadId: string | null
+      protocol: components['schemas']['DownloadProtocol']
+      downloadClient: string | null
+      downloadClientHasPostImportCategory: boolean
+      indexer: string | null
+      outputPath: string | null
+      episodeHasFile: boolean
       /**
        * Format: double
        * @deprecated
        */
-      sizeleft?: number
+      sizeleft: number
       /**
        * Format: date-span
        * @deprecated
        */
-      timeleft?: string | null
+      timeleft: string | null
     }
     QueueResourcePagingResource: {
       /** Format: int32 */
-      page?: number
+      page: number
       /** Format: int32 */
-      pageSize?: number
-      sortKey?: string | null
-      sortDirection?: components['schemas']['SortDirection']
+      pageSize: number
+      sortKey: string | null
+      sortDirection: components['schemas']['SortDirection']
       /** Format: int32 */
-      totalRecords?: number
-      records?: components['schemas']['QueueResource'][] | null
+      totalRecords: number
+      records: components['schemas']['QueueResource'][] | null
     }
     /** @enum {string} */
     QueueStatus:
@@ -8846,396 +8840,396 @@ export interface components {
       | 'fallback'
     QueueStatusResource: {
       /** Format: int32 */
-      id?: number
+      id: number
       /** Format: int32 */
-      totalCount?: number
+      totalCount: number
       /** Format: int32 */
-      count?: number
+      count: number
       /** Format: int32 */
-      unknownCount?: number
-      errors?: boolean
-      warnings?: boolean
-      unknownErrors?: boolean
-      unknownWarnings?: boolean
+      unknownCount: number
+      errors: boolean
+      warnings: boolean
+      unknownErrors: boolean
+      unknownWarnings: boolean
     }
     Ratings: {
       /** Format: int32 */
-      votes?: number
+      votes: number
       /** Format: double */
-      value?: number
+      value: number
     }
     /** @enum {string} */
     RejectionType: 'permanent' | 'temporary'
     ReleaseEpisodeResource: {
       /** Format: int32 */
-      id?: number
+      id: number
       /** Format: int32 */
-      seasonNumber?: number
+      seasonNumber: number
       /** Format: int32 */
-      episodeNumber?: number
+      episodeNumber: number
       /** Format: int32 */
-      absoluteEpisodeNumber?: number | null
-      title?: string | null
+      absoluteEpisodeNumber: number | null
+      title: string | null
     }
     ReleaseProfileResource: {
       /** Format: int32 */
-      id?: number
-      name?: string | null
-      enabled?: boolean
-      required?: unknown
-      ignored?: unknown
+      id: number
+      name: string | null
+      enabled: boolean
+      required: unknown
+      ignored: unknown
       /** Format: int32 */
-      indexerId?: number
-      tags?: number[] | null
+      indexerId: number
+      tags: number[] | null
     }
     ReleaseResource: {
       /** Format: int32 */
-      id?: number
-      guid?: string | null
-      quality?: components['schemas']['QualityModel']
+      id: number
+      guid: string | null
+      quality: components['schemas']['QualityModel']
       /** Format: int32 */
-      qualityWeight?: number
+      qualityWeight: number
       /** Format: int32 */
-      age?: number
+      age: number
       /** Format: double */
-      ageHours?: number
+      ageHours: number
       /** Format: double */
-      ageMinutes?: number
+      ageMinutes: number
       /** Format: int64 */
-      size?: number
+      size: number
       /** Format: int32 */
-      indexerId?: number
-      indexer?: string | null
-      releaseGroup?: string | null
-      subGroup?: string | null
-      releaseHash?: string | null
-      title?: string | null
-      fullSeason?: boolean
-      sceneSource?: boolean
+      indexerId: number
+      indexer: string | null
+      releaseGroup: string | null
+      subGroup: string | null
+      releaseHash: string | null
+      title: string | null
+      fullSeason: boolean
+      sceneSource: boolean
       /** Format: int32 */
-      seasonNumber?: number
-      languages?: components['schemas']['Language'][] | null
+      seasonNumber: number
+      languages: components['schemas']['Language'][] | null
       /** Format: int32 */
-      languageWeight?: number
-      airDate?: string | null
-      seriesTitle?: string | null
-      episodeNumbers?: number[] | null
-      absoluteEpisodeNumbers?: number[] | null
+      languageWeight: number
+      airDate: string | null
+      seriesTitle: string | null
+      episodeNumbers: number[] | null
+      absoluteEpisodeNumbers: number[] | null
       /** Format: int32 */
-      mappedSeasonNumber?: number | null
-      mappedEpisodeNumbers?: number[] | null
-      mappedAbsoluteEpisodeNumbers?: number[] | null
+      mappedSeasonNumber: number | null
+      mappedEpisodeNumbers: number[] | null
+      mappedAbsoluteEpisodeNumbers: number[] | null
       /** Format: int32 */
-      mappedSeriesId?: number | null
-      mappedEpisodeInfo?:
+      mappedSeriesId: number | null
+      mappedEpisodeInfo:
         | components['schemas']['ReleaseEpisodeResource'][]
         | null
-      approved?: boolean
-      temporarilyRejected?: boolean
-      rejected?: boolean
+      approved: boolean
+      temporarilyRejected: boolean
+      rejected: boolean
       /** Format: int32 */
-      tvdbId?: number
+      tvdbId: number
       /** Format: int32 */
-      tvRageId?: number
-      imdbId?: string | null
-      rejections?: string[] | null
+      tvRageId: number
+      imdbId: string | null
+      rejections: string[] | null
       /** Format: date-time */
-      publishDate?: string
-      commentUrl?: string | null
-      downloadUrl?: string | null
-      infoUrl?: string | null
-      episodeRequested?: boolean
-      downloadAllowed?: boolean
+      publishDate: string
+      commentUrl: string | null
+      downloadUrl: string | null
+      infoUrl: string | null
+      episodeRequested: boolean
+      downloadAllowed: boolean
       /** Format: int32 */
-      releaseWeight?: number
-      customFormats?: components['schemas']['CustomFormatResource'][] | null
+      releaseWeight: number
+      customFormats: components['schemas']['CustomFormatResource'][] | null
       /** Format: int32 */
-      customFormatScore?: number
-      sceneMapping?: components['schemas']['AlternateTitleResource']
-      magnetUrl?: string | null
-      infoHash?: string | null
+      customFormatScore: number
+      sceneMapping: components['schemas']['AlternateTitleResource']
+      magnetUrl: string | null
+      infoHash: string | null
       /** Format: int32 */
-      seeders?: number | null
+      seeders: number | null
       /** Format: int32 */
-      leechers?: number | null
-      protocol?: components['schemas']['DownloadProtocol']
+      leechers: number | null
+      protocol: components['schemas']['DownloadProtocol']
       /** Format: int32 */
-      indexerFlags?: number
-      isDaily?: boolean
-      isAbsoluteNumbering?: boolean
-      isPossibleSpecialEpisode?: boolean
-      special?: boolean
+      indexerFlags: number
+      isDaily: boolean
+      isAbsoluteNumbering: boolean
+      isPossibleSpecialEpisode: boolean
+      special: boolean
       /** Format: int32 */
-      seriesId?: number | null
+      seriesId: number | null
       /** Format: int32 */
-      episodeId?: number | null
-      episodeIds?: number[] | null
+      episodeId: number | null
+      episodeIds: number[] | null
       /** Format: int32 */
-      downloadClientId?: number | null
-      downloadClient?: string | null
-      shouldOverride?: boolean | null
+      downloadClientId: number | null
+      downloadClient: string | null
+      shouldOverride: boolean | null
     }
     /** @enum {string} */
     ReleaseType: 'unknown' | 'singleEpisode' | 'multiEpisode' | 'seasonPack'
     RemotePathMappingResource: {
       /** Format: int32 */
-      id?: number
-      host?: string | null
-      remotePath?: string | null
-      localPath?: string | null
+      id: number
+      host: string | null
+      remotePath: string | null
+      localPath: string | null
     }
     RenameEpisodeResource: {
       /** Format: int32 */
-      id?: number
+      id: number
       /** Format: int32 */
-      seriesId?: number
+      seriesId: number
       /** Format: int32 */
-      seasonNumber?: number
-      episodeNumbers?: number[] | null
+      seasonNumber: number
+      episodeNumbers: number[] | null
       /** Format: int32 */
-      episodeFileId?: number
-      existingPath?: string | null
-      newPath?: string | null
+      episodeFileId: number
+      existingPath: string | null
+      newPath: string | null
     }
     /** @enum {string} */
     RescanAfterRefreshType: 'always' | 'afterManual' | 'never'
     Revision: {
       /** Format: int32 */
-      version?: number
+      version: number
       /** Format: int32 */
-      real?: number
-      isRepack?: boolean
+      real: number
+      isRepack: boolean
     }
     RootFolderResource: {
       /** Format: int32 */
-      id?: number
-      path?: string | null
-      accessible?: boolean
+      id: number
+      path: string | null
+      accessible: boolean
       /** Format: int64 */
-      freeSpace?: number | null
-      unmappedFolders?: components['schemas']['UnmappedFolder'][] | null
+      freeSpace: number | null
+      unmappedFolders: components['schemas']['UnmappedFolder'][] | null
     }
     /** @enum {string} */
     RuntimeMode: 'console' | 'service' | 'tray'
     SeasonPassResource: {
-      series?: components['schemas']['SeasonPassSeriesResource'][] | null
-      monitoringOptions?: components['schemas']['MonitoringOptions']
+      series: components['schemas']['SeasonPassSeriesResource'][] | null
+      monitoringOptions: components['schemas']['MonitoringOptions']
     }
     SeasonPassSeriesResource: {
       /** Format: int32 */
-      id?: number
-      monitored?: boolean | null
-      seasons?: components['schemas']['SeasonResource'][] | null
+      id: number
+      monitored: boolean | null
+      seasons: components['schemas']['SeasonResource'][] | null
     }
     SeasonResource: {
       /** Format: int32 */
-      seasonNumber?: number
-      monitored?: boolean
-      statistics?: components['schemas']['SeasonStatisticsResource']
-      images?: components['schemas']['MediaCover'][] | null
+      seasonNumber: number
+      monitored: boolean
+      statistics: components['schemas']['SeasonStatisticsResource']
+      images: components['schemas']['MediaCover'][] | null
     }
     SeasonStatisticsResource: {
       /** Format: date-time */
-      nextAiring?: string | null
+      nextAiring: string | null
       /** Format: date-time */
-      previousAiring?: string | null
+      previousAiring: string | null
       /** Format: int32 */
-      episodeFileCount?: number
+      episodeFileCount: number
       /** Format: int32 */
-      episodeCount?: number
+      episodeCount: number
       /** Format: int32 */
-      totalEpisodeCount?: number
+      totalEpisodeCount: number
       /** Format: int64 */
-      sizeOnDisk?: number
-      releaseGroups?: string[] | null
+      sizeOnDisk: number
+      releaseGroups: string[] | null
       /** Format: double */
-      readonly percentOfEpisodes?: number
+      readonly percentOfEpisodes: number
     }
     SelectOption: {
       /** Format: int32 */
-      value?: number
-      name?: string | null
+      value: number
+      name: string | null
       /** Format: int32 */
-      order?: number
-      hint?: string | null
+      order: number
+      hint: string | null
     }
     SeriesEditorResource: {
-      seriesIds?: number[] | null
-      monitored?: boolean | null
-      monitorNewItems?: components['schemas']['NewItemMonitorTypes']
+      seriesIds: number[] | null
+      monitored: boolean | null
+      monitorNewItems: components['schemas']['NewItemMonitorTypes']
       /** Format: int32 */
-      qualityProfileId?: number | null
-      seriesType?: components['schemas']['SeriesTypes']
-      seasonFolder?: boolean | null
-      rootFolderPath?: string | null
-      tags?: number[] | null
-      applyTags?: components['schemas']['ApplyTags']
-      moveFiles?: boolean
-      deleteFiles?: boolean
-      addImportListExclusion?: boolean
+      qualityProfileId: number | null
+      seriesType: components['schemas']['SeriesTypes']
+      seasonFolder: boolean | null
+      rootFolderPath: string | null
+      tags: number[] | null
+      applyTags: components['schemas']['ApplyTags']
+      moveFiles: boolean
+      deleteFiles: boolean
+      addImportListExclusion: boolean
     }
     SeriesResource: {
       /** Format: int32 */
-      id?: number
-      title?: string | null
-      alternateTitles?: components['schemas']['AlternateTitleResource'][] | null
-      sortTitle?: string | null
-      status?: components['schemas']['SeriesStatusType']
-      readonly ended?: boolean
-      profileName?: string | null
-      overview?: string | null
+      id: number
+      title: string | null
+      alternateTitles: components['schemas']['AlternateTitleResource'][] | null
+      sortTitle: string | null
+      status: components['schemas']['SeriesStatusType']
+      readonly ended: boolean
+      profileName: string | null
+      overview: string | null
       /** Format: date-time */
-      nextAiring?: string | null
+      nextAiring: string | null
       /** Format: date-time */
-      previousAiring?: string | null
-      network?: string | null
-      airTime?: string | null
-      images?: components['schemas']['MediaCover'][] | null
-      originalLanguage?: components['schemas']['Language']
-      remotePoster?: string | null
-      seasons?: components['schemas']['SeasonResource'][] | null
+      previousAiring: string | null
+      network: string | null
+      airTime: string | null
+      images: components['schemas']['MediaCover'][] | null
+      originalLanguage: components['schemas']['Language']
+      remotePoster: string | null
+      seasons: components['schemas']['SeasonResource'][] | null
       /** Format: int32 */
-      year?: number
-      path?: string | null
+      year: number
+      path: string | null
       /** Format: int32 */
-      qualityProfileId?: number
-      seasonFolder?: boolean
-      monitored?: boolean
-      monitorNewItems?: components['schemas']['NewItemMonitorTypes']
-      useSceneNumbering?: boolean
+      qualityProfileId: number
+      seasonFolder: boolean
+      monitored: boolean
+      monitorNewItems: components['schemas']['NewItemMonitorTypes']
+      useSceneNumbering: boolean
       /** Format: int32 */
-      runtime?: number
+      runtime: number
       /** Format: int32 */
-      tvdbId?: number
+      tvdbId: number
       /** Format: int32 */
-      tvRageId?: number
+      tvRageId: number
       /** Format: int32 */
-      tvMazeId?: number
+      tvMazeId: number
       /** Format: int32 */
-      tmdbId?: number
+      tmdbId: number
       /** Format: date-time */
-      firstAired?: string | null
+      firstAired: string | null
       /** Format: date-time */
-      lastAired?: string | null
-      seriesType?: components['schemas']['SeriesTypes']
-      cleanTitle?: string | null
-      imdbId?: string | null
-      titleSlug?: string | null
-      rootFolderPath?: string | null
-      folder?: string | null
-      certification?: string | null
-      genres?: string[] | null
-      tags?: number[] | null
+      lastAired: string | null
+      seriesType: components['schemas']['SeriesTypes']
+      cleanTitle: string | null
+      imdbId: string | null
+      titleSlug: string | null
+      rootFolderPath: string | null
+      folder: string | null
+      certification: string | null
+      genres: string[] | null
+      tags: number[] | null
       /** Format: date-time */
-      added?: string
-      addOptions?: components['schemas']['AddSeriesOptions']
-      ratings?: components['schemas']['Ratings']
-      statistics?: components['schemas']['SeriesStatisticsResource']
-      episodesChanged?: boolean | null
+      added: string
+      addOptions: components['schemas']['AddSeriesOptions']
+      ratings: components['schemas']['Ratings']
+      statistics: components['schemas']['SeriesStatisticsResource']
+      episodesChanged: boolean | null
       /**
        * Format: int32
        * @deprecated
        */
-      readonly languageProfileId?: number
+      readonly languageProfileId: number
     }
     SeriesStatisticsResource: {
       /** Format: int32 */
-      seasonCount?: number
+      seasonCount: number
       /** Format: int32 */
-      episodeFileCount?: number
+      episodeFileCount: number
       /** Format: int32 */
-      episodeCount?: number
+      episodeCount: number
       /** Format: int32 */
-      totalEpisodeCount?: number
+      totalEpisodeCount: number
       /** Format: int64 */
-      sizeOnDisk?: number
-      releaseGroups?: string[] | null
+      sizeOnDisk: number
+      releaseGroups: string[] | null
       /** Format: double */
-      readonly percentOfEpisodes?: number
+      readonly percentOfEpisodes: number
     }
     /** @enum {string} */
     SeriesStatusType: 'continuing' | 'ended' | 'upcoming' | 'deleted'
     SeriesTitleInfo: {
-      title?: string | null
-      titleWithoutYear?: string | null
+      title: string | null
+      titleWithoutYear: string | null
       /** Format: int32 */
-      year?: number
-      allTitles?: string[] | null
+      year: number
+      allTitles: string[] | null
     }
     /** @enum {string} */
     SeriesTypes: 'standard' | 'daily' | 'anime'
     /** @enum {string} */
     SortDirection: 'default' | 'ascending' | 'descending'
     SystemResource: {
-      appName?: string | null
-      instanceName?: string | null
-      version?: string | null
+      appName: string | null
+      instanceName: string | null
+      version: string | null
       /** Format: date-time */
-      buildTime?: string
-      isDebug?: boolean
-      isProduction?: boolean
-      isAdmin?: boolean
-      isUserInteractive?: boolean
-      startupPath?: string | null
-      appData?: string | null
-      osName?: string | null
-      osVersion?: string | null
-      isNetCore?: boolean
-      isLinux?: boolean
-      isOsx?: boolean
-      isWindows?: boolean
-      isDocker?: boolean
-      mode?: components['schemas']['RuntimeMode']
-      branch?: string | null
-      authentication?: components['schemas']['AuthenticationType']
-      sqliteVersion?: string | null
+      buildTime: string
+      isDebug: boolean
+      isProduction: boolean
+      isAdmin: boolean
+      isUserInteractive: boolean
+      startupPath: string | null
+      appData: string | null
+      osName: string | null
+      osVersion: string | null
+      isNetCore: boolean
+      isLinux: boolean
+      isOsx: boolean
+      isWindows: boolean
+      isDocker: boolean
+      mode: components['schemas']['RuntimeMode']
+      branch: string | null
+      authentication: components['schemas']['AuthenticationType']
+      sqliteVersion: string | null
       /** Format: int32 */
-      migrationVersion?: number
-      urlBase?: string | null
-      runtimeVersion?: string | null
-      runtimeName?: string | null
+      migrationVersion: number
+      urlBase: string | null
+      runtimeVersion: string | null
+      runtimeName: string | null
       /** Format: date-time */
-      startTime?: string
-      packageVersion?: string | null
-      packageAuthor?: string | null
-      packageUpdateMechanism?: components['schemas']['UpdateMechanism']
-      packageUpdateMechanismMessage?: string | null
-      databaseVersion?: string | null
-      databaseType?: components['schemas']['DatabaseType']
+      startTime: string
+      packageVersion: string | null
+      packageAuthor: string | null
+      packageUpdateMechanism: components['schemas']['UpdateMechanism']
+      packageUpdateMechanismMessage: string | null
+      databaseVersion: string | null
+      databaseType: components['schemas']['DatabaseType']
     }
     TagDetailsResource: {
       /** Format: int32 */
-      id?: number
-      label?: string | null
-      delayProfileIds?: number[] | null
-      importListIds?: number[] | null
-      notificationIds?: number[] | null
-      restrictionIds?: number[] | null
-      indexerIds?: number[] | null
-      downloadClientIds?: number[] | null
-      autoTagIds?: number[] | null
-      seriesIds?: number[] | null
+      id: number
+      label: string | null
+      delayProfileIds: number[] | null
+      importListIds: number[] | null
+      notificationIds: number[] | null
+      restrictionIds: number[] | null
+      indexerIds: number[] | null
+      downloadClientIds: number[] | null
+      autoTagIds: number[] | null
+      seriesIds: number[] | null
     }
     TagResource: {
       /** Format: int32 */
-      id?: number
-      label?: string | null
+      id: number
+      label: string | null
     }
     TaskResource: {
       /** Format: int32 */
-      id?: number
-      name?: string | null
-      taskName?: string | null
+      id: number
+      name: string | null
+      taskName: string | null
       /** Format: int32 */
-      interval?: number
+      interval: number
       /** Format: date-time */
-      lastExecution?: string
+      lastExecution: string
       /** Format: date-time */
-      lastStartTime?: string
+      lastStartTime: string
       /** Format: date-time */
-      nextExecution?: string
+      nextExecution: string
       /** Format: date-span */
-      readonly lastDuration?: string
+      readonly lastDuration: string
     }
     /** @enum {string} */
     TrackedDownloadState:
@@ -9250,51 +9244,51 @@ export interface components {
     /** @enum {string} */
     TrackedDownloadStatus: 'ok' | 'warning' | 'error'
     TrackedDownloadStatusMessage: {
-      title?: string | null
-      messages?: string[] | null
+      title: string | null
+      messages: string[] | null
     }
     UiConfigResource: {
       /** Format: int32 */
-      id?: number
+      id: number
       /** Format: int32 */
-      firstDayOfWeek?: number
-      calendarWeekColumnHeader?: string | null
-      shortDateFormat?: string | null
-      longDateFormat?: string | null
-      timeFormat?: string | null
-      showRelativeDates?: boolean
-      enableColorImpairedMode?: boolean
-      theme?: string | null
+      firstDayOfWeek: number
+      calendarWeekColumnHeader: string | null
+      shortDateFormat: string | null
+      longDateFormat: string | null
+      timeFormat: string | null
+      showRelativeDates: boolean
+      enableColorImpairedMode: boolean
+      theme: string | null
       /** Format: int32 */
-      uiLanguage?: number
+      uiLanguage: number
     }
     UnmappedFolder: {
-      name?: string | null
-      path?: string | null
-      relativePath?: string | null
+      name: string | null
+      path: string | null
+      relativePath: string | null
     }
     UpdateChanges: {
-      new?: string[] | null
-      fixed?: string[] | null
+      new: string[] | null
+      fixed: string[] | null
     }
     /** @enum {string} */
     UpdateMechanism: 'builtIn' | 'script' | 'external' | 'apt' | 'docker'
     UpdateResource: {
       /** Format: int32 */
-      id?: number
-      version?: string | null
-      branch?: string | null
+      id: number
+      version: string | null
+      branch: string | null
       /** Format: date-time */
-      releaseDate?: string
-      fileName?: string | null
-      url?: string | null
-      installed?: boolean
+      releaseDate: string
+      fileName: string | null
+      url: string | null
+      installed: boolean
       /** Format: date-time */
-      installedOn?: string | null
-      installable?: boolean
-      latest?: boolean
-      changes?: components['schemas']['UpdateChanges']
-      hash?: string | null
+      installedOn: string | null
+      installable: boolean
+      latest: boolean
+      changes: components['schemas']['UpdateChanges']
+      hash: string | null
     }
   }
   responses: never

@@ -3,7 +3,7 @@ import { paths } from '../generated/overseerrAPI'
 
 import { config } from '../config'
 
-const baseUrl = `${config.JELLYSEER_URL}/api/v1/`
+const baseUrl = `${config.JELLYSEER_URL}/api/v1`
 
 export const client = createClient<paths>({
   baseUrl,
