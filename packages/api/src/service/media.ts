@@ -190,9 +190,9 @@ const upsertThread =
     const guild = await getServer(discordClient)
     const channel = await getTextChannel(guild)
 
-    async function deleteBadMessage(thread_id: string) {
-      logger.debug(`deleting bad message record ${thread_id}`)
-      await ctx.db.delete(Media).where(eq(Media.thread_id, thread_id))
+    async function deleteBadMessage(message_id: string) {
+      logger.debug(`deleting bad message record ${message_id}`)
+      await ctx.db.delete(Media).where(eq(Media.thread_id, message_id))
     }
 
     async function startThread(message: Message<true>) {
@@ -216,7 +216,7 @@ const upsertThread =
       return message
     }
 
-    async function updateThreadMessage(message: Message<true>) {
+    async function updateMessage(message: Message<true>) {
       await message.edit(mainMessagePayload(media))
       await ctx.db
         .update(Media)
@@ -242,15 +242,15 @@ const upsertThread =
 
     return await fetchExistingThread(thread_id).then(async (message) => {
       if (!message) {
-        if (!thread_id) {
-          logger.verbose(`no existing thread for media`)
-        } else if (!message) {
+        if (thread_id) {
           logger.warn(`thread id doesn't match any known message!`)
           await deleteBadMessage(thread_id)
+        } else {
+          logger.verbose(`no existing message for media`)
         }
         return makeNewMessage().then(startThread)
       }
-      await updateThreadMessage(message)
+      await updateMessage(message)
       if (!message.thread) {
         logger.warn(`message doesn't have a thread!`)
         return await startThread(message)
