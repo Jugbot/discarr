@@ -1,7 +1,4 @@
-import {
-  Client,
-  Guild
-} from 'discord.js'
+import { Client, Guild } from 'discord.js'
 
 import { config } from '../config'
 
