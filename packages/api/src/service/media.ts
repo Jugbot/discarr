@@ -8,6 +8,7 @@ import {
   MessageCreateOptions,
   MessageEditOptions,
   PublicThreadChannel,
+  ThreadAutoArchiveDuration,
 } from 'discord.js'
 import { fromMovie, fromSeries } from '../adapter/media'
 import { logger } from '../logger'
@@ -18,7 +19,7 @@ import { getClient } from '../sdk/discord'
 import { client as jellyseerrClient } from '../sdk/jellyseer'
 import { client as radarrClient } from '../sdk/radarr'
 import { client as sonarrClient } from '../sdk/sonarr'
-import { getServer, getTextChannel, makeThread } from '../service/discord'
+import { getServer, getTextChannel } from '../service/discord'
 
 const handleBadResponse =
   (errorMessage: string) =>
@@ -189,25 +190,30 @@ const upsertThread =
     const guild = await getServer(discordClient)
     const channel = await getTextChannel(guild)
 
-    async function deleteBadThread(thread_id: string) {
+    async function deleteBadMessage(thread_id: string) {
       logger.verbose(`deleting bad thread ${thread_id}`)
       await ctx.db.delete(Media).where(eq(Media.thread_id, thread_id))
     }
 
-    async function makeNewThread() {
-      logger.info(`creating new thread for ${media.title}`)
-      const newThread = await makeThread(channel)(mainMessagePayload(media), {
+    async function startThread(message: Message<true>) {
+      return message.startThread({
         name: media.title,
+        autoArchiveDuration: ThreadAutoArchiveDuration.OneDay,
       })
-      logger.verbose(`created thread ${newThread.id}`)
+    }
+
+    async function makeNewMessage() {
+      logger.info(`creating new message for ${media.title}`)
+      const message = await channel.send(mainMessagePayload(media))
+      logger.verbose(`created message ${message.id}`)
       await ctx.db.insert(Media).values({
         jellyseerr_id: media.id,
-        thread_id: newThread.id,
+        thread_id: message.id,
         last_state: {
           status: media.status,
         },
       })
-      return newThread
+      return message
     }
 
     async function updateThreadMessage(message: Message<true>) {
@@ -227,39 +233,29 @@ const upsertThread =
       if (!thread_id) {
         return null
       }
-      const handleBadThread = async (thread_id: string) => {
-        await deleteBadThread(thread_id)
+      const message = channel.messages.fetch(thread_id).catch((err) => {
+        logger.debug(`Error fetching message: ${err}`)
         return null
-      }
-      const message = channel.messages
-        .fetch(thread_id)
-        .then((r) => {
-          if (!r.thread) {
-            return handleBadThread(thread_id)
-          }
-          return r
-        })
-        .catch((err) => {
-          logger.debug(`Error fetching message: ${err}`)
-          return handleBadThread(thread_id)
-        })
+      })
       return message
     }
 
     return await fetchExistingThread(thread_id).then(async (message) => {
-      if (!message || !message.thread) {
+      if (!message) {
         if (!thread_id) {
           logger.verbose(`no existing thread for media`)
         } else if (!message) {
           logger.warn(`thread id doesn't match any message!`)
-        } else if (!message.thread) {
-          // TODO: Start a thread instead of a whole message
-          logger.warn(`message is not a thread!`)
+          await deleteBadMessage(thread_id)
         }
-        return makeNewThread()
-      } else {
-        await updateThreadMessage(message)
+        return makeNewMessage().then(startThread)
       }
+      await updateThreadMessage(message)
+      if (!message.thread) {
+        logger.warn(`message doesn't have a thread!`)
+        return await startThread(message)
+      }
+
       return message.thread as PublicThreadChannel<false>
     })
   }
@@ -275,6 +271,17 @@ function eventMessagePayload(media: MediaInfo): MessageCreateOptions {
     content: `\`\`\`ansi\nStatus → ${formatANSI(media.status, [colorFromStatus(media.status).ansi, 'bold'])}\n\`\`\``,
   }
 }
+function addRequestersToThread(
+  thread: PublicThreadChannel<false>,
+  media: MediaInfo,
+) {
+  return Promise.allSettled(
+    media.requests
+      .map((r) => r.user.discordId)
+      .filter((s): s is string => !!s)
+      .map((s) => thread.members.add(s)),
+  )
+}
 export const processMediaUpdate =
   (ctx: inferRouterContext<typeof postRouter>) => async (media: MediaInfo) => {
     logger.verbose(`processing ${media.title}`)
@@ -287,15 +294,10 @@ export const processMediaUpdate =
       where: eq(Media.jellyseerr_id, media.id),
     })
 
-    // Update or create thread
+    // Update or create message with thread
     const thread = await upsertThread(ctx)(media, threadRow?.thread_id)
 
-    await Promise.allSettled(
-      media.requests
-        .map((r) => r.user.discordId)
-        .filter((s): s is string => !!s)
-        .map((s) => thread.members.add(s)),
-    )
+    await addRequestersToThread(thread, media)
 
     // Skip faux events if thread is new
     if (!threadRow?.last_state) {

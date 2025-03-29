@@ -1,14 +1,9 @@
 import {
   Client,
-  Guild,
-  GuildBasedChannel,
-  MessageCreateOptions,
-  PublicThreadChannel,
-  StartThreadOptions,
+  Guild
 } from 'discord.js'
 
 import { config } from '../config'
-import { logger } from '../logger'
 
 export function getServer(readyClient: Client) {
   return readyClient.guilds.fetch(config.DISCORD_GUILD_ID).catch((error) => {
@@ -36,19 +31,5 @@ export function getTextChannel(server: Guild) {
       throw new Error(`Error fetching channel`, {
         cause: error,
       })
-    })
-}
-
-export function makeThread(channel: GuildBasedChannel) {
-  if (!channel.isTextBased()) {
-    throw new Error(`Channel ${channel.id} is not text-based`)
-  }
-  return (message: MessageCreateOptions, thread: StartThreadOptions) =>
-    channel.send(message).then(async (result) => {
-      if (!result.thread) {
-        logger.verbose(`Starting thread for message ${result.id}`)
-        return result.startThread(thread)
-      }
-      return result.thread as PublicThreadChannel<false>
     })
 }
