@@ -12,7 +12,7 @@
     "dev": "tsx watch src/server",
     "prod": "tsx src/server",
     "check-types": "tsc",
-    "test": "vitest",
+    "test": "vitest run",
     "gen-types": "node ./scripts/gen-types.js ./src/generated"
   },
   "dependencies": {
