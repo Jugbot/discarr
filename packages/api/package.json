@@ -12,11 +12,13 @@
     "dev": "tsx watch src/server",
     "prod": "tsx src/server",
     "check-types": "tsc",
+    "test": "vitest run",
     "gen-types": "node ./scripts/gen-types.js ./src/generated"
   },
   "dependencies": {
     "@acme/db": "workspace:*",
     "@trpc/server": "catalog:",
+    "ansi-escape-sequences": "catalog:",
     "cors": "catalog:",
     "discord.js": "catalog:",
     "dotenv": "catalog:",
@@ -26,13 +28,23 @@
   },
   "devDependencies": {
     "@acme/tsconfig": "workspace:*",
+    "@faker-js/faker": "catalog:",
+    "@types/ansi-escape-sequences": "catalog:",
     "@types/cors": "catalog:",
     "@types/node-cron": "catalog:",
     "eslint": "catalog:",
+    "msw": "catalog:",
+    "msw-auto-mock": "catalog:",
     "node-cron": "catalog:",
     "prettier": "catalog:",
     "tsx": "catalog:",
     "typescript": "catalog:",
+    "vitest": "catalog:",
     "winston": "catalog:"
+  },
+  "msw": {
+    "workerDirectory": [
+      "public"
+    ]
   }
 }
