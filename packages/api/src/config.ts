@@ -3,7 +3,7 @@ import { z } from 'zod'
 import { validate } from 'node-cron'
 
 dotEnvConfig({
-  path: ['.env.local', '.env.development'],
+  path: ['.env.local', `.env.${process.env.NODE_ENV}`],
 })
 
 const envSchema = z

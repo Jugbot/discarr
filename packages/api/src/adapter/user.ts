@@ -1,4 +1,4 @@
-import { components } from '../generated/overseerrAPI'
+import { components } from '../generated/jellyseerrAPI'
 import { User } from '../model/User'
 import { getNotificationSettings } from '../service/user'
 

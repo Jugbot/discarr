@@ -1,4 +1,4 @@
-import { components } from '../generated/overseerrAPI'
+import { components } from '../generated/jellyseerrAPI'
 import { config } from '../config'
 import { Epsiode, MediaInfo, Request } from '../model/Media'
 import { UserMap } from '../model/User'
