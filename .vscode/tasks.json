@@ -1,0 +1,42 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "type": "npm",
+      "script": "format"
+    },
+    {
+      "type": "npm",
+      "script": "check-types"
+    },
+    {
+      "type": "npm",
+      "script": "dev"
+    },
+    {
+      "type": "npm",
+      "script": "test"
+    },
+    {
+      "label": "docker-build",
+      "type": "shell",
+      "command": "docker build --tag discarr:latest ${workspaceFolder}"
+    },
+    {
+      "label": "docker-run",
+      "type": "shell",
+      "command": "docker run --rm discarr:latest"
+    },
+    {
+      "label": "docker-compose",
+      "type": "docker-compose",
+      "dockerCompose": {
+        "up": {
+          "detached": false,
+          "build": true
+        },
+        "files": ["${workspaceFolder}/docker-compose.yml"]
+      }
+    }
+  ]
+}

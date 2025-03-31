@@ -1,0 +1,6 @@
+{
+  "files.associations": {
+    "**/tsconfig/*.json": "jsonc"
+  },
+  "docker.commands.run": "${containerCommand} run --rm ${exposedPorts} ${tag}"
+}
