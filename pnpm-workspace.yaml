@@ -48,7 +48,7 @@ catalog:
   msw: ^2.7.3
   msw-auto-mock: ^0.28.0
   node-cron: ^3.0.3
-  openapi-fetch: ^0.13.4
+  openapi-fetch: ^0.13.5
   postgres: ^3.4.4
   prettier: ^3.3.3
   react: ^18.3.1

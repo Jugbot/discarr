@@ -1,6 +1,15 @@
 import { exec } from 'child_process'
+import { config } from 'dotenv'
 import path from 'path'
 import fs from 'fs'
+
+const { error } = config({
+  path: '.env.test',
+})
+
+if (error) {
+  throw error
+}
 
 if (process.argv.length < 3) {
   logger.error('Usage: node gen-types.js <output-folder>')
@@ -28,7 +37,7 @@ const commands = [
   `pnpx openapi-typescript "${SONARR_SCHEMA_URL}" -o "${OUTPUT_FOLDER}/sonarrAPI.ts" --properties-required-by-default`,
   `pnpx openapi-typescript "${RADARR_SCHEMA_URL}" -o "${OUTPUT_FOLDER}/radarrAPI.ts" --properties-required-by-default`,
   // mocks
-  `pnpx msw-auto-mock "${JELLYSEERR_SCHEMA_URL}" -o "${OUTPUT_FOLDER}/jellyseerrMock" --typescript`,
+  `pnpx msw-auto-mock "${JELLYSEERR_SCHEMA_URL}" -o "${OUTPUT_FOLDER}/jellyseerrMock" --base-url ${process.env.JELLYSEER_URL}/api/v1 --typescript`,
   `pnpx msw-auto-mock "${SONARR_SCHEMA_URL}" -o "${OUTPUT_FOLDER}/sonarrMock" --typescript`,
   `pnpx msw-auto-mock "${RADARR_SCHEMA_URL}" -o "${OUTPUT_FOLDER}/radarrMock" --typescript`,
 ]

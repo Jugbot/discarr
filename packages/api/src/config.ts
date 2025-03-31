@@ -1,8 +1,8 @@
-import { config as dotEnvConfig } from 'dotenv'
+import { configDotenv } from 'dotenv'
 import { z } from 'zod'
 import { validate } from 'node-cron'
 
-dotEnvConfig({
+configDotenv({
   path: ['.env.local', `.env.${process.env.NODE_ENV}`],
 })
 
