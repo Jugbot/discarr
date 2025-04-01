@@ -282,7 +282,14 @@ function addRequestersToThread(
       .map((r) => r.user.discordId)
       .filter((s): s is string => !!s)
       .map((s) => thread.members.add(s)),
-  )
+  ).then((results) => {
+    results
+      .filter((r) => r.status === 'rejected')
+      .forEach((e) => {
+        logger.warn(`Failed to add member to thread: ${e.reason}`)
+      })
+    return results
+  })
 }
 export const processMediaUpdate =
   (ctx: inferRouterContext<typeof postRouter>) => async (media: MediaInfo) => {

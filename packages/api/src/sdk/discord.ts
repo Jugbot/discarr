@@ -11,8 +11,24 @@ client.once(Events.ClientReady, (readyClient) => {
 
 client.rest.on('rateLimited', (data) => {
   logger.verbose(
-    `Discord API rate limited. Limit: ${data.limit} Timeout: ${data.retryAfter / 1000}s @ ${data.method}:${data.url}`,
+    `Discord API rate limited. Limit: ${data.limit} Timeout: ${(data.retryAfter / 1000).toFixed()}s @ ${data.method}:${data.url}`,
   )
+})
+
+client.on('debug', (message) => {
+  logger.debug(`[discordjs] ${message}`)
+})
+
+client.rest.on('response', (request) => {
+  logger.verbose(`[discordjs] ${request.method} ${request.path}`)
+})
+
+client.on('warn', (message) => {
+  logger.warn(`[discordjs] ${message}`)
+})
+
+client.on('error', (error) => {
+  logger.error(`[discordjs] ${error}`)
 })
 
 let pendingLogin: Promise<Client<boolean>> | null = null

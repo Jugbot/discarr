@@ -41,9 +41,12 @@ const envSchema = z
         message: "URL should not end with '/'",
       }),
     RADARR_API_KEY: z.string().min(1).optional(),
-    CRON_SCHEDULE: z.string().default('* * * * *').refine(validate, {
-      message: 'Invalid cron schedule',
-    }),
+    CRON_SCHEDULE: z
+      .string()
+      .default('* * * * *')
+      .refine(validate, (invalid) => ({
+        message: `Invalid cron schedule: "${invalid}"`,
+      })),
     LOG_LEVEL: z
       .enum(['error', 'warn', 'info', 'verbose', 'debug'])
       .default('info'),
