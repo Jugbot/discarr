@@ -9,6 +9,12 @@ client.once(Events.ClientReady, (readyClient) => {
   logger.info(`Ready! Logged in as ${readyClient.user.tag}`)
 })
 
+client.rest.on('rateLimited', (data) => {
+  logger.verbose(
+    `Discord API rate limited. Limit: ${data.limit} Timeout: ${data.retryAfter / 1000}s @ ${data.method}:${data.url}`,
+  )
+})
+
 let pendingLogin: Promise<Client<boolean>> | null = null
 
 export const getClient = () => {
