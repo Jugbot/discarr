@@ -139,6 +139,7 @@ function colorFromStatus(status: MediaInfo['status']): StatusMeta {
       }
   }
 }
+
 function mainMessagePayload(
   media: MediaInfo,
 ): MessageCreateOptions & MessageEditOptions {
@@ -183,9 +184,10 @@ function mainMessagePayload(
     ],
   }
 }
-const upsertThread =
+
+const upsertMessage =
   (ctx: inferRouterContext<typeof postRouter>) =>
-  async (media: MediaInfo, thread_id?: string) => {
+  async (media: MediaInfo, message_id?: string) => {
     const discordClient = await getClient()
     const guild = await getServer(discordClient)
     const channel = await getTextChannel(guild)
@@ -193,15 +195,6 @@ const upsertThread =
     async function deleteBadMessage(message_id: string) {
       logger.debug(`deleting bad message record ${message_id}`)
       await ctx.db.delete(Media).where(eq(Media.thread_id, message_id))
-    }
-
-    async function startThread(message: Message<true>) {
-      const thread = await message.startThread({
-        name: media.title,
-        autoArchiveDuration: ThreadAutoArchiveDuration.OneDay,
-      })
-      await addRequestersToThread(thread, media)
-      return thread
     }
 
     async function makeNewMessage() {
@@ -231,12 +224,12 @@ const upsertThread =
       return message
     }
 
-    async function fetchExistingThread(thread_id?: string) {
-      if (!thread_id) {
+    async function fetchExistingMessage(message_id?: string) {
+      if (!message_id) {
         return null
       }
       const message = channel.messages
-        .fetch({ message: thread_id, force: true })
+        .fetch({ message: message_id, force: true })
         .catch((err) => {
           logger.debug(`Error fetching message: ${err}`)
           return null
@@ -244,37 +237,30 @@ const upsertThread =
       return message
     }
 
-    return await fetchExistingThread(thread_id).then(async (message) => {
+    return await fetchExistingMessage(message_id).then(async (message) => {
       if (!message) {
-        if (thread_id) {
+        if (message_id) {
           logger.warn(`thread id doesn't match any known message!`)
-          await deleteBadMessage(thread_id)
+          await deleteBadMessage(message_id)
         } else {
           logger.verbose(`no existing message for media`)
         }
-        return makeNewMessage().then(startThread)
+        return makeNewMessage()
       }
-      await updateMessage(message)
-      if (!message.thread) {
-        logger.warn(`message doesn't have a thread!`)
-        return await startThread(message)
-      }
-
-      return message.thread as PublicThreadChannel<false>
+      return await updateMessage(message)
     })
   }
+
 function watchCondition(media: MediaInfo) {
-  // TODO: Jellyseerr doesn't expose whether the media is being watched in sonarr or radarr
-  return (
-    !['Unknown', 'Blacklisted'].includes(media.status) ||
-    media.requests.length > 0
-  )
+  return !['Blacklisted'].includes(media.status) || media.requests.length > 0
 }
+
 function eventMessagePayload(media: MediaInfo): MessageCreateOptions {
   return {
     content: `\`\`\`ansi\nStatus → ${formatANSI(media.status, [colorFromStatus(media.status).ansi, 'bold'])}\n\`\`\``,
   }
 }
+
 function addRequestersToThread(
   thread: PublicThreadChannel<false>,
   media: MediaInfo,
@@ -293,6 +279,16 @@ function addRequestersToThread(
     return results
   })
 }
+
+async function startThread(message: Message<true>, media: MediaInfo) {
+  const thread = await message.startThread({
+    name: media.title,
+    autoArchiveDuration: ThreadAutoArchiveDuration.OneDay,
+  })
+  await addRequestersToThread(thread, media)
+  return thread
+}
+
 export const processMediaUpdate =
   (ctx: inferRouterContext<typeof postRouter>) => async (media: MediaInfo) => {
     logger.verbose(`processing ${media.title}`)
@@ -305,22 +301,31 @@ export const processMediaUpdate =
       where: eq(Media.jellyseerr_id, media.id),
     })
 
-    // Update or create message with thread
-    const thread = await upsertThread(ctx)(media, threadRow?.thread_id)
+    // Update or create message
+    const message = await upsertMessage(ctx)(media, threadRow?.thread_id)
 
     // Skip faux events if thread is new
     if (!threadRow?.last_state) {
       return
     }
 
-    logger.verbose(`processing changes for ${media.title}`)
+    logger.verbose(`processing changes`)
 
     const lastState = threadRow.last_state
+
+    // Get or create thread
+    const getThread = () => {
+      if (!message.thread) {
+        return startThread(message, media)
+      }
+      return Promise.resolve(message.thread)
+    }
 
     // Skip if field hasn't been set, which means it's from an old version of the app
     const isMigrated = (val: unknown) => val !== undefined
 
     if (isMigrated(lastState.status) && lastState.status !== media.status) {
+      const thread = await getThread()
       await thread.send(eventMessagePayload(media))
     }
   }
