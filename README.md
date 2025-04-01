@@ -27,8 +27,7 @@ services:
       - JELLYSEER_API_KEY=
       - JELLYSEER_URL=
       - JELLYSEER_PUBLIC_URL= # fallback: JELLYSEER_URL
-      - LOG_LEVEL= # default: info
-        # options: error|warn|info|verbose|debug
+      - LOG_LEVEL= # default: info # options: error|warn|info|verbose|debug
       - CRON_SCHEDULE= # default: * * * * * (every minute)
 volumes:
   postgres-data:
