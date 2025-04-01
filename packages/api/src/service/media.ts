@@ -196,10 +196,12 @@ const upsertThread =
     }
 
     async function startThread(message: Message<true>) {
-      return message.startThread({
+      const thread = await message.startThread({
         name: media.title,
         autoArchiveDuration: ThreadAutoArchiveDuration.OneDay,
       })
+      await addRequestersToThread(thread, media)
+      return thread
     }
 
     async function makeNewMessage() {
@@ -305,8 +307,6 @@ export const processMediaUpdate =
 
     // Update or create message with thread
     const thread = await upsertThread(ctx)(media, threadRow?.thread_id)
-
-    await addRequestersToThread(thread, media)
 
     // Skip faux events if thread is new
     if (!threadRow?.last_state) {
