@@ -2,6 +2,12 @@
 
 Discord bot for jellyseerr media updates.
 
+## Using the bot
+
+1. [Register](https://discord.com/developers/applications?new_application=true) your own discord bot and obtain your token.
+2. [Copy](https://support.discord.com/hc/en-us/articles/206346498-Where-can-I-find-my-User-Server-Message-ID) the id of the server (also known as a guild) and text channel.
+3. Use the provided `docker-compose.yml` with the required environment variables to host your bot using docker.
+
 ```yaml
 services:
   discarr:
@@ -20,8 +26,10 @@ services:
       - DISCORD_CHANNEL_ID=
       - JELLYSEER_API_KEY=
       - JELLYSEER_URL=
-      - JELLYSEER_PUBLIC_URL= # optional
-      - LOG_LEVEL=info # optional
+      - JELLYSEER_PUBLIC_URL= # fallback: JELLYSEER_URL
+      - LOG_LEVEL= # default: info
+        # options: error|warn|info|verbose|debug
+      - CRON_SCHEDULE= # default: * * * * * (every minute)
 volumes:
   postgres-data:
 ```
