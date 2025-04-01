@@ -233,10 +233,12 @@ const upsertThread =
       if (!thread_id) {
         return null
       }
-      const message = channel.messages.fetch(thread_id).catch((err) => {
-        logger.debug(`Error fetching message: ${err}`)
-        return null
-      })
+      const message = channel.messages
+        .fetch({ message: thread_id, force: true })
+        .catch((err) => {
+          logger.debug(`Error fetching message: ${err}`)
+          return null
+        })
       return message
     }
 
