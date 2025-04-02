@@ -4,10 +4,12 @@ import { inferRouterContext } from '@trpc/server'
 import ansi from 'ansi-escape-sequences'
 import {
   AttachmentPayload,
+  DiscordAPIError,
   Message,
   MessageCreateOptions,
   MessageEditOptions,
   PublicThreadChannel,
+  RESTJSONErrorCodes,
   ThreadAutoArchiveDuration,
 } from 'discord.js'
 import { fromMovie, fromSeries } from '../adapter/media'
@@ -231,8 +233,14 @@ const upsertMessage =
       const message = channel.messages
         .fetch({ message: message_id, force: true })
         .catch((err) => {
+          if (
+            err instanceof DiscordAPIError &&
+            err.code === RESTJSONErrorCodes.UnknownMessage
+          ) {
+            return null
+          }
           logger.debug(`Error fetching message: ${err}`)
-          return null
+          throw err
         })
       return message
     }
