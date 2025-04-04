@@ -6,7 +6,7 @@
 
 ## Using the bot
 
-1. [Register](https://discord.com/developers/applications?new_application=true) your own discord bot and obtain your token.  
+1. [Register](https://discord.com/developers/applications?new_application=true) your own discord bot and obtain your token.
    <details><summary>You will also need to give the bot priviledges.</summary>
      <img src="https://github.com/user-attachments/assets/3145bfcd-8f6f-42d3-9da4-9c15de0263fc"/>
    </details>
