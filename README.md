@@ -1,6 +1,8 @@
 # Discarr
 
-Discord bot for jellyseerr media updates.
+### Discord bot for jellyseerr media updates.
+
+![Screenshot 2025-04-03 211717](https://github.com/user-attachments/assets/0cac78fa-ac75-4902-ab41-9cfac37a0d45)
 
 ## Using the bot
 
