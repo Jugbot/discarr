@@ -6,7 +6,10 @@
 
 ## Using the bot
 
-1. [Register](https://discord.com/developers/applications?new_application=true) your own discord bot and obtain your token.
+1. [Register](https://discord.com/developers/applications?new_application=true) your own discord bot and obtain your token.  
+   <details><summary>You will also need to give the bot priviledges.</summary>
+     <img src="https://github.com/user-attachments/assets/3145bfcd-8f6f-42d3-9da4-9c15de0263fc"/>
+   </details>
 2. [Copy](https://support.discord.com/hc/en-us/articles/206346498-Where-can-I-find-my-User-Server-Message-ID) the id of the server (also known as a guild) and text channel.
 3. Use the provided `docker-compose.yml` with the required environment variables to host your bot using docker.
 
