@@ -2,7 +2,6 @@ import { Client, Events, GatewayIntentBits } from 'discord.js'
 
 import { logger } from '../logger'
 import { config } from '../config'
-import { Logger } from 'winston'
 
 const client = new Client({ intents: [GatewayIntentBits.Guilds] })
 
