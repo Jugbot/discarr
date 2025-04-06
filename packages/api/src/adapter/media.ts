@@ -94,10 +94,10 @@ export const fromSeries =
     type: 'tv',
     overview: series.overview,
     image: imageUrlFromPath(series.posterPath),
-    status: statusTextFromCode(series.mediaInfo.status),
+    status: statusTextFromCode(series.mediaInfo?.status ?? 0),
     link: `${config.JELLYSEER_PUBLIC_URL}/tv/${series.id}`,
-    requests: series.mediaInfo.requests.map(requestAdapter(users)),
-    ...downloadStatusSummary(series.mediaInfo.downloadStatus),
+    requests: series.mediaInfo?.requests.map(requestAdapter(users)) ?? [],
+    ...downloadStatusSummary(series.mediaInfo?.downloadStatus ?? []),
   })
 
 export const fromMovie =
@@ -108,8 +108,8 @@ export const fromMovie =
     type: 'movie',
     overview: movie.overview,
     image: imageUrlFromPath(movie.posterPath),
-    status: statusTextFromCode(movie.mediaInfo.status),
+    status: statusTextFromCode(movie.mediaInfo?.status ?? 0),
     link: `${config.JELLYSEER_PUBLIC_URL}/movie/${movie.id}`,
-    requests: movie.mediaInfo.requests.map(requestAdapter(users)),
-    ...downloadStatusSummary(movie.mediaInfo.downloadStatus),
+    requests: movie.mediaInfo?.requests.map(requestAdapter(users)) ?? [],
+    ...downloadStatusSummary(movie.mediaInfo?.downloadStatus ?? []),
   })

@@ -2,33 +2,38 @@ import { Client, Events, GatewayIntentBits } from 'discord.js'
 
 import { logger } from '../logger'
 import { config } from '../config'
+import { Logger } from 'winston'
 
 const client = new Client({ intents: [GatewayIntentBits.Guilds] })
 
+const discordLogger = logger.child({
+  service: 'discord',
+})
+
 client.once(Events.ClientReady, (readyClient) => {
-  logger.info(`Ready! Logged in as ${readyClient.user.tag}`)
+  discordLogger.info(`Ready! Logged in as ${readyClient.user.tag}`)
 })
 
 client.rest.on('rateLimited', (data) => {
-  logger.verbose(
+  discordLogger.verbose(
     `Discord API rate limited. Limit: ${data.limit} Timeout: ${(data.retryAfter / 1000).toFixed()}s @ ${data.method}:${data.url}`,
   )
 })
 
 client.on('debug', (message) => {
-  logger.debug(`[discordjs] ${message}`)
+  discordLogger.debug(`${message}`)
 })
 
 client.rest.on('response', (request) => {
-  logger.verbose(`[discordjs] ${request.method} ${request.path}`)
+  discordLogger.debug(`${request.method} ${request.path}`)
 })
 
 client.on('warn', (message) => {
-  logger.warn(`[discordjs] ${message}`)
+  discordLogger.warn(`${message}`)
 })
 
 client.on('error', (error) => {
-  logger.error(`[discordjs] ${error}`)
+  discordLogger.error(`${error}`)
 })
 
 let pendingLogin: Promise<Client<boolean>> | null = null
@@ -45,7 +50,7 @@ export const getClient = () => {
   pendingLogin = client
     .login(config.DISCORD_TOKEN)
     .then(() => {
-      logger.info('Discord client logged in')
+      discordLogger.info('Discord client logged in')
       return client
     })
     .catch((error) => {
