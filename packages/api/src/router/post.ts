@@ -16,7 +16,9 @@ export const postRouter = createTRPCRouter({
     logger.info(`Processing ${medias.length} items`)
     if (medias.length > 1000) {
       logger.warn(
-        'More than 1000 media items to process, this is above the thread limit of discord. New threads will not be made until inactive threads are archived. Discord should do this automatically after 24 hours.',
+        'More than 1000 media items to process, this is above the thread limit of discord. ' +
+          'New threads will not be made until inactive threads are archived. ' +
+          'Discord should do this automatically after 24 hours.',
       )
     }
 
@@ -30,10 +32,13 @@ export const postRouter = createTRPCRouter({
           ...ctx,
           logger: mediaLogger,
         })
-        await processMediaUpdate(media).catch((error) => {
-          mediaLogger.error(error)
-        })
-        mediaLogger.verbose(`Done`)
+        return processMediaUpdate(media)
+          .catch((error) => {
+            mediaLogger.error(error)
+          })
+          .finally(() => {
+            mediaLogger.verbose(`Done`)
+          })
       }),
     )
 

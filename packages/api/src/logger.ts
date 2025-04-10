@@ -6,8 +6,9 @@ export const logger = winston.createLogger({
   transports: [
     new winston.transports.File({
       level: 'debug',
-      filename: 'logs/latest.log',
-      zippedArchive: true,
+      dirname: 'logs',
+      filename: 'latest.log',
+      options: { flags: 'w' },
     }),
     new winston.transports.Console({}),
   ],

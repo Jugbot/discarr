@@ -37,7 +37,6 @@ const downloadStatusSummary = (
         episode: download.episode.absoluteEpisodeNumber,
         downloadStatus: {
           completion: (download.size - download.sizeLeft) / download.size,
-          timeEstimate: download.estimatedCompletionTime,
         },
       },
     ]
@@ -51,10 +50,6 @@ const downloadStatusSummary = (
     { numerator: 0, denominator: 0 },
   )
 
-  const timeEstimate = downloads
-    .map((s) => s.estimatedCompletionTime)
-    .reduce((last, next) => (next > last ? next : last), '')
-
   return {
     episodes,
     downloadStatus: {
@@ -62,7 +57,6 @@ const downloadStatusSummary = (
         ? totalCompletionFraction.numerator /
           totalCompletionFraction.denominator
         : 0,
-      timeEstimate,
     },
   }
 }

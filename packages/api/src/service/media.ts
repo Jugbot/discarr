@@ -1,6 +1,6 @@
-import { eq } from '@acme/db'
+import { eq, and } from '@acme/db'
 import { Media } from '@acme/db/schema'
-import { inferRouterContext } from '@trpc/server'
+import { DeepPartial, inferRouterContext } from '@trpc/server'
 import ansi from 'ansi-escape-sequences'
 import {
   AttachmentPayload,
@@ -21,6 +21,7 @@ import { client as jellyseerrClient } from '../sdk/jellyseer'
 import { client as radarrClient } from '../sdk/radarr'
 import { client as sonarrClient } from '../sdk/sonarr'
 import { getServer, getTextChannel } from '../service/discord'
+import { deepEquals } from '../utilities/deepEquals'
 
 export function mediaService({
   logger,
@@ -211,10 +212,9 @@ export function mediaService({
       logger.verbose(`Created message ${message.id}`)
       await db.insert(Media).values({
         jellyseerr_id: media.id,
+        type: media.type,
         thread_id: message.id,
-        last_state: {
-          status: media.status,
-        },
+        last_state: media,
       })
       return message
     }
@@ -225,9 +225,7 @@ export function mediaService({
       await db
         .update(Media)
         .set({
-          last_state: {
-            status: media.status,
-          },
+          last_state: media,
         })
         .where(eq(Media.thread_id, message.id))
       return message
@@ -267,10 +265,6 @@ export function mediaService({
     })
   }
 
-  function watchCondition(media: MediaInfo) {
-    return !['Blacklisted'].includes(media.status) || media.requests.length > 0
-  }
-
   function eventMessagePayload(media: MediaInfo): MessageCreateOptions {
     return {
       content: `\`\`\`ansi\nStatus → ${ansi.format(media.status, [colorFromStatus(media.status).ansi, 'bold'])}\n\`\`\``,
@@ -306,39 +300,37 @@ export function mediaService({
   }
 
   const processMediaUpdate = async (media: MediaInfo) => {
-    if (!watchCondition(media)) {
-      logger.verbose(`Skipping`)
+    const threadRow = await db.query.Media.findFirst({
+      where: and(eq(Media.jellyseerr_id, media.id), eq(Media.type, media.type)),
+    })
+
+    if (threadRow && deepEquals(threadRow.last_state, media)) {
+      logger.verbose(`No changes to media, skipping`)
       return
     }
-
-    const threadRow = await db.query.Media.findFirst({
-      where: eq(Media.jellyseerr_id, media.id),
-    })
 
     // Update or create message
     const message = await upsertMessage(media, threadRow?.thread_id)
 
     // Skip faux events if thread is new
-    if (!threadRow?.last_state) {
+    if (!threadRow) {
       return
     }
 
     logger.verbose(`Creating events`)
 
-    const lastState = threadRow.last_state
+    // Last state can potentially have missing keys
+    const lastState = threadRow.last_state as DeepPartial<MediaInfo>
 
     // Get or create thread
-    const getThread = () => {
+    const getThread = async () => {
       if (!message.thread) {
         return startThread(message, media)
       }
-      return Promise.resolve(message.thread)
+      return message.thread
     }
 
-    // Skip if field hasn't been set, which means it's from an old version of the app
-    const isMigrated = (val: unknown) => val !== undefined
-
-    if (isMigrated(lastState.status) && lastState.status !== media.status) {
+    if (lastState.status !== media.status) {
       const thread = await getThread()
       await thread.send(eventMessagePayload(media))
     }
