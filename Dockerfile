@@ -55,12 +55,6 @@ USER nodejs
 
 COPY --from=installer --chown=nodejs:nodejs /app ./
 COPY --chown=nodejs:nodejs /docker-entrypoint.sh .
-
-RUN pg_ctl init && \
-    pg_ctl start && \
-    createuser -s user && \
-    createdb -O user dbname && \
-    pg_ctl stop
     
 VOLUME ["${PGDATA}"]
 
