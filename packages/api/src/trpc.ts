@@ -10,21 +10,8 @@ import { initTRPC } from '@trpc/server'
 import { ZodError } from 'zod'
 import superjson from 'superjson'
 
-// import type { Session } from "@acme/auth";
-// import { auth, validateToken } from "@acme/auth";
 import { db } from '@acme/db/client'
 import { logger } from './logger'
-
-/**
- * Isomorphic Session getter for API requests
- * - Expo requests will have a session token in the Authorization header
- * - Next.js requests will have a session token in cookies
- */
-// const isomorphicGetSession = async (headers: Headers) => {
-//   const authToken = headers.get("Authorization") ?? null;
-//   if (authToken) return validateToken(authToken);
-//   return auth();
-// };
 
 /**
  * 1. CONTEXT
@@ -39,16 +26,9 @@ import { logger } from './logger'
  * @see https://trpc.io/docs/server/context
  */
 export const createTRPCContext = () => {
-  // const authToken = opts.headers.get('Authorization') ?? null
-  // const session = await isomorphicGetSession(opts.headers);
-
-  // const source = opts.headers.get("x-trpc-source") ?? "unknown";
-  // logger.info(">>> tRPC Request from", source, "by", session?.user);
-
   return {
     db,
-    // session,
-    // token: authToken,
+    logger,
   }
 }
 
@@ -106,7 +86,9 @@ const timingMiddleware = t.middleware(async ({ next, path }) => {
   const result = await next()
 
   const end = Date.now()
-  logger.info(`[TRPC] ${path} took ${String(end - start)}ms to execute`)
+  logger.debug(`${path} took ${String(end - start)}ms to execute`, {
+    service: 'trpc',
+  })
 
   return result
 })
@@ -119,25 +101,3 @@ const timingMiddleware = t.middleware(async ({ next, path }) => {
  * can still access user session data if they are logged in
  */
 export const publicProcedure = t.procedure.use(timingMiddleware)
-
-/**
- * Protected (authenticated) procedure
- *
- * If you want a query or mutation to ONLY be accessible to logged in users, use this. It verifies
- * the session is valid and guarantees `ctx.session.user` is not null.
- *
- * @see https://trpc.io/docs/procedures
- */
-// export const protectedProcedure = t.procedure
-//   .use(timingMiddleware)
-//   .use(({ ctx, next }) => {
-//     if (!ctx.session?.user) {
-//       throw new TRPCError({ code: "UNAUTHORIZED" });
-//     }
-//     return next({
-//       ctx: {
-//         // infers the `session` as non-nullable
-//         session: { ...ctx.session, user: ctx.session.user },
-//       },
-//     });
-//   });

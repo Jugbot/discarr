@@ -39,12 +39,14 @@ RUN apk add --no-cache postgresql postgresql-client
 
 WORKDIR /app
 
+ENV UID=1001
+ENV GID=1001
+
 # Don't run production as root
-RUN addgroup --system --gid 1001 nodejs
-RUN adduser --system --uid 1001 nodejs
+RUN addgroup --system --gid "$GID" nodejs 
+RUN adduser --system --uid "$UID" --ingroup nodejs nodejs
 
 ENV PGDATA="/var/lib/postgresql/data"
-
 
 RUN install -v -d -o nodejs -g nodejs \
     /var/lib/postgresql \
@@ -56,12 +58,6 @@ USER nodejs
 COPY --from=installer --chown=nodejs:nodejs /app ./
 COPY --chown=nodejs:nodejs /docker-entrypoint.sh .
 
-RUN pg_ctl init && \
-    pg_ctl start && \
-    createuser -s user && \
-    createdb -O user dbname && \
-    pg_ctl stop
-    
 VOLUME ["${PGDATA}"]
 
 ENTRYPOINT ["sh", "docker-entrypoint.sh"]

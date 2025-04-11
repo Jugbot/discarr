@@ -1,0 +1,61 @@
+{
+  "id": "6605fd13-7ed4-44c1-b9a0-49d5d1bfc3de",
+  "prevId": "00000000-0000-0000-0000-000000000000",
+  "version": "7",
+  "dialect": "postgresql",
+  "tables": {
+    "public.media": {
+      "name": "media",
+      "schema": "",
+      "columns": {
+        "jellyseerr_id": {
+          "name": "jellyseerr_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "thread_id": {
+          "name": "thread_id",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "last_state": {
+          "name": "last_state",
+          "type": "json",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "'{}'::json"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {
+        "media_jellyseerr_id_thread_id_pk": {
+          "name": "media_jellyseerr_id_thread_id_pk",
+          "columns": ["jellyseerr_id", "thread_id"]
+        }
+      },
+      "uniqueConstraints": {
+        "media_jellyseerr_id_unique": {
+          "name": "media_jellyseerr_id_unique",
+          "nullsNotDistinct": false,
+          "columns": ["jellyseerr_id"]
+        },
+        "media_thread_id_unique": {
+          "name": "media_thread_id_unique",
+          "nullsNotDistinct": false,
+          "columns": ["thread_id"]
+        }
+      }
+    }
+  },
+  "enums": {},
+  "schemas": {},
+  "sequences": {},
+  "_meta": {
+    "columns": {},
+    "schemas": {},
+    "tables": {}
+  }
+}

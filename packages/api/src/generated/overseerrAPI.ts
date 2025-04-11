@@ -8439,7 +8439,7 @@ export interface components {
       adult?: boolean
       /** @example false */
       video?: boolean
-      mediaInfo?: components['schemas']['MediaInfo']
+      mediaInfo?: components['schemas']['MediaInfo'] | null
     }
     TvResult: {
       /** @example 1234 */
@@ -8462,7 +8462,7 @@ export interface components {
       originalName: string
       originCountry: string[]
       firstAirDate: string
-      mediaInfo: components['schemas']['MediaInfo']
+      mediaInfo: components['schemas']['MediaInfo'] | null
     }
     PersonResult: {
       /** @example 12345 */
@@ -8590,7 +8590,7 @@ export interface components {
         backdropPath: string
       }
       externalIds: components['schemas']['ExternalIds']
-      mediaInfo: components['schemas']['MediaInfo']
+      mediaInfo: components['schemas']['MediaInfo'] | null
       watchProviders: components['schemas']['WatchProviders'][]
     }
     Episode: {
@@ -8671,7 +8671,7 @@ export interface components {
       }
       externalIds: components['schemas']['ExternalIds']
       keywords: components['schemas']['Keyword'][]
-      mediaInfo: components['schemas']['MediaInfo']
+      mediaInfo: components['schemas']['MediaInfo'] | null
       watchProviders: components['schemas']['WatchProviders'][]
     }
     MediaRequest: {
