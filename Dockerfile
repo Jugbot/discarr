@@ -39,24 +39,16 @@ RUN apk add --no-cache postgresql postgresql-client
 
 WORKDIR /app
 
-ENV UID=1001
-ENV GID=1001
-
-# Don't run production as root
-RUN addgroup --system --gid "$GID" nodejs 
-RUN adduser --system --uid "$UID" --ingroup nodejs nodejs
+COPY --from=installer --chmod=777 /app ./
+COPY --chmod=777 /docker-entrypoint.sh .
 
 ENV PGDATA="/var/lib/postgresql/data"
 
-RUN install -v -d -o nodejs -g nodejs \
+RUN install -v -d -m 777 \
+    ${PGDATA} \
     /var/lib/postgresql \
-    /var/lib/postgresql/data \
-    /var/run/postgresql
-
-USER nodejs
-
-COPY --from=installer --chown=nodejs:nodejs /app ./
-COPY --chown=nodejs:nodejs /docker-entrypoint.sh .
+    /var/run/postgresql \
+    /run/postgresql 
 
 VOLUME ["${PGDATA}"]
 
