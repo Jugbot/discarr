@@ -9,7 +9,7 @@ setup() {
     pg_ctl start
 
     # Run migrations
-    pnpm --filter=@acme/db push
+    pnpm --filter=@acme/db migrate
 }
 teardown() {
     # Tear down postgres

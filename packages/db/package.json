@@ -16,7 +16,8 @@
   },
   "scripts": {
     "dev": "docker-compose up",
-    "push": "drizzle-kit push --force",
+    "generate": "drizzle-kit generate",
+    "migrate": "drizzle-kit migrate",
     "studio": "drizzle-kit studio",
     "check-types": "tsc"
   },
