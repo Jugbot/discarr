@@ -39,7 +39,7 @@ RUN apk add --no-cache postgresql postgresql-client
 
 WORKDIR /app
 
-COPY --from=installer --chmod=777 /app ./
+COPY --chmod=777 --from=installer /app ./
 COPY --chmod=777 /docker-entrypoint.sh .
 
 ENV PGDATA="/var/lib/postgresql/data"
