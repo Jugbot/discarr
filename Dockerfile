@@ -41,6 +41,8 @@ RUN adduser --system --ingroup defaultuser defaultuser
 COPY --chmod=777 --from=installer /app ./
 COPY --chmod=777 /docker-entrypoint.sh .
 
+USER defaultuser
+
 ENV DATA_DIR="/data"
 
 VOLUME ["${DATA_DIR}"]
