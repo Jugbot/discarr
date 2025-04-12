@@ -2,6 +2,7 @@ node_modules
 dist
 Dockerfile
 logs
+/data
 
 .cache
 .git

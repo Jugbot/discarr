@@ -15,17 +15,16 @@
     }
   },
   "scripts": {
-    "dev": "docker-compose up",
+    "dev": "drizzle-kit studio",
     "generate": "drizzle-kit generate",
     "migrate": "drizzle-kit migrate",
-    "studio": "drizzle-kit studio",
     "check-types": "tsc"
   },
   "dependencies": {
+    "@electric-sql/pglite": "catalog:",
     "dotenv": "catalog:",
     "drizzle-orm": "catalog:",
     "drizzle-zod": "catalog:",
-    "postgres": "catalog:",
     "zod": "catalog:"
   },
   "devDependencies": {

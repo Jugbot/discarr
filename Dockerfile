@@ -1,4 +1,4 @@
-FROM node:22-alpine AS base
+FROM node:alpine AS base
 
 ENV DO_NOT_TRACK="1"
 ENV NODE_ENV="production"
@@ -18,8 +18,6 @@ RUN pnpm turbo prune @acme/api @acme/app --docker
 
 # Add lockfile and package.json's of isolated subworkspace
 FROM base AS installer
-RUN apk update
-RUN apk add --no-cache libc6-compat
 
 WORKDIR /app
 
@@ -34,23 +32,23 @@ COPY --from=builder /app/out/full/ .
 RUN pnpm build
 
 FROM base AS runner
-RUN apk update
-RUN apk add --no-cache postgresql postgresql-client
 
 WORKDIR /app
+
+RUN addgroup --system defaultuser
+RUN adduser --system --ingroup defaultuser defaultuser
 
 COPY --chmod=777 --from=installer /app ./
 COPY --chmod=777 /docker-entrypoint.sh .
 
-ENV PGDATA="/var/lib/postgresql/data"
+ENV DATA_DIR="/data"
 
-RUN install -v -d -m 777 \
-    ${PGDATA} \
-    /var/lib/postgresql \
-    /var/run/postgresql \
-    /run/postgresql 
+RUN mkdir ${DATA_DIR}
+RUN chmod 777 ${DATA_DIR}
 
-VOLUME ["${PGDATA}"]
+USER defaultuser
+
+VOLUME [${DATA_DIR}]
 
 ENTRYPOINT ["sh", "docker-entrypoint.sh"]
 

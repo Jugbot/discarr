@@ -1,8 +1,11 @@
 import type { Config } from 'drizzle-kit'
-import { connectionUrl } from './src/config'
+import { config } from './src/config'
 
 export default {
   schema: './src/schema.ts',
   dialect: 'postgresql',
-  dbCredentials: { url: connectionUrl },
+  driver: 'pglite',
+  dbCredentials: {
+    url: config.POSTGRES_DATA_DIR,
+  },
 } satisfies Config

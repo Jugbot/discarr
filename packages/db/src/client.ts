@@ -1,9 +1,7 @@
-import postgres from 'postgres'
-import { drizzle } from 'drizzle-orm/postgres-js'
+import { drizzle } from 'drizzle-orm/pglite'
 
 import * as schema from './schema'
-import { connectionUrl } from './config'
 
-const pg = postgres(connectionUrl, {})
+import { config } from './config'
 
-export const db = drizzle(pg, { schema })
+export const db = drizzle(config.POSTGRES_DATA_DIR, { schema })

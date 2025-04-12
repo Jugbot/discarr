@@ -18,9 +18,9 @@ export const Media = pgTable(
     // Last known state of media so we can generate faux-events
     last_state: json('last_state').default({}),
   },
-  (media) => ({
-    compoundKey: primaryKey({
+  (media) => [
+    primaryKey({
       columns: [media.type, media.jellyseerr_id, media.thread_id],
     }),
-  }),
+  ],
 )
