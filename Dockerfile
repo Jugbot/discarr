@@ -43,12 +43,7 @@ COPY --chmod=777 /docker-entrypoint.sh .
 
 ENV DATA_DIR="/data"
 
-RUN mkdir ${DATA_DIR}
-RUN chmod 777 ${DATA_DIR}
-
-USER defaultuser
-
-VOLUME [${DATA_DIR}]
+VOLUME ["${DATA_DIR}"]
 
 ENTRYPOINT ["sh", "docker-entrypoint.sh"]
 
