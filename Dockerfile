@@ -41,6 +41,13 @@ RUN adduser --system --ingroup defaultuser defaultuser
 COPY --chmod=777 --from=installer /app ./
 COPY --chmod=777 /docker-entrypoint.sh .
 
+RUN mkdir -m 777 /data
+
+ENV COREPACK_HOME="/.corepack"
+RUN mkdir -m 777 $COREPACK_HOME
+RUN corepack install
+ENV COREPACK_ENABLE_NETWORK=0
+
 USER defaultuser
 
 ENV DATA_DIR="/data"

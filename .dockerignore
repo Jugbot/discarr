@@ -11,5 +11,6 @@ logs
 .pnpm-store
 .turbo
 .vscode
+.devcontainer
 
 .env.local
