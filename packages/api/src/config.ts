@@ -1,6 +1,7 @@
 import { config as dotEnvConfig } from 'dotenv'
 import { z } from 'zod'
 import { validate } from 'node-cron'
+import path from 'path'
 
 dotEnvConfig({
   path: ['.env.local', '.env.development'],
@@ -50,10 +51,12 @@ const envSchema = z
     LOG_LEVEL: z
       .enum(['error', 'warn', 'info', 'verbose', 'debug'])
       .default('info'),
+    DATA_DIR: z.string().transform((dir) => path.resolve(dir)),
   })
   .transform((obj) => ({
     ...obj,
     JELLYSEER_PUBLIC_URL: obj.JELLYSEER_PUBLIC_URL ?? obj.JELLYSEER_URL,
+    LOG_DIR: path.resolve(obj.DATA_DIR, 'logs'),
   }))
 
 const parsedEnv = envSchema.safeParse(process.env)

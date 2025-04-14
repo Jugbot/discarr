@@ -9,9 +9,6 @@ setup() {
         echo "Error: User $(id -u) does not have write access to volume $DATA_DIR"
         exit 1
     fi
-
-    # Run migrations
-    pnpm --filter=@acme/db migrate
 }
 teardown() {
     trap - EXIT

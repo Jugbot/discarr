@@ -6,7 +6,7 @@ export const logger = winston.createLogger({
   transports: [
     new winston.transports.File({
       level: 'debug',
-      dirname: 'logs',
+      dirname: config.LOG_DIR,
       filename: 'latest.log',
       options: { flags: 'w' },
     }),
