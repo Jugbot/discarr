@@ -1,4 +1,4 @@
-FROM node:alpine AS base
+FROM node:22-alpine AS base
 
 ENV DO_NOT_TRACK="1"
 ENV NODE_ENV="production"
