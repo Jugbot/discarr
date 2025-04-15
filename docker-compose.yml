@@ -4,7 +4,13 @@ services:
       context: .
       dockerfile: Dockerfile
     env_file:
+      # Dev env specifically for testing the container, if needed
       - path: .env.local
         required: false
+      # Dev env
       - path: packages/api/.env.local
         required: true
+    environment:
+      DATA_DIR: /data
+    volumes:
+      - /data

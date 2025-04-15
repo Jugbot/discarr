@@ -8,7 +8,6 @@ export interface Epsiode {
 
 export interface DownloadStatus {
   completion: number
-  timeEstimate: string
 }
 
 export interface Request {

@@ -13,15 +13,20 @@
     "dev": {
       "env": ["DISCORD_TOKEN"],
       "inputs": ["$TURBO_DEFAULT$", ".env.local"],
+      "dependsOn": ["@acme/db#migrate"],
       "persistent": true,
       "interactive": false,
       "cache": false
     },
     "prod": {
       "passThroughEnv": ["*"],
+      "dependsOn": ["@acme/db#migrate"],
       "persistent": true,
       "interactive": false,
       "cache": false
+    },
+    "migrate": {
+      "passThroughEnv": ["*"]
     },
     "test": {}
   }

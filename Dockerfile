@@ -4,7 +4,16 @@ ENV DO_NOT_TRACK="1"
 ENV NODE_ENV="production"
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
+
+# Use custom corepack home so cache is readable by other users
+ENV COREPACK_HOME="/.corepack"
+RUN mkdir $COREPACK_HOME
+
+# Install pnpm
 RUN corepack enable
+COPY /package.json .
+RUN corepack install
+RUN rm /package.json
 
 FROM base AS builder
 
@@ -18,8 +27,6 @@ RUN pnpm turbo prune @acme/api @acme/app --docker
 
 # Add lockfile and package.json's of isolated subworkspace
 FROM base AS installer
-RUN apk update
-RUN apk add --no-cache libc6-compat
 
 WORKDIR /app
 
@@ -34,35 +41,22 @@ COPY --from=builder /app/out/full/ .
 RUN pnpm build
 
 FROM base AS runner
-RUN apk update
-RUN apk add --no-cache postgresql postgresql-client
 
 WORKDIR /app
 
-# Don't run production as root
-RUN addgroup --system --gid 1001 nodejs
-RUN adduser --system --uid 1001 nodejs
+RUN addgroup --system defaultuser
+RUN adduser --system --ingroup defaultuser defaultuser
 
-ENV PGDATA="/var/lib/postgresql/data"
+COPY --chmod=777 --from=installer /app .
+COPY --chmod=777 /docker-entrypoint.sh .
 
+RUN mkdir -m 777 /data
 
-RUN install -v -d -o nodejs -g nodejs \
-    /var/lib/postgresql \
-    /var/lib/postgresql/data \
-    /var/run/postgresql
+USER defaultuser
 
-USER nodejs
+ENV DATA_DIR="/data"
 
-COPY --from=installer --chown=nodejs:nodejs /app ./
-COPY --chown=nodejs:nodejs /docker-entrypoint.sh .
-
-RUN pg_ctl init && \
-    pg_ctl start && \
-    createuser -s user && \
-    createdb -O user dbname && \
-    pg_ctl stop
-    
-VOLUME ["${PGDATA}"]
+VOLUME ["${DATA_DIR}"]
 
 ENTRYPOINT ["sh", "docker-entrypoint.sh"]
 

@@ -1,0 +1,2 @@
+ALTER TABLE "media" DROP CONSTRAINT "media_jellyseerr_id_thread_id_pk";--> statement-breakpoint
+ALTER TABLE "media" ADD CONSTRAINT "media_type_jellyseerr_id_thread_id_pk" PRIMARY KEY("type","jellyseerr_id","thread_id");

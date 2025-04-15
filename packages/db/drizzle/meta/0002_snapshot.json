@@ -1,0 +1,69 @@
+{
+  "id": "d44c580f-daaa-4642-9280-8ee7aa7935bd",
+  "prevId": "593083fe-377f-4b44-8b39-e7b518f0bd32",
+  "version": "7",
+  "dialect": "postgresql",
+  "tables": {
+    "public.media": {
+      "name": "media",
+      "schema": "",
+      "columns": {
+        "jellyseerr_id": {
+          "name": "jellyseerr_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "type": {
+          "name": "type",
+          "type": "media_type",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "thread_id": {
+          "name": "thread_id",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "last_state": {
+          "name": "last_state",
+          "type": "json",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "'{}'::json"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {
+        "media_type_jellyseerr_id_thread_id_pk": {
+          "name": "media_type_jellyseerr_id_thread_id_pk",
+          "columns": ["type", "jellyseerr_id", "thread_id"]
+        }
+      },
+      "uniqueConstraints": {
+        "media_thread_id_unique": {
+          "name": "media_thread_id_unique",
+          "nullsNotDistinct": false,
+          "columns": ["thread_id"]
+        }
+      }
+    }
+  },
+  "enums": {
+    "public.media_type": {
+      "name": "media_type",
+      "schema": "public",
+      "values": ["movie", "tv"]
+    }
+  },
+  "schemas": {},
+  "sequences": {},
+  "_meta": {
+    "columns": {},
+    "schemas": {},
+    "tables": {}
+  }
+}

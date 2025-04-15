@@ -1,6 +1,7 @@
 node_modules
 dist
 Dockerfile
+/data
 
 .cache
 .git
@@ -9,5 +10,7 @@ Dockerfile
 .pnpm-store
 .turbo
 .vscode
+.devcontainer
 
 .env.local
+.env.development

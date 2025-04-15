@@ -5,16 +5,12 @@ setup() {
     RC=-1
     trap 'teardown' EXIT
 
-    # Start postgres
-    pg_ctl start
-
-    # Run migrations
-    pnpm --filter=@acme/db push
+    if [ ! -w "$DATA_DIR" ]; then
+        echo "Error: User $(id -u) does not have write access to volume $DATA_DIR"
+        exit 1
+    fi
 }
 teardown() {
-    # Tear down postgres
-    pg_ctl stop
-
     trap - EXIT
     exit $RC
 }
