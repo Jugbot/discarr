@@ -4,7 +4,16 @@ ENV DO_NOT_TRACK="1"
 ENV NODE_ENV="production"
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
+
+# Use custom corepack home so cache is readable by other users
+ENV COREPACK_HOME="/.corepack"
+RUN mkdir $COREPACK_HOME
+
+# Install pnpm
 RUN corepack enable
+COPY /package.json .
+RUN corepack install
+RUN rm /package.json
 
 FROM base AS builder
 
@@ -38,15 +47,10 @@ WORKDIR /app
 RUN addgroup --system defaultuser
 RUN adduser --system --ingroup defaultuser defaultuser
 
-COPY --chmod=777 --from=installer /app ./
+COPY --chmod=777 --from=installer /app .
 COPY --chmod=777 /docker-entrypoint.sh .
 
 RUN mkdir -m 777 /data
-
-ENV COREPACK_HOME="/.corepack"
-RUN mkdir -m 777 $COREPACK_HOME
-RUN corepack install
-ENV COREPACK_ENABLE_NETWORK=0
 
 USER defaultuser
 
