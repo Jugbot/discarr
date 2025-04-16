@@ -1,9 +1,15 @@
 import { User } from './User'
 
-export interface Epsiode {
-  season: number
-  episode: number
-  downloadStatus: DownloadStatus
+export interface Season {
+  number: number
+  available: boolean
+  episodes: Record<number, Episode>
+}
+
+export interface Episode {
+  number: number
+  seasonNumber: number
+  available: boolean
 }
 
 export interface DownloadStatus {
@@ -21,7 +27,7 @@ export interface MediaInfo<Type extends 'movie' | 'tv' = 'movie' | 'tv'> {
   overview: string
   image: string
   status: 'Pending' | 'Processing' | 'Available' | 'Blacklisted' | 'Unknown'
-  episodes: Epsiode[]
+  seasons: Type extends 'movie' ? undefined : Record<number, Season>
   downloadStatus: DownloadStatus
   link: string
   requests: Request[]

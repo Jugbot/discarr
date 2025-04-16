@@ -13,7 +13,7 @@ import {
   ThreadAutoArchiveDuration,
 } from 'discord.js'
 import { fromMovie, fromSeries } from '../adapter/media'
-import { MediaInfo } from '../model/Media'
+import { Episode, MediaInfo, Season } from '../model/Media'
 import { UserMap } from '../model/User'
 import { postRouter } from '../router/post'
 import { getClient } from '../sdk/discord'
@@ -51,6 +51,18 @@ export function mediaService({
       })
       .then(handleBadResponse('Error fetching jellyseerr series'))
 
+  const fetchSerieEpisodes = (seriesId: number) =>
+    sonarrClient
+      .GET('/api/v3/episode', {
+        params: {
+          query: {
+            seriesId: seriesId,
+            includeEpisodeFile: true,
+          },
+        },
+      })
+      .then(handleBadResponse('Error fetching sonarr episodes'))
+
   const fetchMovie = (tmdbId: number) =>
     jellyseerrClient
       .GET('/movie/{movieId}', {
@@ -72,7 +84,12 @@ export function mediaService({
 
     const tvMediaInfo = await Promise.allSettled(
       sonarrMedia.map((media) =>
-        fetchSerie(media.tmdbId).then(fromSeries(users)),
+        fetchSerie(media.tmdbId)
+          .then(async (serie) => ({
+            ...serie,
+            episodes: await fetchSerieEpisodes(serie.id),
+          }))
+          .then(fromSeries(users)),
       ),
     )
     const movieMediaInfo = await Promise.allSettled(
@@ -265,9 +282,27 @@ export function mediaService({
     })
   }
 
-  function eventMessagePayload(media: MediaInfo): MessageCreateOptions {
+  function mediaStatusMessagePayload(media: MediaInfo): MessageCreateOptions {
     return {
       content: `\`\`\`ansi\nStatus → ${ansi.format(media.status, [colorFromStatus(media.status).ansi, 'bold'])}\n\`\`\``,
+    }
+  }
+
+  function episodeStatusMessagePayload(episode: Episode): MessageCreateOptions {
+    return {
+      content: `\`\`\`ansi\nEpisode ${episode.seasonNumber}x${episode.number} → ${ansi.format(
+        episode.available ? 'Available' : 'Unavailable',
+        [episode.available ? 'green' : 'red', 'bold'],
+      )}\n\`\`\``,
+    }
+  }
+
+  function seasonStatusMessagePayload(season: Season): MessageCreateOptions {
+    return {
+      content: `\`\`\`ansi\nSeason ${season.number} → ${ansi.format(
+        season.available ? 'Available' : 'Unavailable',
+        [season.available ? 'green' : 'red', 'bold'],
+      )}\n\`\`\``,
     }
   }
 
@@ -332,7 +367,24 @@ export function mediaService({
 
     if (lastState.status !== media.status) {
       const thread = await getThread()
-      await thread.send(eventMessagePayload(media))
+      await thread.send(mediaStatusMessagePayload(media))
+    }
+
+    for (const season of Object.values(media.seasons ?? {})) {
+      const lastSeason = lastState.seasons?.[season.number]
+      if (season.available && !lastSeason?.available) {
+        const thread = await getThread()
+        await thread.send(seasonStatusMessagePayload(season))
+        continue
+      }
+      if (season.available) continue
+      for (const episode of Object.values(season.episodes)) {
+        const lastEpisode = lastSeason?.episodes?.[episode.number]
+        if (episode.available && !lastEpisode?.available) {
+          const thread = await getThread()
+          await thread.send(episodeStatusMessagePayload(episode))
+        }
+      }
     }
   }
 

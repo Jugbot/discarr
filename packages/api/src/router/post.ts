@@ -25,7 +25,7 @@ export const postRouter = createTRPCRouter({
     await Promise.all(
       medias.map(async (media) => {
         const mediaLogger = logger.child({
-          mediaId: media.id,
+          mediaId: `${media.type}/${media.id}`,
         })
         mediaLogger.verbose(`Processing ${media.title}`)
         const { processMediaUpdate } = mediaService({
