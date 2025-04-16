@@ -290,7 +290,7 @@ export function mediaService({
 
   function episodeStatusMessagePayload(episode: Episode): MessageCreateOptions {
     return {
-      content: `\`\`\`ansi\nEpisode ${episode.seasonNumber}x${episode.number} → ${ansi.format(
+      content: `\`\`\`ansi\nEpisode S${episode.seasonNumber}E${episode.number} → ${ansi.format(
         episode.available ? 'Available' : 'Unavailable',
         [episode.available ? 'green' : 'red', 'bold'],
       )}\n\`\`\``,
@@ -372,12 +372,13 @@ export function mediaService({
 
     for (const season of Object.values(media.seasons ?? {})) {
       const lastSeason = lastState.seasons?.[season.number]
-      if (season.available && !lastSeason?.available) {
-        const thread = await getThread()
-        await thread.send(seasonStatusMessagePayload(season))
+      if (season.available) {
+        if (!lastSeason?.available) {
+          const thread = await getThread()
+          await thread.send(seasonStatusMessagePayload(season))
+        }
         continue
       }
-      if (season.available) continue
       for (const episode of Object.values(season.episodes)) {
         const lastEpisode = lastSeason?.episodes?.[episode.number]
         if (episode.available && !lastEpisode?.available) {
