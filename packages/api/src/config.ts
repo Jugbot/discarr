@@ -52,7 +52,10 @@ const envSchema = z
       .enum(['error', 'warn', 'info', 'verbose', 'debug'])
       .default('info'),
     DATA_DIR: z.string().transform((dir) => path.resolve(dir)),
-    SKIP_STARTUP_DATA_SYNC: z.boolean().default(false),
+    SKIP_STARTUP_DATA_SYNC: z
+      .enum(['0', '1', 'true', 'false'])
+      .default('false')
+      .transform((value) => ['1', 'true'].includes(value.toLowerCase())),
   })
   .transform((obj) => ({
     ...obj,
