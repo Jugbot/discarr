@@ -34,7 +34,7 @@ export const postRouter = createTRPCRouter({
   }),
   hook: publicProcedure.mutation(async ({ ctx }) => {
     const { logger } = ctx
-    logger.info('Running media sync hook')
+    logger.info('Checking media updates')
 
     const { getMedia } = mediaService(ctx)
 
@@ -70,6 +70,6 @@ export const postRouter = createTRPCRouter({
       }),
     )
 
-    logger.info('Media sync hook complete')
+    logger.info('Update check complete')
   }),
 })
