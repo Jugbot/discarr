@@ -226,7 +226,7 @@ export function mediaService({
     async function makeNewMessage() {
       logger.info(`Creating new discord message`)
       const message = await channel.send(mainMessagePayload(media))
-      logger.verbose(`Created message ${message.id}`)
+      logger.info(`Created message ${message.id}`)
       await db.insert(Media).values({
         jellyseerr_id: media.id,
         type: media.type,
@@ -237,7 +237,7 @@ export function mediaService({
     }
 
     async function updateMessage(message: Message<true>) {
-      logger.verbose(`Updating existing message ${message.id}`)
+      logger.info(`Updating existing message ${message.id}`)
       await message.edit(mainMessagePayload(media))
       await db
         .update(Media)
@@ -352,8 +352,6 @@ export function mediaService({
       return
     }
 
-    logger.verbose(`Creating events`)
-
     // Last state can potentially have missing keys
     const lastState = threadRow.last_state as DeepPartial<MediaInfo>
 
@@ -366,6 +364,7 @@ export function mediaService({
     }
 
     if (lastState.status !== media.status) {
+      logger.info(`Sending status update: media status`)
       const thread = await getThread()
       await thread.send(mediaStatusMessagePayload(media))
     }
@@ -374,6 +373,7 @@ export function mediaService({
       const lastSeason = lastState.seasons?.[season.number]
       if (season.available) {
         if (!lastSeason?.available) {
+          logger.info(`Sending status update: new season`)
           const thread = await getThread()
           await thread.send(seasonStatusMessagePayload(season))
         }
@@ -382,6 +382,7 @@ export function mediaService({
       for (const episode of Object.values(season.episodes)) {
         const lastEpisode = lastSeason?.episodes?.[episode.number]
         if (episode.available && !lastEpisode?.available) {
+          logger.info(`Sending status update: new episode`)
           const thread = await getThread()
           await thread.send(episodeStatusMessagePayload(episode))
         }
