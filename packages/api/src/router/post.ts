@@ -51,25 +51,23 @@ export const postRouter = createTRPCRouter({
     }
 
     await Promise.all(
-      medias
-        .filter((media) => media.id === 3570)
-        .map(async (media) => {
-          const mediaLogger = logger.child({
-            mediaId: `${media.type}/${media.id}`,
+      medias.map(async (media) => {
+        const mediaLogger = logger.child({
+          mediaId: `${media.type}/${media.id}`,
+        })
+        mediaLogger.verbose(`Processing ${media.title}`)
+        const { processMediaUpdate } = mediaService({
+          ...ctx,
+          logger: mediaLogger,
+        })
+        return processMediaUpdate(media)
+          .catch((error) => {
+            mediaLogger.error(error)
           })
-          mediaLogger.verbose(`Processing ${media.title}`)
-          const { processMediaUpdate } = mediaService({
-            ...ctx,
-            logger: mediaLogger,
+          .finally(() => {
+            mediaLogger.verbose(`Done`)
           })
-          return processMediaUpdate(media)
-            .catch((error) => {
-              mediaLogger.error(error)
-            })
-            .finally(() => {
-              mediaLogger.verbose(`Done`)
-            })
-        }),
+      }),
     )
 
     logger.info('Media sync hook complete')
