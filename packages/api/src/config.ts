@@ -2,9 +2,15 @@ import { config as dotEnvConfig } from 'dotenv'
 import { z } from 'zod'
 import { validate } from 'node-cron'
 import path from 'path'
+import { fileURLToPath } from 'url'
+
+const filename = fileURLToPath(import.meta.url)
+const dirname = path.dirname(filename)
 
 dotEnvConfig({
-  path: ['.env.local', '.env.development'],
+  path: ['.env.local', `.env.${process.env.NODE_ENV ?? 'development'}`].map(
+    (filename) => path.resolve(dirname, '..', filename),
+  ),
 })
 
 const envSchema = z

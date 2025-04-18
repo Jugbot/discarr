@@ -7,7 +7,9 @@ const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
 dotEnvConfig({
-  path: path.resolve(dirname, '../.env.development'),
+  path: ['.env.local', `.env.${process.env.NODE_ENV ?? 'development'}`].map(
+    (filename) => path.resolve(dirname, '..', filename),
+  ),
 })
 
 const envSchema = z
