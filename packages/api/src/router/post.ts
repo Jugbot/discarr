@@ -1,9 +1,37 @@
 import { getUsers } from '../service/user'
 import { createTRPCRouter, publicProcedure } from '../trpc'
 import { mediaService } from '../service/media'
+import { Media } from '@acme/db/schema'
+import { and, eq } from '@acme/db'
 
 export const postRouter = createTRPCRouter({
   ping: publicProcedure.query(() => 'pong'),
+  sync: publicProcedure.mutation(async ({ ctx }) => {
+    const { logger, db } = ctx
+    logger.info('Running media sync')
+
+    const { getMedia } = mediaService(ctx)
+
+    const users = await getUsers()
+    const medias = await getMedia(users)
+
+    await Promise.all(
+      medias.map(async (media) => {
+        const mediaLogger = logger.child({
+          mediaId: `${media.type}/${media.id}`,
+        })
+        mediaLogger.verbose(`Syncing ${media.title}`)
+        await db
+          .update(Media)
+          .set({ last_state: media })
+          .where(
+            and(eq(Media.jellyseerr_id, media.id), eq(Media.type, media.type)),
+          )
+      }),
+    )
+
+    logger.info('Sync complete')
+  }),
   hook: publicProcedure.mutation(async ({ ctx }) => {
     const { logger } = ctx
     logger.info('Running media sync hook')
@@ -23,23 +51,25 @@ export const postRouter = createTRPCRouter({
     }
 
     await Promise.all(
-      medias.map(async (media) => {
-        const mediaLogger = logger.child({
-          mediaId: `${media.type}/${media.id}`,
-        })
-        mediaLogger.verbose(`Processing ${media.title}`)
-        const { processMediaUpdate } = mediaService({
-          ...ctx,
-          logger: mediaLogger,
-        })
-        return processMediaUpdate(media)
-          .catch((error) => {
-            mediaLogger.error(error)
+      medias
+        .filter((media) => media.id === 3570)
+        .map(async (media) => {
+          const mediaLogger = logger.child({
+            mediaId: `${media.type}/${media.id}`,
           })
-          .finally(() => {
-            mediaLogger.verbose(`Done`)
+          mediaLogger.verbose(`Processing ${media.title}`)
+          const { processMediaUpdate } = mediaService({
+            ...ctx,
+            logger: mediaLogger,
           })
-      }),
+          return processMediaUpdate(media)
+            .catch((error) => {
+              mediaLogger.error(error)
+            })
+            .finally(() => {
+              mediaLogger.verbose(`Done`)
+            })
+        }),
     )
 
     logger.info('Media sync hook complete')
