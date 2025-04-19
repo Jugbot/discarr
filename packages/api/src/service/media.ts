@@ -83,7 +83,7 @@ export function mediaService({
         fetchSerie(media.tmdbId)
           .then(async (serie) => ({
             ...serie,
-            episodes: await fetchSerieEpisodes(serie.id),
+            episodes: await fetchSerieEpisodes(media.id),
           }))
           .then(fromSeries(users)),
       ),
