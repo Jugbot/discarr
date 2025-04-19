@@ -1,26 +1,22 @@
-import { eq, and } from '@acme/db'
+import { and, eq } from '@acme/db'
 import { Media } from '@acme/db/schema'
 import { DeepPartial, inferRouterContext } from '@trpc/server'
-import ansi from 'ansi-escape-sequences'
 import {
-  AttachmentPayload,
   DiscordAPIError,
   Message,
-  MessageCreateOptions,
-  MessageEditOptions,
   PublicThreadChannel,
   RESTJSONErrorCodes,
   ThreadAutoArchiveDuration,
 } from 'discord.js'
 import { fromMovie, fromSeries } from '../adapter/media'
-import { Episode, MediaInfo, Season } from '../model/Media'
+import { MediaInfo } from '../model/Media'
 import { UserMap } from '../model/User'
 import { postRouter } from '../router/post'
 import { getClient } from '../sdk/discord'
 import { client as jellyseerrClient } from '../sdk/jellyseer'
 import { client as radarrClient } from '../sdk/radarr'
 import { client as sonarrClient } from '../sdk/sonarr'
-import { getServer, getTextChannel } from '../service/discord'
+import { getServer, getTextChannel, templates } from '../service/discord'
 import { deepEquals } from '../utilities/deepEquals'
 
 export function mediaService({
@@ -117,102 +113,6 @@ export function mediaService({
     return resolved
   }
 
-  type StatusMeta = {
-    /** hex rgb number */
-    color: number
-    /** png image 1x1 pixel */
-    base64: string
-    ansi: keyof typeof ansi.style
-  }
-
-  function colorFromStatus(status: MediaInfo['status']): StatusMeta {
-    switch (status) {
-      case 'Available':
-        return {
-          color: 0x2ecc71,
-          base64:
-            'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAA1JREFUGFdj0DtT+B8ABQICa3znZ2oAAAAASUVORK5CYII=',
-          ansi: 'green',
-        }
-      case 'Blacklisted':
-        return {
-          color: 0xe74c3c,
-          base64:
-            'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAA1JREFUGFdjeO5j8x8ABfwCb6cFtH0AAAAASUVORK5CYII=',
-          ansi: 'red',
-        }
-      case 'Pending':
-        return {
-          color: 0xe67e22,
-          base64:
-            'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAA1JREFUGFdjeFan9B8ABloChnlkdVsAAAAASUVORK5CYII=',
-          ansi: 'yellow',
-        }
-      case 'Processing':
-        return {
-          color: 0x3498db,
-          base64:
-            'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAA1JREFUGFdjMJlx+z8ABVICp/IuGtoAAAAASUVORK5CYII=',
-          ansi: 'blue',
-        }
-      default:
-        return {
-          color: 0x95a5a6,
-          base64:
-            'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAA1JREFUGFdjmLp02X8ABpMC4IYnRY4AAAAASUVORK5CYII=',
-          ansi: 'white',
-        }
-    }
-  }
-
-  function mainMessagePayload(
-    media: MediaInfo,
-  ): MessageCreateOptions & MessageEditOptions {
-    const requests = media.requests
-      .map((r) => (r.user.discordId ? `<@${r.user.discordId}>` : r.user.name))
-      .join(' ')
-    const statusText =
-      media.status === 'Processing'
-        ? `Processing — ${(media.downloadStatus.completion * 100).toFixed()}%`
-        : media.status
-
-    return {
-      embeds: [
-        {
-          title: media.title,
-          url: media.link,
-          description: media.overview,
-          thumbnail: {
-            url: media.image,
-          },
-          color: colorFromStatus(media.status).color,
-          fields: requests
-            ? [
-                {
-                  name: '',
-                  value: `*Requested by* ${requests}`,
-                  inline: true,
-                },
-              ]
-            : undefined,
-          footer: {
-            text: statusText,
-            icon_url: 'attachment://status',
-          },
-        },
-      ],
-      files: [
-        {
-          name: 'status',
-          attachment: Buffer.from(
-            colorFromStatus(media.status).base64,
-            'base64',
-          ),
-        } satisfies AttachmentPayload,
-      ],
-    }
-  }
-
   const upsertMessage = async (media: MediaInfo, message_id?: string) => {
     const discordClient = await getClient()
     const guild = await getServer(discordClient)
@@ -225,7 +125,7 @@ export function mediaService({
 
     async function makeNewMessage() {
       logger.info(`Creating new discord message`)
-      const message = await channel.send(mainMessagePayload(media))
+      const message = await channel.send(templates.mainMessage(media))
       logger.info(`Created message ${message.id}`)
       await db.insert(Media).values({
         jellyseerr_id: media.id,
@@ -238,7 +138,7 @@ export function mediaService({
 
     async function updateMessage(message: Message<true>) {
       logger.info(`Updating existing message ${message.id}`)
-      await message.edit(mainMessagePayload(media))
+      await message.edit(templates.mainMessage(media))
       await db
         .update(Media)
         .set({
@@ -280,30 +180,6 @@ export function mediaService({
       }
       return await updateMessage(message)
     })
-  }
-
-  function mediaStatusMessagePayload(media: MediaInfo): MessageCreateOptions {
-    return {
-      content: `\`\`\`ansi\nStatus → ${ansi.format(media.status, [colorFromStatus(media.status).ansi, 'bold'])}\n\`\`\``,
-    }
-  }
-
-  function episodeStatusMessagePayload(episode: Episode): MessageCreateOptions {
-    return {
-      content: `\`\`\`ansi\nEpisode S${episode.seasonNumber}E${episode.number} → ${ansi.format(
-        episode.available ? 'Available' : 'Unavailable',
-        [episode.available ? 'green' : 'red', 'bold'],
-      )}\n\`\`\``,
-    }
-  }
-
-  function seasonStatusMessagePayload(season: Season): MessageCreateOptions {
-    return {
-      content: `\`\`\`ansi\nSeason ${season.number} → ${ansi.format(
-        season.available ? 'Available' : 'Unavailable',
-        [season.available ? 'green' : 'red', 'bold'],
-      )}\n\`\`\``,
-    }
   }
 
   function addRequestersToThread(
@@ -366,7 +242,7 @@ export function mediaService({
     if (lastState.status !== media.status) {
       logger.info(`Sending status update: media status`)
       const thread = await getThread()
-      await thread.send(mediaStatusMessagePayload(media))
+      await thread.send(templates.mediaStatus(media))
     }
 
     for (const season of Object.values(media.seasons ?? {})) {
@@ -375,7 +251,7 @@ export function mediaService({
         if (!lastSeason?.available) {
           logger.info(`Sending status update: new season`)
           const thread = await getThread()
-          await thread.send(seasonStatusMessagePayload(season))
+          await thread.send(templates.seasonStatus(season))
         }
         continue
       }
@@ -384,7 +260,7 @@ export function mediaService({
         if (episode.available && !lastEpisode?.available) {
           logger.info(`Sending status update: new episode`)
           const thread = await getThread()
-          await thread.send(episodeStatusMessagePayload(episode))
+          await thread.send(templates.episodeStatus(episode))
         }
       }
     }
