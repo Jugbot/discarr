@@ -1,9 +1,9 @@
 import {
   AttachmentPayload,
+  BaseMessageOptions,
   Client,
   Guild,
   MessageCreateOptions,
-  MessageEditOptions,
 } from 'discord.js'
 import { Episode, MediaInfo, Season } from '../model/Media'
 
@@ -95,11 +95,11 @@ function statusMessageTemplate(
 }
 
 export const templates = {
-  mediaStatus: function (media: MediaInfo): MessageCreateOptions {
+  mediaStatus: function (media: MediaInfo): BaseMessageOptions {
     return statusMessageTemplate(media.status, `Status → ${media.status}`)
   },
 
-  episodeStatus: function (episode: Episode): MessageCreateOptions {
+  episodeStatus: function (episode: Episode): BaseMessageOptions {
     return statusMessageTemplate(
       episode.available ? 'Available' : 'Unknown',
       `Episode S${episode.seasonNumber}E${episode.number} → ${
@@ -108,7 +108,7 @@ export const templates = {
     )
   },
 
-  seasonStatus: function (season: Season): MessageCreateOptions {
+  seasonStatus: function (season: Season): BaseMessageOptions {
     return statusMessageTemplate(
       season.available ? 'Available' : 'Unknown',
       `Season ${season.number} → ${
@@ -117,9 +117,7 @@ export const templates = {
     )
   },
 
-  mainMessage: function (
-    media: MediaInfo,
-  ): MessageCreateOptions & MessageEditOptions {
+  mainMessage: function (media: MediaInfo): BaseMessageOptions {
     const requests = media.requests
       .map((r) => (r.user.discordId ? `<@${r.user.discordId}>` : r.user.name))
       .join(' ')
