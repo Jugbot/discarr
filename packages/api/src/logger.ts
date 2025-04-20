@@ -1,21 +1,21 @@
-import winston from 'winston'
+import { createLogger, transports, format } from 'winston'
 import { config } from './config'
 
-export const logger = winston.createLogger({
+export const logger = createLogger({
   level: config.LOG_LEVEL,
   transports: [
-    new winston.transports.File({
+    new transports.File({
       level: 'debug',
       dirname: config.LOG_DIR,
       filename: 'latest.log',
       options: { flags: 'w' },
     }),
-    new winston.transports.Console({}),
+    new transports.Console({}),
   ],
-  format: winston.format.combine(
-    winston.format.errors({ stack: true }),
-    winston.format.timestamp(),
-    winston.format.printf((info) => {
+  format: format.combine(
+    format.errors({ stack: true }),
+    format.timestamp(),
+    format.printf((info) => {
       const { level, message, timestamp, ...context } = info
 
       const keys = [
