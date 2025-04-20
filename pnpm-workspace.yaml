@@ -62,4 +62,10 @@ catalog:
   vite: ^5.4.1
   vitest: ^2.0.5
   winston: ^3.17.0
-  zod: ^3.23.8
+  zod: ^3.24.3
+
+catalogs:
+  msw1:
+    msw: ^1.3.4
+    msw-storybook-addon: ^1.10.0
+    msw-trpc: ^1.3.4
