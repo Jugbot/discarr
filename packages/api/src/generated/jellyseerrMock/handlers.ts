@@ -6,6 +6,7 @@
  */
 /* eslint-disable */
 /* tslint:disable */
+// @ts-nocheck
 import { HttpResponse, http } from 'msw'
 import { faker } from '@faker-js/faker'
 
@@ -14,740 +15,1134 @@ faker.seed(1)
 const baseURL = 'http://localhost:3001/api/v1'
 const MAX_ARRAY_LENGTH = 20
 
-let i = 0
-const next = () => {
-  if (i === Number.MAX_SAFE_INTEGER - 1) {
-    i = 0
+// Map to store counters for each API endpoint
+const apiCounters = new Map<string, number>()
+
+const next = (apiKey: string) => {
+  let currentCount = apiCounters.get(apiKey) ?? 0
+  if (currentCount === Number.MAX_SAFE_INTEGER - 1) {
+    currentCount = 0
   }
-  return i++
+  apiCounters.set(apiKey, currentCount + 1)
+  return currentCount
 }
 
 export const handlers = [
   http.get(`${baseURL}/status`, async () => {
-    const resultArray = [[await getGetStatus200Response(), { status: 200 }]]
+    const resultArray = [[getGetStatus200Response(), { status: 200 }]] as [
+      any,
+      { status: number },
+    ][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`get /status`) % resultArray.length],
+    )
   }),
   http.get(`${baseURL}/status/appdata`, async () => {
     const resultArray = [
-      [await getGetStatusAppdata200Response(), { status: 200 }],
-    ]
+      [getGetStatusAppdata200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`get /status/appdata`) % resultArray.length],
+    )
   }),
   http.get(`${baseURL}/settings/main`, async () => {
     const resultArray = [
-      [await getGetSettingsMain200Response(), { status: 200 }],
-    ]
+      [getGetSettingsMain200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`get /settings/main`) % resultArray.length],
+    )
   }),
   http.post(`${baseURL}/settings/main`, async () => {
     const resultArray = [
-      [await getPostSettingsMain200Response(), { status: 200 }],
-    ]
+      [getPostSettingsMain200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`post /settings/main`) % resultArray.length],
+    )
   }),
   http.get(`${baseURL}/settings/network`, async () => {
     const resultArray = [
-      [await getGetSettingsNetwork200Response(), { status: 200 }],
-    ]
+      [getGetSettingsNetwork200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`get /settings/network`) % resultArray.length],
+    )
   }),
   http.post(`${baseURL}/settings/network`, async () => {
     const resultArray = [
-      [await getPostSettingsNetwork200Response(), { status: 200 }],
-    ]
+      [getPostSettingsNetwork200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`post /settings/network`) % resultArray.length],
+    )
   }),
   http.post(`${baseURL}/settings/main/regenerate`, async () => {
     const resultArray = [
-      [await getPostSettingsMainRegenerate200Response(), { status: 200 }],
-    ]
+      [getPostSettingsMainRegenerate200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[
+        next(`post /settings/main/regenerate`) % resultArray.length
+      ],
+    )
   }),
   http.get(`${baseURL}/settings/jellyfin`, async () => {
     const resultArray = [
-      [await getGetSettingsJellyfin200Response(), { status: 200 }],
-    ]
+      [getGetSettingsJellyfin200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`get /settings/jellyfin`) % resultArray.length],
+    )
   }),
   http.post(`${baseURL}/settings/jellyfin`, async () => {
     const resultArray = [
-      [await getPostSettingsJellyfin200Response(), { status: 200 }],
-    ]
+      [getPostSettingsJellyfin200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`post /settings/jellyfin`) % resultArray.length],
+    )
   }),
   http.get(`${baseURL}/settings/jellyfin/library`, async () => {
     const resultArray = [
-      [await getGetSettingsJellyfinLibrary200Response(), { status: 200 }],
-    ]
+      [getGetSettingsJellyfinLibrary200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[
+        next(`get /settings/jellyfin/library`) % resultArray.length
+      ],
+    )
   }),
   http.get(`${baseURL}/settings/jellyfin/users`, async () => {
     const resultArray = [
-      [await getGetSettingsJellyfinUsers200Response(), { status: 200 }],
-    ]
+      [getGetSettingsJellyfinUsers200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`get /settings/jellyfin/users`) % resultArray.length],
+    )
   }),
   http.get(`${baseURL}/settings/jellyfin/sync`, async () => {
     const resultArray = [
-      [await getGetSettingsJellyfinSync200Response(), { status: 200 }],
-    ]
+      [getGetSettingsJellyfinSync200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`get /settings/jellyfin/sync`) % resultArray.length],
+    )
   }),
   http.post(`${baseURL}/settings/jellyfin/sync`, async () => {
     const resultArray = [
-      [await getPostSettingsJellyfinSync200Response(), { status: 200 }],
-    ]
+      [getPostSettingsJellyfinSync200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`post /settings/jellyfin/sync`) % resultArray.length],
+    )
   }),
   http.get(`${baseURL}/settings/plex`, async () => {
     const resultArray = [
-      [await getGetSettingsPlex200Response(), { status: 200 }],
-    ]
+      [getGetSettingsPlex200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`get /settings/plex`) % resultArray.length],
+    )
   }),
   http.post(`${baseURL}/settings/plex`, async () => {
     const resultArray = [
-      [await getPostSettingsPlex200Response(), { status: 200 }],
-    ]
+      [getPostSettingsPlex200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`post /settings/plex`) % resultArray.length],
+    )
   }),
   http.get(`${baseURL}/settings/plex/library`, async () => {
     const resultArray = [
-      [await getGetSettingsPlexLibrary200Response(), { status: 200 }],
-    ]
+      [getGetSettingsPlexLibrary200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`get /settings/plex/library`) % resultArray.length],
+    )
   }),
   http.get(`${baseURL}/settings/plex/sync`, async () => {
     const resultArray = [
-      [await getGetSettingsPlexSync200Response(), { status: 200 }],
-    ]
+      [getGetSettingsPlexSync200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`get /settings/plex/sync`) % resultArray.length],
+    )
   }),
   http.post(`${baseURL}/settings/plex/sync`, async () => {
     const resultArray = [
-      [await getPostSettingsPlexSync200Response(), { status: 200 }],
-    ]
+      [getPostSettingsPlexSync200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`post /settings/plex/sync`) % resultArray.length],
+    )
   }),
   http.get(`${baseURL}/settings/plex/devices/servers`, async () => {
     const resultArray = [
-      [await getGetSettingsPlexDevicesServers200Response(), { status: 200 }],
-    ]
+      [getGetSettingsPlexDevicesServers200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[
+        next(`get /settings/plex/devices/servers`) % resultArray.length
+      ],
+    )
   }),
   http.get(`${baseURL}/settings/plex/users`, async () => {
     const resultArray = [
-      [await getGetSettingsPlexUsers200Response(), { status: 200 }],
-    ]
+      [getGetSettingsPlexUsers200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`get /settings/plex/users`) % resultArray.length],
+    )
   }),
   http.get(`${baseURL}/settings/tautulli`, async () => {
     const resultArray = [
-      [await getGetSettingsTautulli200Response(), { status: 200 }],
-    ]
+      [getGetSettingsTautulli200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`get /settings/tautulli`) % resultArray.length],
+    )
   }),
   http.post(`${baseURL}/settings/tautulli`, async () => {
     const resultArray = [
-      [await getPostSettingsTautulli200Response(), { status: 200 }],
-    ]
+      [getPostSettingsTautulli200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`post /settings/tautulli`) % resultArray.length],
+    )
   }),
   http.get(`${baseURL}/settings/radarr`, async () => {
     const resultArray = [
-      [await getGetSettingsRadarr200Response(), { status: 200 }],
-    ]
+      [getGetSettingsRadarr200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`get /settings/radarr`) % resultArray.length],
+    )
   }),
   http.post(`${baseURL}/settings/radarr`, async () => {
     const resultArray = [
-      [await getPostSettingsRadarr201Response(), { status: 201 }],
-    ]
+      [getPostSettingsRadarr201Response(), { status: 201 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`post /settings/radarr`) % resultArray.length],
+    )
   }),
   http.post(`${baseURL}/settings/radarr/test`, async () => {
     const resultArray = [
-      [await getPostSettingsRadarrTest200Response(), { status: 200 }],
-    ]
+      [getPostSettingsRadarrTest200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`post /settings/radarr/test`) % resultArray.length],
+    )
   }),
   http.put(`${baseURL}/settings/radarr/:radarrId`, async () => {
     const resultArray = [
-      [await getPutSettingsRadarrRadarrId200Response(), { status: 200 }],
-    ]
+      [getPutSettingsRadarrRadarrId200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[
+        next(`put /settings/radarr/:radarrId`) % resultArray.length
+      ],
+    )
   }),
   http.delete(`${baseURL}/settings/radarr/:radarrId`, async () => {
     const resultArray = [
-      [await getDeleteSettingsRadarrRadarrId200Response(), { status: 200 }],
-    ]
+      [getDeleteSettingsRadarrRadarrId200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[
+        next(`delete /settings/radarr/:radarrId`) % resultArray.length
+      ],
+    )
   }),
   http.get(`${baseURL}/settings/radarr/:radarrId/profiles`, async () => {
     const resultArray = [
-      [
-        await getGetSettingsRadarrRadarrIdProfiles200Response(),
-        { status: 200 },
-      ],
-    ]
+      [getGetSettingsRadarrRadarrIdProfiles200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[
+        next(`get /settings/radarr/:radarrId/profiles`) % resultArray.length
+      ],
+    )
   }),
   http.get(`${baseURL}/settings/sonarr`, async () => {
     const resultArray = [
-      [await getGetSettingsSonarr200Response(), { status: 200 }],
-    ]
+      [getGetSettingsSonarr200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`get /settings/sonarr`) % resultArray.length],
+    )
   }),
   http.post(`${baseURL}/settings/sonarr`, async () => {
     const resultArray = [
-      [await getPostSettingsSonarr201Response(), { status: 201 }],
-    ]
+      [getPostSettingsSonarr201Response(), { status: 201 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`post /settings/sonarr`) % resultArray.length],
+    )
   }),
   http.post(`${baseURL}/settings/sonarr/test`, async () => {
     const resultArray = [
-      [await getPostSettingsSonarrTest200Response(), { status: 200 }],
-    ]
+      [getPostSettingsSonarrTest200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`post /settings/sonarr/test`) % resultArray.length],
+    )
   }),
   http.put(`${baseURL}/settings/sonarr/:sonarrId`, async () => {
     const resultArray = [
-      [await getPutSettingsSonarrSonarrId200Response(), { status: 200 }],
-    ]
+      [getPutSettingsSonarrSonarrId200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[
+        next(`put /settings/sonarr/:sonarrId`) % resultArray.length
+      ],
+    )
   }),
   http.delete(`${baseURL}/settings/sonarr/:sonarrId`, async () => {
     const resultArray = [
-      [await getDeleteSettingsSonarrSonarrId200Response(), { status: 200 }],
-    ]
+      [getDeleteSettingsSonarrSonarrId200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[
+        next(`delete /settings/sonarr/:sonarrId`) % resultArray.length
+      ],
+    )
   }),
   http.get(`${baseURL}/settings/public`, async () => {
     const resultArray = [
-      [await getGetSettingsPublic200Response(), { status: 200 }],
-    ]
+      [getGetSettingsPublic200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`get /settings/public`) % resultArray.length],
+    )
   }),
   http.post(`${baseURL}/settings/initialize`, async () => {
     const resultArray = [
-      [await getPostSettingsInitialize200Response(), { status: 200 }],
-    ]
+      [getPostSettingsInitialize200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`post /settings/initialize`) % resultArray.length],
+    )
   }),
   http.get(`${baseURL}/settings/jobs`, async () => {
     const resultArray = [
-      [await getGetSettingsJobs200Response(), { status: 200 }],
-    ]
+      [getGetSettingsJobs200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`get /settings/jobs`) % resultArray.length],
+    )
   }),
   http.post(`${baseURL}/settings/jobs/:jobId/run`, async () => {
     const resultArray = [
-      [await getPostSettingsJobsJobIdRun200Response(), { status: 200 }],
-    ]
+      [getPostSettingsJobsJobIdRun200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[
+        next(`post /settings/jobs/:jobId/run`) % resultArray.length
+      ],
+    )
   }),
   http.post(`${baseURL}/settings/jobs/:jobId/cancel`, async () => {
     const resultArray = [
-      [await getPostSettingsJobsJobIdCancel200Response(), { status: 200 }],
-    ]
+      [getPostSettingsJobsJobIdCancel200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[
+        next(`post /settings/jobs/:jobId/cancel`) % resultArray.length
+      ],
+    )
   }),
   http.post(`${baseURL}/settings/jobs/:jobId/schedule`, async () => {
     const resultArray = [
-      [await getPostSettingsJobsJobIdSchedule200Response(), { status: 200 }],
-    ]
+      [getPostSettingsJobsJobIdSchedule200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[
+        next(`post /settings/jobs/:jobId/schedule`) % resultArray.length
+      ],
+    )
   }),
   http.get(`${baseURL}/settings/cache`, async () => {
     const resultArray = [
-      [await getGetSettingsCache200Response(), { status: 200 }],
-    ]
+      [getGetSettingsCache200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`get /settings/cache`) % resultArray.length],
+    )
   }),
   http.post(`${baseURL}/settings/cache/:cacheId/flush`, async () => {
-    const resultArray = [[undefined, { status: 204 }]]
+    const resultArray = [[undefined, { status: 204 }]] as [
+      any,
+      { status: number },
+    ][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[
+        next(`post /settings/cache/:cacheId/flush`) % resultArray.length
+      ],
+    )
   }),
   http.get(`${baseURL}/settings/logs`, async () => {
     const resultArray = [
-      [await getGetSettingsLogs200Response(), { status: 200 }],
-    ]
+      [getGetSettingsLogs200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`get /settings/logs`) % resultArray.length],
+    )
   }),
   http.get(`${baseURL}/settings/notifications/email`, async () => {
     const resultArray = [
-      [await getGetSettingsNotificationsEmail200Response(), { status: 200 }],
-    ]
+      [getGetSettingsNotificationsEmail200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[
+        next(`get /settings/notifications/email`) % resultArray.length
+      ],
+    )
   }),
   http.post(`${baseURL}/settings/notifications/email`, async () => {
     const resultArray = [
-      [await getPostSettingsNotificationsEmail200Response(), { status: 200 }],
-    ]
+      [getPostSettingsNotificationsEmail200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[
+        next(`post /settings/notifications/email`) % resultArray.length
+      ],
+    )
   }),
   http.post(`${baseURL}/settings/notifications/email/test`, async () => {
-    const resultArray = [[undefined, { status: 204 }]]
+    const resultArray = [[undefined, { status: 204 }]] as [
+      any,
+      { status: number },
+    ][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[
+        next(`post /settings/notifications/email/test`) % resultArray.length
+      ],
+    )
   }),
   http.get(`${baseURL}/settings/notifications/discord`, async () => {
     const resultArray = [
-      [await getGetSettingsNotificationsDiscord200Response(), { status: 200 }],
-    ]
+      [getGetSettingsNotificationsDiscord200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[
+        next(`get /settings/notifications/discord`) % resultArray.length
+      ],
+    )
   }),
   http.post(`${baseURL}/settings/notifications/discord`, async () => {
     const resultArray = [
-      [await getPostSettingsNotificationsDiscord200Response(), { status: 200 }],
-    ]
+      [getPostSettingsNotificationsDiscord200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[
+        next(`post /settings/notifications/discord`) % resultArray.length
+      ],
+    )
   }),
   http.post(`${baseURL}/settings/notifications/discord/test`, async () => {
-    const resultArray = [[undefined, { status: 204 }]]
+    const resultArray = [[undefined, { status: 204 }]] as [
+      any,
+      { status: number },
+    ][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[
+        next(`post /settings/notifications/discord/test`) % resultArray.length
+      ],
+    )
   }),
   http.get(`${baseURL}/settings/notifications/lunasea`, async () => {
     const resultArray = [
-      [await getGetSettingsNotificationsLunasea200Response(), { status: 200 }],
-    ]
+      [getGetSettingsNotificationsLunasea200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[
+        next(`get /settings/notifications/lunasea`) % resultArray.length
+      ],
+    )
   }),
   http.post(`${baseURL}/settings/notifications/lunasea`, async () => {
     const resultArray = [
-      [await getPostSettingsNotificationsLunasea200Response(), { status: 200 }],
-    ]
+      [getPostSettingsNotificationsLunasea200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[
+        next(`post /settings/notifications/lunasea`) % resultArray.length
+      ],
+    )
   }),
   http.post(`${baseURL}/settings/notifications/lunasea/test`, async () => {
-    const resultArray = [[undefined, { status: 204 }]]
+    const resultArray = [[undefined, { status: 204 }]] as [
+      any,
+      { status: number },
+    ][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[
+        next(`post /settings/notifications/lunasea/test`) % resultArray.length
+      ],
+    )
   }),
   http.get(`${baseURL}/settings/notifications/pushbullet`, async () => {
     const resultArray = [
-      [
-        await getGetSettingsNotificationsPushbullet200Response(),
-        { status: 200 },
-      ],
-    ]
+      [getGetSettingsNotificationsPushbullet200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[
+        next(`get /settings/notifications/pushbullet`) % resultArray.length
+      ],
+    )
   }),
   http.post(`${baseURL}/settings/notifications/pushbullet`, async () => {
     const resultArray = [
-      [
-        await getPostSettingsNotificationsPushbullet200Response(),
-        { status: 200 },
-      ],
-    ]
+      [getPostSettingsNotificationsPushbullet200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[
+        next(`post /settings/notifications/pushbullet`) % resultArray.length
+      ],
+    )
   }),
   http.post(`${baseURL}/settings/notifications/pushbullet/test`, async () => {
-    const resultArray = [[undefined, { status: 204 }]]
+    const resultArray = [[undefined, { status: 204 }]] as [
+      any,
+      { status: number },
+    ][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[
+        next(`post /settings/notifications/pushbullet/test`) %
+          resultArray.length
+      ],
+    )
   }),
   http.get(`${baseURL}/settings/notifications/pushover`, async () => {
     const resultArray = [
-      [await getGetSettingsNotificationsPushover200Response(), { status: 200 }],
-    ]
+      [getGetSettingsNotificationsPushover200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[
+        next(`get /settings/notifications/pushover`) % resultArray.length
+      ],
+    )
   }),
   http.post(`${baseURL}/settings/notifications/pushover`, async () => {
     const resultArray = [
-      [
-        await getPostSettingsNotificationsPushover200Response(),
-        { status: 200 },
-      ],
-    ]
+      [getPostSettingsNotificationsPushover200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[
+        next(`post /settings/notifications/pushover`) % resultArray.length
+      ],
+    )
   }),
   http.post(`${baseURL}/settings/notifications/pushover/test`, async () => {
-    const resultArray = [[undefined, { status: 204 }]]
+    const resultArray = [[undefined, { status: 204 }]] as [
+      any,
+      { status: number },
+    ][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[
+        next(`post /settings/notifications/pushover/test`) % resultArray.length
+      ],
+    )
   }),
   http.get(`${baseURL}/settings/notifications/pushover/sounds`, async () => {
     const resultArray = [
-      [
-        await getGetSettingsNotificationsPushoverSounds200Response(),
-        { status: 200 },
-      ],
-    ]
+      [getGetSettingsNotificationsPushoverSounds200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[
+        next(`get /settings/notifications/pushover/sounds`) % resultArray.length
+      ],
+    )
   }),
   http.get(`${baseURL}/settings/notifications/gotify`, async () => {
     const resultArray = [
-      [await getGetSettingsNotificationsGotify200Response(), { status: 200 }],
-    ]
+      [getGetSettingsNotificationsGotify200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[
+        next(`get /settings/notifications/gotify`) % resultArray.length
+      ],
+    )
   }),
   http.post(`${baseURL}/settings/notifications/gotify`, async () => {
     const resultArray = [
-      [await getPostSettingsNotificationsGotify200Response(), { status: 200 }],
-    ]
+      [getPostSettingsNotificationsGotify200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[
+        next(`post /settings/notifications/gotify`) % resultArray.length
+      ],
+    )
   }),
   http.post(`${baseURL}/settings/notifications/gotify/test`, async () => {
-    const resultArray = [[undefined, { status: 204 }]]
+    const resultArray = [[undefined, { status: 204 }]] as [
+      any,
+      { status: number },
+    ][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[
+        next(`post /settings/notifications/gotify/test`) % resultArray.length
+      ],
+    )
   }),
   http.get(`${baseURL}/settings/notifications/slack`, async () => {
     const resultArray = [
-      [await getGetSettingsNotificationsSlack200Response(), { status: 200 }],
-    ]
+      [getGetSettingsNotificationsSlack200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[
+        next(`get /settings/notifications/slack`) % resultArray.length
+      ],
+    )
   }),
   http.post(`${baseURL}/settings/notifications/slack`, async () => {
     const resultArray = [
-      [await getPostSettingsNotificationsSlack200Response(), { status: 200 }],
-    ]
+      [getPostSettingsNotificationsSlack200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[
+        next(`post /settings/notifications/slack`) % resultArray.length
+      ],
+    )
   }),
   http.post(`${baseURL}/settings/notifications/slack/test`, async () => {
-    const resultArray = [[undefined, { status: 204 }]]
+    const resultArray = [[undefined, { status: 204 }]] as [
+      any,
+      { status: number },
+    ][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[
+        next(`post /settings/notifications/slack/test`) % resultArray.length
+      ],
+    )
   }),
   http.get(`${baseURL}/settings/notifications/telegram`, async () => {
     const resultArray = [
-      [await getGetSettingsNotificationsTelegram200Response(), { status: 200 }],
-    ]
+      [getGetSettingsNotificationsTelegram200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[
+        next(`get /settings/notifications/telegram`) % resultArray.length
+      ],
+    )
   }),
   http.post(`${baseURL}/settings/notifications/telegram`, async () => {
     const resultArray = [
-      [
-        await getPostSettingsNotificationsTelegram200Response(),
-        { status: 200 },
-      ],
-    ]
+      [getPostSettingsNotificationsTelegram200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[
+        next(`post /settings/notifications/telegram`) % resultArray.length
+      ],
+    )
   }),
   http.post(`${baseURL}/settings/notifications/telegram/test`, async () => {
-    const resultArray = [[undefined, { status: 204 }]]
+    const resultArray = [[undefined, { status: 204 }]] as [
+      any,
+      { status: number },
+    ][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[
+        next(`post /settings/notifications/telegram/test`) % resultArray.length
+      ],
+    )
   }),
   http.get(`${baseURL}/settings/notifications/webpush`, async () => {
     const resultArray = [
-      [await getGetSettingsNotificationsWebpush200Response(), { status: 200 }],
-    ]
+      [getGetSettingsNotificationsWebpush200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[
+        next(`get /settings/notifications/webpush`) % resultArray.length
+      ],
+    )
   }),
   http.post(`${baseURL}/settings/notifications/webpush`, async () => {
     const resultArray = [
-      [await getPostSettingsNotificationsWebpush200Response(), { status: 200 }],
-    ]
+      [getPostSettingsNotificationsWebpush200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[
+        next(`post /settings/notifications/webpush`) % resultArray.length
+      ],
+    )
   }),
   http.post(`${baseURL}/settings/notifications/webpush/test`, async () => {
-    const resultArray = [[undefined, { status: 204 }]]
+    const resultArray = [[undefined, { status: 204 }]] as [
+      any,
+      { status: number },
+    ][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[
+        next(`post /settings/notifications/webpush/test`) % resultArray.length
+      ],
+    )
   }),
   http.get(`${baseURL}/settings/notifications/webhook`, async () => {
     const resultArray = [
-      [await getGetSettingsNotificationsWebhook200Response(), { status: 200 }],
-    ]
+      [getGetSettingsNotificationsWebhook200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[
+        next(`get /settings/notifications/webhook`) % resultArray.length
+      ],
+    )
   }),
   http.post(`${baseURL}/settings/notifications/webhook`, async () => {
     const resultArray = [
-      [await getPostSettingsNotificationsWebhook200Response(), { status: 200 }],
-    ]
+      [getPostSettingsNotificationsWebhook200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[
+        next(`post /settings/notifications/webhook`) % resultArray.length
+      ],
+    )
   }),
   http.post(`${baseURL}/settings/notifications/webhook/test`, async () => {
-    const resultArray = [[undefined, { status: 204 }]]
+    const resultArray = [[undefined, { status: 204 }]] as [
+      any,
+      { status: number },
+    ][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[
+        next(`post /settings/notifications/webhook/test`) % resultArray.length
+      ],
+    )
   }),
   http.get(`${baseURL}/settings/discover`, async () => {
     const resultArray = [
-      [await getGetSettingsDiscover200Response(), { status: 200 }],
-    ]
+      [getGetSettingsDiscover200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`get /settings/discover`) % resultArray.length],
+    )
   }),
   http.post(`${baseURL}/settings/discover`, async () => {
     const resultArray = [
-      [await getPostSettingsDiscover200Response(), { status: 200 }],
-    ]
+      [getPostSettingsDiscover200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`post /settings/discover`) % resultArray.length],
+    )
   }),
   http.put(`${baseURL}/settings/discover/:sliderId`, async () => {
     const resultArray = [
-      [await getPutSettingsDiscoverSliderId200Response(), { status: 200 }],
-    ]
+      [getPutSettingsDiscoverSliderId200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[
+        next(`put /settings/discover/:sliderId`) % resultArray.length
+      ],
+    )
   }),
   http.delete(`${baseURL}/settings/discover/:sliderId`, async () => {
     const resultArray = [
-      [await getDeleteSettingsDiscoverSliderId200Response(), { status: 200 }],
-    ]
+      [getDeleteSettingsDiscoverSliderId200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[
+        next(`delete /settings/discover/:sliderId`) % resultArray.length
+      ],
+    )
   }),
   http.post(`${baseURL}/settings/discover/add`, async () => {
     const resultArray = [
-      [await getPostSettingsDiscoverAdd200Response(), { status: 200 }],
-    ]
+      [getPostSettingsDiscoverAdd200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`post /settings/discover/add`) % resultArray.length],
+    )
   }),
   http.get(`${baseURL}/settings/discover/reset`, async () => {
-    const resultArray = [[undefined, { status: 204 }]]
+    const resultArray = [[undefined, { status: 204 }]] as [
+      any,
+      { status: number },
+    ][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`get /settings/discover/reset`) % resultArray.length],
+    )
   }),
   http.get(`${baseURL}/settings/about`, async () => {
     const resultArray = [
-      [await getGetSettingsAbout200Response(), { status: 200 }],
-    ]
+      [getGetSettingsAbout200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`get /settings/about`) % resultArray.length],
+    )
   }),
   http.get(`${baseURL}/auth/me`, async () => {
-    const resultArray = [[await getGetAuthMe200Response(), { status: 200 }]]
+    const resultArray = [[getGetAuthMe200Response(), { status: 200 }]] as [
+      any,
+      { status: number },
+    ][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`get /auth/me`) % resultArray.length],
+    )
   }),
   http.post(`${baseURL}/auth/plex`, async () => {
-    const resultArray = [[await getPostAuthPlex200Response(), { status: 200 }]]
+    const resultArray = [[getPostAuthPlex200Response(), { status: 200 }]] as [
+      any,
+      { status: number },
+    ][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`post /auth/plex`) % resultArray.length],
+    )
   }),
   http.post(`${baseURL}/auth/jellyfin`, async () => {
     const resultArray = [
-      [await getPostAuthJellyfin200Response(), { status: 200 }],
-    ]
+      [getPostAuthJellyfin200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`post /auth/jellyfin`) % resultArray.length],
+    )
   }),
   http.post(`${baseURL}/auth/local`, async () => {
-    const resultArray = [[await getPostAuthLocal200Response(), { status: 200 }]]
+    const resultArray = [[getPostAuthLocal200Response(), { status: 200 }]] as [
+      any,
+      { status: number },
+    ][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`post /auth/local`) % resultArray.length],
+    )
   }),
   http.post(`${baseURL}/auth/logout`, async () => {
-    const resultArray = [
-      [await getPostAuthLogout200Response(), { status: 200 }],
-    ]
+    const resultArray = [[getPostAuthLogout200Response(), { status: 200 }]] as [
+      any,
+      { status: number },
+    ][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`post /auth/logout`) % resultArray.length],
+    )
   }),
   http.post(`${baseURL}/auth/reset-password`, async () => {
     const resultArray = [
-      [await getPostAuthResetPassword200Response(), { status: 200 }],
-    ]
+      [getPostAuthResetPassword200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`post /auth/reset-password`) % resultArray.length],
+    )
   }),
   http.post(`${baseURL}/auth/reset-password/:guid`, async () => {
     const resultArray = [
-      [await getPostAuthResetPasswordGuid200Response(), { status: 200 }],
-    ]
+      [getPostAuthResetPasswordGuid200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[
+        next(`post /auth/reset-password/:guid`) % resultArray.length
+      ],
+    )
   }),
   http.get(`${baseURL}/user`, async () => {
-    const resultArray = [[await getGetUser200Response(), { status: 200 }]]
+    const resultArray = [[getGetUser200Response(), { status: 200 }]] as [
+      any,
+      { status: number },
+    ][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`get /user`) % resultArray.length],
+    )
   }),
   http.post(`${baseURL}/user`, async () => {
-    const resultArray = [[await getPostUser201Response(), { status: 201 }]]
+    const resultArray = [[getPostUser201Response(), { status: 201 }]] as [
+      any,
+      { status: number },
+    ][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`post /user`) % resultArray.length],
+    )
   }),
   http.put(`${baseURL}/user`, async () => {
-    const resultArray = [[await getPutUser200Response(), { status: 200 }]]
+    const resultArray = [[getPutUser200Response(), { status: 200 }]] as [
+      any,
+      { status: number },
+    ][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`put /user`) % resultArray.length],
+    )
   }),
   http.post(`${baseURL}/user/import-from-plex`, async () => {
     const resultArray = [
-      [await getPostUserImportFromPlex201Response(), { status: 201 }],
-    ]
+      [getPostUserImportFromPlex201Response(), { status: 201 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`post /user/import-from-plex`) % resultArray.length],
+    )
   }),
   http.post(`${baseURL}/user/import-from-jellyfin`, async () => {
     const resultArray = [
-      [await getPostUserImportFromJellyfin201Response(), { status: 201 }],
-    ]
+      [getPostUserImportFromJellyfin201Response(), { status: 201 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[
+        next(`post /user/import-from-jellyfin`) % resultArray.length
+      ],
+    )
   }),
   http.post(`${baseURL}/user/registerPushSubscription`, async () => {
-    const resultArray = [[undefined, { status: 204 }]]
+    const resultArray = [[undefined, { status: 204 }]] as [
+      any,
+      { status: number },
+    ][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[
+        next(`post /user/registerPushSubscription`) % resultArray.length
+      ],
+    )
   }),
   http.get(`${baseURL}/user/:userId`, async () => {
-    const resultArray = [[await getGetUserUserId200Response(), { status: 200 }]]
+    const resultArray = [[getGetUserUserId200Response(), { status: 200 }]] as [
+      any,
+      { status: number },
+    ][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`get /user/:userId`) % resultArray.length],
+    )
   }),
   http.put(`${baseURL}/user/:userId`, async () => {
-    const resultArray = [[await getPutUserUserId200Response(), { status: 200 }]]
+    const resultArray = [[getPutUserUserId200Response(), { status: 200 }]] as [
+      any,
+      { status: number },
+    ][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`put /user/:userId`) % resultArray.length],
+    )
   }),
   http.delete(`${baseURL}/user/:userId`, async () => {
     const resultArray = [
-      [await getDeleteUserUserId200Response(), { status: 200 }],
-    ]
+      [getDeleteUserUserId200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`delete /user/:userId`) % resultArray.length],
+    )
   }),
   http.get(`${baseURL}/user/:userId/requests`, async () => {
     const resultArray = [
-      [await getGetUserUserIdRequests200Response(), { status: 200 }],
-    ]
+      [getGetUserUserIdRequests200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`get /user/:userId/requests`) % resultArray.length],
+    )
   }),
   http.get(`${baseURL}/user/:userId/quota`, async () => {
     const resultArray = [
-      [await getGetUserUserIdQuota200Response(), { status: 200 }],
-    ]
+      [getGetUserUserIdQuota200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`get /user/:userId/quota`) % resultArray.length],
+    )
   }),
   http.get(`${baseURL}/blacklist`, async () => {
-    const resultArray = [[await getGetBlacklist200Response(), { status: 200 }]]
+    const resultArray = [[getGetBlacklist200Response(), { status: 200 }]] as [
+      any,
+      { status: number },
+    ][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`get /blacklist`) % resultArray.length],
+    )
   }),
   http.post(`${baseURL}/blacklist`, async () => {
     const resultArray = [
       [undefined, { status: 201 }],
       [undefined, { status: 412 }],
-    ]
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`post /blacklist`) % resultArray.length],
+    )
   }),
   http.get(`${baseURL}/blacklist/:tmdbId`, async () => {
-    const resultArray = [[undefined, { status: 200 }]]
+    const resultArray = [[undefined, { status: 200 }]] as [
+      any,
+      { status: number },
+    ][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`get /blacklist/:tmdbId`) % resultArray.length],
+    )
   }),
   http.delete(`${baseURL}/blacklist/:tmdbId`, async () => {
-    const resultArray = [[undefined, { status: 204 }]]
+    const resultArray = [[undefined, { status: 204 }]] as [
+      any,
+      { status: number },
+    ][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`delete /blacklist/:tmdbId`) % resultArray.length],
+    )
   }),
   http.post(`${baseURL}/watchlist`, async () => {
-    const resultArray = [[await getPostWatchlist200Response(), { status: 200 }]]
+    const resultArray = [[getPostWatchlist200Response(), { status: 200 }]] as [
+      any,
+      { status: number },
+    ][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`post /watchlist`) % resultArray.length],
+    )
   }),
   http.delete(`${baseURL}/watchlist/:tmdbId`, async () => {
-    const resultArray = [[undefined, { status: 204 }]]
+    const resultArray = [[undefined, { status: 204 }]] as [
+      any,
+      { status: number },
+    ][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`delete /watchlist/:tmdbId`) % resultArray.length],
+    )
   }),
   http.get(`${baseURL}/user/:userId/watchlist`, async () => {
     const resultArray = [
-      [await getGetUserUserIdWatchlist200Response(), { status: 200 }],
-    ]
+      [getGetUserUserIdWatchlist200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`get /user/:userId/watchlist`) % resultArray.length],
+    )
   }),
   http.get(`${baseURL}/user/:userId/settings/main`, async () => {
     const resultArray = [
-      [await getGetUserUserIdSettingsMain200Response(), { status: 200 }],
-    ]
+      [getGetUserUserIdSettingsMain200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[
+        next(`get /user/:userId/settings/main`) % resultArray.length
+      ],
+    )
   }),
   http.post(`${baseURL}/user/:userId/settings/main`, async () => {
     const resultArray = [
-      [await getPostUserUserIdSettingsMain200Response(), { status: 200 }],
-    ]
+      [getPostUserUserIdSettingsMain200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[
+        next(`post /user/:userId/settings/main`) % resultArray.length
+      ],
+    )
   }),
   http.get(`${baseURL}/user/:userId/settings/password`, async () => {
     const resultArray = [
-      [await getGetUserUserIdSettingsPassword200Response(), { status: 200 }],
-    ]
+      [getGetUserUserIdSettingsPassword200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[
+        next(`get /user/:userId/settings/password`) % resultArray.length
+      ],
+    )
   }),
   http.post(`${baseURL}/user/:userId/settings/password`, async () => {
-    const resultArray = [[undefined, { status: 204 }]]
+    const resultArray = [[undefined, { status: 204 }]] as [
+      any,
+      { status: number },
+    ][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[
+        next(`post /user/:userId/settings/password`) % resultArray.length
+      ],
+    )
   }),
   http.post(
     `${baseURL}/user/:userId/settings/linked-accounts/plex`,
@@ -756,9 +1151,14 @@ export const handlers = [
         [undefined, { status: 204 }],
         [undefined, { status: 403 }],
         [undefined, { status: 422 }],
-      ]
+      ] as [any, { status: number }][]
 
-      return HttpResponse.json(...resultArray[next() % resultArray.length])
+      return HttpResponse.json(
+        ...resultArray[
+          next(`post /user/:userId/settings/linked-accounts/plex`) %
+            resultArray.length
+        ],
+      )
     },
   ),
   http.delete(
@@ -768,9 +1168,14 @@ export const handlers = [
         [undefined, { status: 204 }],
         [undefined, { status: 400 }],
         [undefined, { status: 404 }],
-      ]
+      ] as [any, { status: number }][]
 
-      return HttpResponse.json(...resultArray[next() % resultArray.length])
+      return HttpResponse.json(
+        ...resultArray[
+          next(`delete /user/:userId/settings/linked-accounts/plex`) %
+            resultArray.length
+        ],
+      )
     },
   ),
   http.post(
@@ -780,9 +1185,14 @@ export const handlers = [
         [undefined, { status: 204 }],
         [undefined, { status: 403 }],
         [undefined, { status: 422 }],
-      ]
+      ] as [any, { status: number }][]
 
-      return HttpResponse.json(...resultArray[next() % resultArray.length])
+      return HttpResponse.json(
+        ...resultArray[
+          next(`post /user/:userId/settings/linked-accounts/jellyfin`) %
+            resultArray.length
+        ],
+      )
     },
   ),
   http.delete(
@@ -792,542 +1202,797 @@ export const handlers = [
         [undefined, { status: 204 }],
         [undefined, { status: 400 }],
         [undefined, { status: 404 }],
-      ]
+      ] as [any, { status: number }][]
 
-      return HttpResponse.json(...resultArray[next() % resultArray.length])
+      return HttpResponse.json(
+        ...resultArray[
+          next(`delete /user/:userId/settings/linked-accounts/jellyfin`) %
+            resultArray.length
+        ],
+      )
     },
   ),
   http.get(`${baseURL}/user/:userId/settings/notifications`, async () => {
     const resultArray = [
-      [
-        await getGetUserUserIdSettingsNotifications200Response(),
-        { status: 200 },
-      ],
-    ]
+      [getGetUserUserIdSettingsNotifications200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[
+        next(`get /user/:userId/settings/notifications`) % resultArray.length
+      ],
+    )
   }),
   http.post(`${baseURL}/user/:userId/settings/notifications`, async () => {
     const resultArray = [
-      [
-        await getPostUserUserIdSettingsNotifications200Response(),
-        { status: 200 },
-      ],
-    ]
+      [getPostUserUserIdSettingsNotifications200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[
+        next(`post /user/:userId/settings/notifications`) % resultArray.length
+      ],
+    )
   }),
   http.get(`${baseURL}/user/:userId/settings/permissions`, async () => {
     const resultArray = [
-      [await getGetUserUserIdSettingsPermissions200Response(), { status: 200 }],
-    ]
+      [getGetUserUserIdSettingsPermissions200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[
+        next(`get /user/:userId/settings/permissions`) % resultArray.length
+      ],
+    )
   }),
   http.post(`${baseURL}/user/:userId/settings/permissions`, async () => {
     const resultArray = [
-      [
-        await getPostUserUserIdSettingsPermissions200Response(),
-        { status: 200 },
-      ],
-    ]
+      [getPostUserUserIdSettingsPermissions200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[
+        next(`post /user/:userId/settings/permissions`) % resultArray.length
+      ],
+    )
   }),
   http.get(`${baseURL}/user/:userId/watch_data`, async () => {
     const resultArray = [
-      [await getGetUserUserIdWatchData200Response(), { status: 200 }],
-    ]
+      [getGetUserUserIdWatchData200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`get /user/:userId/watch_data`) % resultArray.length],
+    )
   }),
   http.get(`${baseURL}/search`, async () => {
-    const resultArray = [[await getGetSearch200Response(), { status: 200 }]]
+    const resultArray = [[getGetSearch200Response(), { status: 200 }]] as [
+      any,
+      { status: number },
+    ][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`get /search`) % resultArray.length],
+    )
   }),
   http.get(`${baseURL}/search/keyword`, async () => {
     const resultArray = [
-      [await getGetSearchKeyword200Response(), { status: 200 }],
-    ]
+      [getGetSearchKeyword200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`get /search/keyword`) % resultArray.length],
+    )
   }),
   http.get(`${baseURL}/search/company`, async () => {
     const resultArray = [
-      [await getGetSearchCompany200Response(), { status: 200 }],
-    ]
+      [getGetSearchCompany200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`get /search/company`) % resultArray.length],
+    )
   }),
   http.get(`${baseURL}/discover/movies`, async () => {
     const resultArray = [
-      [await getGetDiscoverMovies200Response(), { status: 200 }],
-    ]
+      [getGetDiscoverMovies200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`get /discover/movies`) % resultArray.length],
+    )
   }),
   http.get(`${baseURL}/discover/movies/genre/:genreId`, async () => {
     const resultArray = [
-      [await getGetDiscoverMoviesGenreGenreId200Response(), { status: 200 }],
-    ]
+      [getGetDiscoverMoviesGenreGenreId200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[
+        next(`get /discover/movies/genre/:genreId`) % resultArray.length
+      ],
+    )
   }),
   http.get(`${baseURL}/discover/movies/language/:language`, async () => {
     const resultArray = [
-      [
-        await getGetDiscoverMoviesLanguageLanguage200Response(),
-        { status: 200 },
-      ],
-    ]
+      [getGetDiscoverMoviesLanguageLanguage200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[
+        next(`get /discover/movies/language/:language`) % resultArray.length
+      ],
+    )
   }),
   http.get(`${baseURL}/discover/movies/studio/:studioId`, async () => {
     const resultArray = [
-      [await getGetDiscoverMoviesStudioStudioId200Response(), { status: 200 }],
-    ]
+      [getGetDiscoverMoviesStudioStudioId200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[
+        next(`get /discover/movies/studio/:studioId`) % resultArray.length
+      ],
+    )
   }),
   http.get(`${baseURL}/discover/movies/upcoming`, async () => {
     const resultArray = [
-      [await getGetDiscoverMoviesUpcoming200Response(), { status: 200 }],
-    ]
+      [getGetDiscoverMoviesUpcoming200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[
+        next(`get /discover/movies/upcoming`) % resultArray.length
+      ],
+    )
   }),
   http.get(`${baseURL}/discover/tv`, async () => {
-    const resultArray = [[await getGetDiscoverTv200Response(), { status: 200 }]]
+    const resultArray = [[getGetDiscoverTv200Response(), { status: 200 }]] as [
+      any,
+      { status: number },
+    ][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`get /discover/tv`) % resultArray.length],
+    )
   }),
   http.get(`${baseURL}/discover/tv/language/:language`, async () => {
     const resultArray = [
-      [await getGetDiscoverTvLanguageLanguage200Response(), { status: 200 }],
-    ]
+      [getGetDiscoverTvLanguageLanguage200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[
+        next(`get /discover/tv/language/:language`) % resultArray.length
+      ],
+    )
   }),
   http.get(`${baseURL}/discover/tv/genre/:genreId`, async () => {
     const resultArray = [
-      [await getGetDiscoverTvGenreGenreId200Response(), { status: 200 }],
-    ]
+      [getGetDiscoverTvGenreGenreId200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[
+        next(`get /discover/tv/genre/:genreId`) % resultArray.length
+      ],
+    )
   }),
   http.get(`${baseURL}/discover/tv/network/:networkId`, async () => {
     const resultArray = [
-      [await getGetDiscoverTvNetworkNetworkId200Response(), { status: 200 }],
-    ]
+      [getGetDiscoverTvNetworkNetworkId200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[
+        next(`get /discover/tv/network/:networkId`) % resultArray.length
+      ],
+    )
   }),
   http.get(`${baseURL}/discover/tv/upcoming`, async () => {
     const resultArray = [
-      [await getGetDiscoverTvUpcoming200Response(), { status: 200 }],
-    ]
+      [getGetDiscoverTvUpcoming200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`get /discover/tv/upcoming`) % resultArray.length],
+    )
   }),
   http.get(`${baseURL}/discover/trending`, async () => {
     const resultArray = [
-      [await getGetDiscoverTrending200Response(), { status: 200 }],
-    ]
+      [getGetDiscoverTrending200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`get /discover/trending`) % resultArray.length],
+    )
   }),
   http.get(`${baseURL}/discover/keyword/:keywordId/movies`, async () => {
     const resultArray = [
-      [
-        await getGetDiscoverKeywordKeywordIdMovies200Response(),
-        { status: 200 },
-      ],
-    ]
+      [getGetDiscoverKeywordKeywordIdMovies200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[
+        next(`get /discover/keyword/:keywordId/movies`) % resultArray.length
+      ],
+    )
   }),
   http.get(`${baseURL}/discover/genreslider/movie`, async () => {
     const resultArray = [
-      [await getGetDiscoverGenresliderMovie200Response(), { status: 200 }],
-    ]
+      [getGetDiscoverGenresliderMovie200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[
+        next(`get /discover/genreslider/movie`) % resultArray.length
+      ],
+    )
   }),
   http.get(`${baseURL}/discover/genreslider/tv`, async () => {
     const resultArray = [
-      [await getGetDiscoverGenresliderTv200Response(), { status: 200 }],
-    ]
+      [getGetDiscoverGenresliderTv200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`get /discover/genreslider/tv`) % resultArray.length],
+    )
   }),
   http.get(`${baseURL}/discover/watchlist`, async () => {
     const resultArray = [
-      [await getGetDiscoverWatchlist200Response(), { status: 200 }],
-    ]
+      [getGetDiscoverWatchlist200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`get /discover/watchlist`) % resultArray.length],
+    )
   }),
   http.get(`${baseURL}/request`, async () => {
-    const resultArray = [[await getGetRequest200Response(), { status: 200 }]]
+    const resultArray = [[getGetRequest200Response(), { status: 200 }]] as [
+      any,
+      { status: number },
+    ][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`get /request`) % resultArray.length],
+    )
   }),
   http.post(`${baseURL}/request`, async () => {
-    const resultArray = [[await getPostRequest201Response(), { status: 201 }]]
+    const resultArray = [[getPostRequest201Response(), { status: 201 }]] as [
+      any,
+      { status: number },
+    ][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`post /request`) % resultArray.length],
+    )
   }),
   http.get(`${baseURL}/request/count`, async () => {
     const resultArray = [
-      [await getGetRequestCount200Response(), { status: 200 }],
-    ]
+      [getGetRequestCount200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`get /request/count`) % resultArray.length],
+    )
   }),
   http.get(`${baseURL}/request/:requestId`, async () => {
     const resultArray = [
-      [await getGetRequestRequestId200Response(), { status: 200 }],
-    ]
+      [getGetRequestRequestId200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`get /request/:requestId`) % resultArray.length],
+    )
   }),
   http.put(`${baseURL}/request/:requestId`, async () => {
     const resultArray = [
-      [await getPutRequestRequestId200Response(), { status: 200 }],
-    ]
+      [getPutRequestRequestId200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`put /request/:requestId`) % resultArray.length],
+    )
   }),
   http.delete(`${baseURL}/request/:requestId`, async () => {
-    const resultArray = [[undefined, { status: 204 }]]
+    const resultArray = [[undefined, { status: 204 }]] as [
+      any,
+      { status: number },
+    ][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`delete /request/:requestId`) % resultArray.length],
+    )
   }),
   http.post(`${baseURL}/request/:requestId/retry`, async () => {
     const resultArray = [
-      [await getPostRequestRequestIdRetry200Response(), { status: 200 }],
-    ]
+      [getPostRequestRequestIdRetry200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[
+        next(`post /request/:requestId/retry`) % resultArray.length
+      ],
+    )
   }),
   http.post(`${baseURL}/request/:requestId/:status`, async () => {
     const resultArray = [
-      [await getPostRequestRequestIdStatus200Response(), { status: 200 }],
-    ]
+      [getPostRequestRequestIdStatus200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[
+        next(`post /request/:requestId/:status`) % resultArray.length
+      ],
+    )
   }),
   http.get(`${baseURL}/movie/:movieId`, async () => {
     const resultArray = [
-      [await getGetMovieMovieId200Response(), { status: 200 }],
-    ]
+      [getGetMovieMovieId200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`get /movie/:movieId`) % resultArray.length],
+    )
   }),
   http.get(`${baseURL}/movie/:movieId/recommendations`, async () => {
     const resultArray = [
-      [await getGetMovieMovieIdRecommendations200Response(), { status: 200 }],
-    ]
+      [getGetMovieMovieIdRecommendations200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[
+        next(`get /movie/:movieId/recommendations`) % resultArray.length
+      ],
+    )
   }),
   http.get(`${baseURL}/movie/:movieId/similar`, async () => {
     const resultArray = [
-      [await getGetMovieMovieIdSimilar200Response(), { status: 200 }],
-    ]
+      [getGetMovieMovieIdSimilar200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`get /movie/:movieId/similar`) % resultArray.length],
+    )
   }),
   http.get(`${baseURL}/movie/:movieId/ratings`, async () => {
     const resultArray = [
-      [await getGetMovieMovieIdRatings200Response(), { status: 200 }],
-    ]
+      [getGetMovieMovieIdRatings200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`get /movie/:movieId/ratings`) % resultArray.length],
+    )
   }),
   http.get(`${baseURL}/movie/:movieId/ratingscombined`, async () => {
     const resultArray = [
-      [await getGetMovieMovieIdRatingscombined200Response(), { status: 200 }],
-    ]
+      [getGetMovieMovieIdRatingscombined200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[
+        next(`get /movie/:movieId/ratingscombined`) % resultArray.length
+      ],
+    )
   }),
   http.get(`${baseURL}/tv/:tvId`, async () => {
-    const resultArray = [[await getGetTvTvId200Response(), { status: 200 }]]
+    const resultArray = [[getGetTvTvId200Response(), { status: 200 }]] as [
+      any,
+      { status: number },
+    ][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`get /tv/:tvId`) % resultArray.length],
+    )
   }),
   http.get(`${baseURL}/tv/:tvId/season/:seasonId`, async () => {
     const resultArray = [
-      [await getGetTvTvIdSeasonSeasonId200Response(), { status: 200 }],
-    ]
+      [getGetTvTvIdSeasonSeasonId200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[
+        next(`get /tv/:tvId/season/:seasonId`) % resultArray.length
+      ],
+    )
   }),
   http.get(`${baseURL}/tv/:tvId/recommendations`, async () => {
     const resultArray = [
-      [await getGetTvTvIdRecommendations200Response(), { status: 200 }],
-    ]
+      [getGetTvTvIdRecommendations200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[
+        next(`get /tv/:tvId/recommendations`) % resultArray.length
+      ],
+    )
   }),
   http.get(`${baseURL}/tv/:tvId/similar`, async () => {
     const resultArray = [
-      [await getGetTvTvIdSimilar200Response(), { status: 200 }],
-    ]
+      [getGetTvTvIdSimilar200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`get /tv/:tvId/similar`) % resultArray.length],
+    )
   }),
   http.get(`${baseURL}/tv/:tvId/ratings`, async () => {
     const resultArray = [
-      [await getGetTvTvIdRatings200Response(), { status: 200 }],
-    ]
+      [getGetTvTvIdRatings200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`get /tv/:tvId/ratings`) % resultArray.length],
+    )
   }),
   http.get(`${baseURL}/person/:personId`, async () => {
     const resultArray = [
-      [await getGetPersonPersonId200Response(), { status: 200 }],
-    ]
+      [getGetPersonPersonId200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`get /person/:personId`) % resultArray.length],
+    )
   }),
   http.get(`${baseURL}/person/:personId/combined_credits`, async () => {
     const resultArray = [
-      [await getGetPersonPersonIdCombinedCredits200Response(), { status: 200 }],
-    ]
+      [getGetPersonPersonIdCombinedCredits200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[
+        next(`get /person/:personId/combined_credits`) % resultArray.length
+      ],
+    )
   }),
   http.get(`${baseURL}/media`, async () => {
-    const resultArray = [[await getGetMedia200Response(), { status: 200 }]]
+    const resultArray = [[getGetMedia200Response(), { status: 200 }]] as [
+      any,
+      { status: number },
+    ][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`get /media`) % resultArray.length],
+    )
   }),
   http.delete(`${baseURL}/media/:mediaId`, async () => {
-    const resultArray = [[undefined, { status: 204 }]]
+    const resultArray = [[undefined, { status: 204 }]] as [
+      any,
+      { status: number },
+    ][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`delete /media/:mediaId`) % resultArray.length],
+    )
   }),
   http.delete(`${baseURL}/media/:mediaId/file`, async () => {
-    const resultArray = [[undefined, { status: 204 }]]
+    const resultArray = [[undefined, { status: 204 }]] as [
+      any,
+      { status: number },
+    ][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`delete /media/:mediaId/file`) % resultArray.length],
+    )
   }),
   http.post(`${baseURL}/media/:mediaId/:status`, async () => {
     const resultArray = [
-      [await getPostMediaMediaIdStatus200Response(), { status: 200 }],
-    ]
+      [getPostMediaMediaIdStatus200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`post /media/:mediaId/:status`) % resultArray.length],
+    )
   }),
   http.get(`${baseURL}/media/:mediaId/watch_data`, async () => {
     const resultArray = [
-      [await getGetMediaMediaIdWatchData200Response(), { status: 200 }],
-    ]
+      [getGetMediaMediaIdWatchData200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[
+        next(`get /media/:mediaId/watch_data`) % resultArray.length
+      ],
+    )
   }),
   http.get(`${baseURL}/collection/:collectionId`, async () => {
     const resultArray = [
-      [await getGetCollectionCollectionId200Response(), { status: 200 }],
-    ]
+      [getGetCollectionCollectionId200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[
+        next(`get /collection/:collectionId`) % resultArray.length
+      ],
+    )
   }),
   http.get(`${baseURL}/service/radarr`, async () => {
     const resultArray = [
-      [await getGetServiceRadarr200Response(), { status: 200 }],
-    ]
+      [getGetServiceRadarr200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`get /service/radarr`) % resultArray.length],
+    )
   }),
   http.get(`${baseURL}/service/radarr/:radarrId`, async () => {
     const resultArray = [
-      [await getGetServiceRadarrRadarrId200Response(), { status: 200 }],
-    ]
+      [getGetServiceRadarrRadarrId200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[
+        next(`get /service/radarr/:radarrId`) % resultArray.length
+      ],
+    )
   }),
   http.get(`${baseURL}/service/sonarr`, async () => {
     const resultArray = [
-      [await getGetServiceSonarr200Response(), { status: 200 }],
-    ]
+      [getGetServiceSonarr200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`get /service/sonarr`) % resultArray.length],
+    )
   }),
   http.get(`${baseURL}/service/sonarr/:sonarrId`, async () => {
     const resultArray = [
-      [await getGetServiceSonarrSonarrId200Response(), { status: 200 }],
-    ]
+      [getGetServiceSonarrSonarrId200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[
+        next(`get /service/sonarr/:sonarrId`) % resultArray.length
+      ],
+    )
   }),
   http.get(`${baseURL}/service/sonarr/lookup/:tmdbId`, async () => {
     const resultArray = [
-      [await getGetServiceSonarrLookupTmdbId200Response(), { status: 200 }],
-    ]
+      [getGetServiceSonarrLookupTmdbId200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[
+        next(`get /service/sonarr/lookup/:tmdbId`) % resultArray.length
+      ],
+    )
   }),
   http.get(`${baseURL}/regions`, async () => {
-    const resultArray = [[await getGetRegions200Response(), { status: 200 }]]
+    const resultArray = [[getGetRegions200Response(), { status: 200 }]] as [
+      any,
+      { status: number },
+    ][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`get /regions`) % resultArray.length],
+    )
   }),
   http.get(`${baseURL}/languages`, async () => {
-    const resultArray = [[await getGetLanguages200Response(), { status: 200 }]]
+    const resultArray = [[getGetLanguages200Response(), { status: 200 }]] as [
+      any,
+      { status: number },
+    ][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`get /languages`) % resultArray.length],
+    )
   }),
   http.get(`${baseURL}/studio/:studioId`, async () => {
     const resultArray = [
-      [await getGetStudioStudioId200Response(), { status: 200 }],
-    ]
+      [getGetStudioStudioId200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`get /studio/:studioId`) % resultArray.length],
+    )
   }),
   http.get(`${baseURL}/network/:networkId`, async () => {
     const resultArray = [
-      [await getGetNetworkNetworkId200Response(), { status: 200 }],
-    ]
+      [getGetNetworkNetworkId200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`get /network/:networkId`) % resultArray.length],
+    )
   }),
   http.get(`${baseURL}/genres/movie`, async () => {
-    const resultArray = [
-      [await getGetGenresMovie200Response(), { status: 200 }],
-    ]
+    const resultArray = [[getGetGenresMovie200Response(), { status: 200 }]] as [
+      any,
+      { status: number },
+    ][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`get /genres/movie`) % resultArray.length],
+    )
   }),
   http.get(`${baseURL}/genres/tv`, async () => {
-    const resultArray = [[await getGetGenresTv200Response(), { status: 200 }]]
+    const resultArray = [[getGetGenresTv200Response(), { status: 200 }]] as [
+      any,
+      { status: number },
+    ][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`get /genres/tv`) % resultArray.length],
+    )
   }),
   http.get(`${baseURL}/backdrops`, async () => {
-    const resultArray = [[await getGetBackdrops200Response(), { status: 200 }]]
+    const resultArray = [[getGetBackdrops200Response(), { status: 200 }]] as [
+      any,
+      { status: number },
+    ][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`get /backdrops`) % resultArray.length],
+    )
   }),
   http.get(`${baseURL}/issue`, async () => {
-    const resultArray = [[await getGetIssue200Response(), { status: 200 }]]
+    const resultArray = [[getGetIssue200Response(), { status: 200 }]] as [
+      any,
+      { status: number },
+    ][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`get /issue`) % resultArray.length],
+    )
   }),
   http.post(`${baseURL}/issue`, async () => {
-    const resultArray = [[await getPostIssue201Response(), { status: 201 }]]
+    const resultArray = [[getPostIssue201Response(), { status: 201 }]] as [
+      any,
+      { status: number },
+    ][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`post /issue`) % resultArray.length],
+    )
   }),
   http.get(`${baseURL}/issue/count`, async () => {
-    const resultArray = [[await getGetIssueCount200Response(), { status: 200 }]]
+    const resultArray = [[getGetIssueCount200Response(), { status: 200 }]] as [
+      any,
+      { status: number },
+    ][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`get /issue/count`) % resultArray.length],
+    )
   }),
   http.get(`${baseURL}/issue/:issueId`, async () => {
     const resultArray = [
-      [await getGetIssueIssueId200Response(), { status: 200 }],
-    ]
+      [getGetIssueIssueId200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`get /issue/:issueId`) % resultArray.length],
+    )
   }),
   http.delete(`${baseURL}/issue/:issueId`, async () => {
-    const resultArray = [[undefined, { status: 204 }]]
+    const resultArray = [[undefined, { status: 204 }]] as [
+      any,
+      { status: number },
+    ][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`delete /issue/:issueId`) % resultArray.length],
+    )
   }),
   http.post(`${baseURL}/issue/:issueId/comment`, async () => {
     const resultArray = [
-      [await getPostIssueIssueIdComment200Response(), { status: 200 }],
-    ]
+      [getPostIssueIssueIdComment200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`post /issue/:issueId/comment`) % resultArray.length],
+    )
   }),
   http.get(`${baseURL}/issueComment/:commentId`, async () => {
     const resultArray = [
-      [await getGetIssueCommentCommentId200Response(), { status: 200 }],
-    ]
+      [getGetIssueCommentCommentId200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`get /issueComment/:commentId`) % resultArray.length],
+    )
   }),
   http.put(`${baseURL}/issueComment/:commentId`, async () => {
     const resultArray = [
-      [await getPutIssueCommentCommentId200Response(), { status: 200 }],
-    ]
+      [getPutIssueCommentCommentId200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`put /issueComment/:commentId`) % resultArray.length],
+    )
   }),
   http.delete(`${baseURL}/issueComment/:commentId`, async () => {
-    const resultArray = [[undefined, { status: 204 }]]
+    const resultArray = [[undefined, { status: 204 }]] as [
+      any,
+      { status: number },
+    ][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[
+        next(`delete /issueComment/:commentId`) % resultArray.length
+      ],
+    )
   }),
   http.post(`${baseURL}/issue/:issueId/:status`, async () => {
     const resultArray = [
-      [await getPostIssueIssueIdStatus200Response(), { status: 200 }],
-    ]
+      [getPostIssueIssueIdStatus200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`post /issue/:issueId/:status`) % resultArray.length],
+    )
   }),
   http.get(`${baseURL}/keyword/:keywordId`, async () => {
     const resultArray = [
-      [await getGetKeywordKeywordId200Response(), { status: 200 }],
-    ]
+      [getGetKeywordKeywordId200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`get /keyword/:keywordId`) % resultArray.length],
+    )
   }),
   http.get(`${baseURL}/watchproviders/regions`, async () => {
     const resultArray = [
-      [await getGetWatchprovidersRegions200Response(), { status: 200 }],
-    ]
+      [getGetWatchprovidersRegions200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`get /watchproviders/regions`) % resultArray.length],
+    )
   }),
   http.get(`${baseURL}/watchproviders/movies`, async () => {
     const resultArray = [
-      [await getGetWatchprovidersMovies200Response(), { status: 200 }],
-    ]
+      [getGetWatchprovidersMovies200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`get /watchproviders/movies`) % resultArray.length],
+    )
   }),
   http.get(`${baseURL}/watchproviders/tv`, async () => {
     const resultArray = [
-      [await getGetWatchprovidersTv200Response(), { status: 200 }],
-    ]
+      [getGetWatchprovidersTv200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`get /watchproviders/tv`) % resultArray.length],
+    )
   }),
   http.get(`${baseURL}/overrideRule`, async () => {
     const resultArray = [
-      [await getGetOverrideRule200Response(), { status: 200 }],
-    ]
+      [getGetOverrideRule200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`get /overrideRule`) % resultArray.length],
+    )
   }),
   http.post(`${baseURL}/overrideRule`, async () => {
     const resultArray = [
-      [await getPostOverrideRule200Response(), { status: 200 }],
-    ]
+      [getPostOverrideRule200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`post /overrideRule`) % resultArray.length],
+    )
   }),
   http.put(`${baseURL}/overrideRule/:ruleId`, async () => {
     const resultArray = [
-      [await getPutOverrideRuleRuleId200Response(), { status: 200 }],
-    ]
+      [getPutOverrideRuleRuleId200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`put /overrideRule/:ruleId`) % resultArray.length],
+    )
   }),
   http.delete(`${baseURL}/overrideRule/:ruleId`, async () => {
     const resultArray = [
-      [await getDeleteOverrideRuleRuleId200Response(), { status: 200 }],
-    ]
+      [getDeleteOverrideRuleRuleId200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`delete /overrideRule/:ruleId`) % resultArray.length],
+    )
   }),
 ]
 

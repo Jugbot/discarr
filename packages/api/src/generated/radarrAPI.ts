@@ -5203,6 +5203,41 @@ export interface paths {
     patch?: never
     trace?: never
   }
+  '/api/v3/movie/{id}/folder': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get: {
+      parameters: {
+        query?: never
+        header?: never
+        path: {
+          id: number
+        }
+        cookie?: never
+      }
+      requestBody?: never
+      responses: {
+        /** @description OK */
+        200: {
+          headers: {
+            [name: string]: unknown
+          }
+          content?: never
+        }
+      }
+    }
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
   '/api/v3/movie/import': {
     parameters: {
       query?: never
@@ -8220,7 +8255,7 @@ export interface components {
       source: string | null
       type: components['schemas']['HealthCheckResult']
       message: string | null
-      wikiUrl: components['schemas']['HttpUri']
+      wikiUrl: string | null
     }
     HistoryResource: {
       /** Format: int32 */
@@ -8300,16 +8335,6 @@ export interface components {
       /** Format: int32 */
       backupRetention: number
       trustCgnatIpAddresses: boolean
-    }
-    HttpUri: {
-      readonly fullUri: string | null
-      readonly scheme: string | null
-      readonly host: string | null
-      /** Format: int32 */
-      readonly port: number | null
-      readonly path: string | null
-      readonly query: string | null
-      readonly fragment: string | null
     }
     ImportListBulkResource: {
       ids: number[] | null
@@ -8678,7 +8703,7 @@ export interface components {
       quality: components['schemas']['QualityModel']
       customFormats: components['schemas']['CustomFormatResource'][] | null
       /** Format: int32 */
-      customFormatScore: number
+      customFormatScore: number | null
       /** Format: int32 */
       indexerFlags: number | null
       mediaInfo: components['schemas']['MediaInfoResource']
