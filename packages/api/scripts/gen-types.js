@@ -11,12 +11,12 @@ if (error) {
   throw error
 }
 
-if (process.argv.length < 3) {
-  logger.error('Usage: node gen-types.js <output-folder>')
+const OUTPUT_FOLDER = process.argv[2]
+
+if (!OUTPUT_FOLDER) {
+  console.error('Usage: node gen-types.js <output-folder>')
   process.exit(1)
 }
-
-const OUTPUT_FOLDER = process.argv[2]
 
 if (fs.existsSync(OUTPUT_FOLDER)) {
   console.info(`Cleaning up ${OUTPUT_FOLDER}...`)
@@ -42,6 +42,10 @@ const commands = [
   `pnpx msw-auto-mock "${RADARR_SCHEMA_URL}" -o "${OUTPUT_FOLDER}/radarrMock" --typescript`,
 ]
 
+/**
+ * @param {string} filePath
+ * @returns {Promise<void>}
+ */
 const addTSNoCheck = async (filePath) => {
   filePath = path.resolve(filePath)
   console.info(`Fixing "${filePath}"`)
