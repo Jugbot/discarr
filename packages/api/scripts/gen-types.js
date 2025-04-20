@@ -60,7 +60,7 @@ const runCommand = (cmd) => {
 
 Promise.all(commands.map(runCommand))
   .then((results) => {
-    results.forEach((result) => result && console.info(result))
+    results.forEach((result) => console.info(result))
   })
   .catch((error) => {
     console.error(error)
