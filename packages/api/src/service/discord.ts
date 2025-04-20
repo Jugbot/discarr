@@ -1,4 +1,3 @@
-import ansi from 'ansi-escape-sequences'
 import {
   AttachmentPayload,
   Client,
@@ -44,7 +43,6 @@ type StatusMeta = {
   color: number
   /** png image 1x1 pixel */
   base64: string
-  ansi: keyof typeof ansi.style
 }
 
 function colorFromStatus(status: MediaInfo['status']): StatusMeta {
@@ -54,35 +52,30 @@ function colorFromStatus(status: MediaInfo['status']): StatusMeta {
         color: 0x2ecc71,
         base64:
           'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAA1JREFUGFdj0DtT+B8ABQICa3znZ2oAAAAASUVORK5CYII=',
-        ansi: 'green',
       }
     case 'Blacklisted':
       return {
         color: 0xe74c3c,
         base64:
           'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAA1JREFUGFdjeO5j8x8ABfwCb6cFtH0AAAAASUVORK5CYII=',
-        ansi: 'red',
       }
     case 'Pending':
       return {
         color: 0xe67e22,
         base64:
           'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAA1JREFUGFdjeFan9B8ABloChnlkdVsAAAAASUVORK5CYII=',
-        ansi: 'yellow',
       }
     case 'Processing':
       return {
         color: 0x3498db,
         base64:
           'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAA1JREFUGFdjMJlx+z8ABVICp/IuGtoAAAAASUVORK5CYII=',
-        ansi: 'blue',
       }
     default:
       return {
         color: 0x95a5a6,
         base64:
           'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAA1JREFUGFdjmLp02X8ABpMC4IYnRY4AAAAASUVORK5CYII=',
-        ansi: 'white',
       }
   }
 }
