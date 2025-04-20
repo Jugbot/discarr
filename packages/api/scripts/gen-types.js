@@ -1,6 +1,5 @@
 import { exec } from 'child_process'
 import { config } from 'dotenv'
-import path from 'path'
 import fs from 'fs'
 
 const { error } = config({
@@ -38,24 +37,9 @@ const commands = [
   `pnpx openapi-typescript "${RADARR_SCHEMA_URL}" -o "${OUTPUT_FOLDER}/radarrAPI.ts" --properties-required-by-default`,
   // mocks
   `pnpx msw-auto-mock "${JELLYSEERR_SCHEMA_URL}" -o "${OUTPUT_FOLDER}/jellyseerrMock" --base-url ${process.env.JELLYSEER_URL}/api/v1 --typescript`,
-  `pnpx msw-auto-mock "${SONARR_SCHEMA_URL}" -o "${OUTPUT_FOLDER}/sonarrMock" --typescript`,
-  `pnpx msw-auto-mock "${RADARR_SCHEMA_URL}" -o "${OUTPUT_FOLDER}/radarrMock" --typescript`,
+  `pnpx msw-auto-mock "${SONARR_SCHEMA_URL}" -o "${OUTPUT_FOLDER}/sonarrMock" --base-url ${process.env.SONARR_URL} --typescript`,
+  `pnpx msw-auto-mock "${RADARR_SCHEMA_URL}" -o "${OUTPUT_FOLDER}/radarrMock" --base-url ${process.env.RADARR_URL} --typescript`,
 ]
-
-/**
- * @param {string} filePath
- * @returns {Promise<void>}
- */
-const addTSNoCheck = async (filePath) => {
-  filePath = path.resolve(filePath)
-  console.info(`Fixing "${filePath}"`)
-  const data = await fs.promises.readFile(filePath, 'utf8')
-  const result =
-    `// eslint-disable-next-line @typescript-eslint/ban-ts-comment\n// @ts-nocheck\n`.concat(
-      data,
-    )
-  await fs.promises.writeFile(filePath, result, 'utf8')
-}
 
 /**
  * @param {string} cmd
@@ -77,11 +61,6 @@ const runCommand = (cmd) => {
 Promise.all(commands.map(runCommand))
   .then((results) => {
     results.forEach((result) => result && console.info(result))
-    return Promise.all([
-      addTSNoCheck(`${OUTPUT_FOLDER}/jellyseerrMock/handlers.ts`),
-      addTSNoCheck(`${OUTPUT_FOLDER}/sonarrMock/handlers.ts`),
-      addTSNoCheck(`${OUTPUT_FOLDER}/radarrMock/handlers.ts`),
-    ])
   })
   .catch((error) => {
     console.error(error)

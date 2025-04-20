@@ -1,16 +1,17 @@
 import { beforeAll, afterEach, afterAll } from 'vitest'
-import { server as jellyseerrMock } from './src/generated/jellyseerrMock/node'
-import { server as sonarrMock } from './src/generated/sonarrMock/node'
-import { server as radarrMock } from './src/generated/radarrMock/node'
+import { handlers as jellyseerrHandlers } from './src/generated/jellyseerrMock/handlers'
+import { handlers as sonarrHandlers } from './src/generated/sonarrMock/handlers'
+import { handlers as radarrHandlers } from './src/generated/radarrMock/handlers'
+import { setupServer } from 'msw/node'
 
-const servers = [jellyseerrMock, sonarrMock, radarrMock]
+const handlers = [...jellyseerrHandlers, ...sonarrHandlers, ...radarrHandlers]
+
+const server = setupServer(...handlers)
 
 beforeAll(() =>
-  servers.forEach((server) =>
-    server.listen({
-      onUnhandledRequest: 'error',
-    }),
-  ),
+  server.listen({
+    onUnhandledRequest: 'error',
+  }),
 )
-afterEach(() => servers.forEach((server) => server.resetHandlers()))
-afterAll(() => servers.forEach((server) => server.close()))
+afterEach(() => server.resetHandlers())
+afterAll(() => server.close())

@@ -39,10 +39,5 @@
     "typescript": "catalog:",
     "vitest": "catalog:",
     "winston": "catalog:"
-  },
-  "msw": {
-    "workerDirectory": [
-      "public"
-    ]
   }
 }

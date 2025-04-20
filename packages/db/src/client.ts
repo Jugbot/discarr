@@ -1,7 +1,10 @@
-import { drizzle } from 'drizzle-orm/pglite'
+import { drizzle, PgliteDatabase } from 'drizzle-orm/pglite'
 
 import * as schema from './schema'
 
 import { config } from './config'
 
-export const db = drizzle(config.POSTGRES_DATA_DIR, { schema })
+export const db: PgliteDatabase<typeof schema> = drizzle(
+  config.POSTGRES_DATA_DIR,
+  { schema },
+)

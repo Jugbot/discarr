@@ -6,9 +6,15 @@ import { z } from 'zod'
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
+const envPaths: Record<string, string[]> = {
+  development: ['.env.local', '.env.development'],
+  test: ['.env.test'],
+  production: ['.env.production'],
+}
+
 dotEnvConfig({
-  path: ['.env.local', `.env.${process.env.NODE_ENV ?? 'development'}`].map(
-    (filename) => path.resolve(dirname, '..', filename),
+  path: envPaths[process.env.NODE_ENV ?? 'development']?.map((filename) =>
+    path.resolve(dirname, '..', filename),
   ),
 })
 
