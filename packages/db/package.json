@@ -15,7 +15,7 @@
     }
   },
   "scripts": {
-    "dev": "drizzle-kit studio",
+    "studio": "drizzle-kit studio",
     "generate": "drizzle-kit generate",
     "migrate": "drizzle-kit migrate",
     "check-types": "tsc"

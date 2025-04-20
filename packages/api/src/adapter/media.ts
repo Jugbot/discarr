@@ -1,6 +1,7 @@
-import { components } from '../generated/overseerrAPI'
 import { config } from '../config'
-import { Epsiode, MediaInfo, Request } from '../model/Media'
+import { components as jellyseerrComponents } from '../generated/overseerrAPI'
+import { components as sonarrComponents } from '../generated/sonarrAPI'
+import { MediaInfo, Request, Season } from '../model/Media'
 import { UserMap } from '../model/User'
 
 const imageUrlFromPath = (path: string) =>
@@ -25,23 +26,8 @@ const statusTextFromCode = (code: number) => {
 }
 
 const downloadStatusSummary = (
-  downloads: components['schemas']['DownloadingItem'][],
+  downloads: jellyseerrComponents['schemas']['DownloadingItem'][],
 ) => {
-  const episodes = downloads.reduce<Epsiode[]>((result, download) => {
-    if (!download.episode) return result
-
-    return [
-      ...result,
-      {
-        season: download.episode.seasonNumber,
-        episode: download.episode.absoluteEpisodeNumber,
-        downloadStatus: {
-          completion: (download.size - download.sizeLeft) / download.size,
-        },
-      },
-    ]
-  }, [])
-
   const totalCompletionFraction = downloads.reduce(
     (acc, status) => ({
       numerator: acc.numerator + status.size - status.sizeLeft,
@@ -51,7 +37,6 @@ const downloadStatusSummary = (
   )
 
   return {
-    episodes,
     downloadStatus: {
       completion: totalCompletionFraction.denominator
         ? totalCompletionFraction.numerator /
@@ -61,9 +46,29 @@ const downloadStatusSummary = (
   }
 }
 
+const fromEpisodes = (
+  episodes: sonarrComponents['schemas']['EpisodeResource'][],
+) =>
+  episodes.reduce<Record<number, Season>>((acc, episode) => {
+    const season = (acc[episode.seasonNumber] ??= {
+      number: episode.seasonNumber,
+      available: true,
+      episodes: {},
+    })
+    season.episodes[episode.episodeNumber] = {
+      number: episode.episodeNumber,
+      seasonNumber: episode.seasonNumber,
+      available: episode.hasFile,
+    }
+    if (!episode.hasFile) {
+      season.available = false
+    }
+    return acc
+  }, {})
+
 const requestAdapter =
   (users: UserMap) =>
-  (request: components['schemas']['MediaRequest']): Request => {
+  (request: jellyseerrComponents['schemas']['MediaRequest']): Request => {
     if (!request.requestedBy) {
       throw new Error(`Request ${request.id} has no user associated with it`)
     }
@@ -82,7 +87,11 @@ const requestAdapter =
 
 export const fromSeries =
   (users: UserMap) =>
-  (series: components['schemas']['TvDetails']): MediaInfo<'tv'> => ({
+  (
+    series: jellyseerrComponents['schemas']['TvDetails'] & {
+      episodes: sonarrComponents['schemas']['EpisodeResource'][]
+    },
+  ): MediaInfo<'tv'> => ({
     id: series.id,
     title: series.name,
     type: 'tv',
@@ -91,12 +100,15 @@ export const fromSeries =
     status: statusTextFromCode(series.mediaInfo?.status ?? 0),
     link: `${config.JELLYSEER_PUBLIC_URL}/tv/${series.id}`,
     requests: series.mediaInfo?.requests.map(requestAdapter(users)) ?? [],
+    seasons: fromEpisodes(series.episodes),
     ...downloadStatusSummary(series.mediaInfo?.downloadStatus ?? []),
   })
 
 export const fromMovie =
   (users: UserMap) =>
-  (movie: components['schemas']['MovieDetails']): MediaInfo<'movie'> => ({
+  (
+    movie: jellyseerrComponents['schemas']['MovieDetails'],
+  ): MediaInfo<'movie'> => ({
     id: movie.id,
     title: movie.title,
     type: 'movie',
@@ -105,5 +117,6 @@ export const fromMovie =
     status: statusTextFromCode(movie.mediaInfo?.status ?? 0),
     link: `${config.JELLYSEER_PUBLIC_URL}/movie/${movie.id}`,
     requests: movie.mediaInfo?.requests.map(requestAdapter(users)) ?? [],
+    seasons: undefined,
     ...downloadStatusSummary(movie.mediaInfo?.downloadStatus ?? []),
   })

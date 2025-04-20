@@ -17,7 +17,6 @@
   "dependencies": {
     "@acme/db": "workspace:*",
     "@trpc/server": "catalog:",
-    "ansi-escape-sequences": "catalog:",
     "cors": "catalog:",
     "discord.js": "catalog:",
     "dotenv": "catalog:",
@@ -27,7 +26,6 @@
   },
   "devDependencies": {
     "@acme/tsconfig": "workspace:*",
-    "@types/ansi-escape-sequences": "catalog:",
     "@types/cors": "catalog:",
     "@types/node-cron": "catalog:",
     "eslint": "catalog:",

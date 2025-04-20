@@ -2,9 +2,15 @@ import { config as dotEnvConfig } from 'dotenv'
 import { z } from 'zod'
 import { validate } from 'node-cron'
 import path from 'path'
+import { fileURLToPath } from 'url'
+
+const filename = fileURLToPath(import.meta.url)
+const dirname = path.dirname(filename)
 
 dotEnvConfig({
-  path: ['.env.local', '.env.development'],
+  path: ['.env.local', `.env.${process.env.NODE_ENV ?? 'development'}`].map(
+    (filename) => path.resolve(dirname, '..', filename),
+  ),
 })
 
 const envSchema = z
@@ -52,6 +58,10 @@ const envSchema = z
       .enum(['error', 'warn', 'info', 'verbose', 'debug'])
       .default('info'),
     DATA_DIR: z.string().transform((dir) => path.resolve(dir)),
+    SKIP_STARTUP_DATA_SYNC: z
+      .enum(['0', '1', 'false', 'true'])
+      .default('false')
+      .transform((value) => ['1', 'true'].includes(value)),
   })
   .transform((obj) => ({
     ...obj,

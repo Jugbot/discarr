@@ -2,5 +2,6 @@
   "files.associations": {
     "**/tsconfig/*.json": "jsonc"
   },
-  "docker.commands.run": "${containerCommand} run --rm ${exposedPorts} ${tag}"
+  "docker.commands.run": "${containerCommand} run --rm ${exposedPorts} ${tag}",
+  "typescript.tsdk": "node_modules\\typescript\\lib"
 }
