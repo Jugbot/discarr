@@ -1,6 +1,7 @@
-import { drizzle, PostgresJsDatabase } from 'drizzle-orm/postgres-js'
+import { drizzle } from 'drizzle-orm/pglite'
+
 import * as schema from './schema'
 
-export const mockDB: PostgresJsDatabase<typeof schema> = drizzle.mock({
+export const mockDB = drizzle.mock({
   schema,
 })
