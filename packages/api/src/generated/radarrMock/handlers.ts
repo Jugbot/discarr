@@ -6,6 +6,7 @@
  */
 /* eslint-disable */
 /* tslint:disable */
+// @ts-nocheck
 import { HttpResponse, http } from 'msw'
 import { faker } from '@faker-js/faker'
 
@@ -14,1482 +15,2410 @@ faker.seed(1)
 const baseURL = ''
 const MAX_ARRAY_LENGTH = 20
 
-let i = 0
-const next = () => {
-  if (i === Number.MAX_SAFE_INTEGER - 1) {
-    i = 0
+// Map to store counters for each API endpoint
+const apiCounters = new Map<string, number>()
+
+const next = (apiKey: string) => {
+  let currentCount = apiCounters.get(apiKey) ?? 0
+  if (currentCount === Number.MAX_SAFE_INTEGER - 1) {
+    currentCount = 0
   }
-  return i++
+  apiCounters.set(apiKey, currentCount + 1)
+  return currentCount
 }
 
 export const handlers = [
   http.get(`${baseURL}/api/v3/alttitle`, async () => {
     const resultArray = [
-      [await getGetApiV3Alttitle200Response(), { status: 200 }],
-    ]
+      [getGetApiV3Alttitle200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`get /api/v3/alttitle`) % resultArray.length],
+    )
   }),
   http.get(`${baseURL}/api/v3/alttitle/:id`, async () => {
     const resultArray = [
-      [await getGetApiV3AlttitleId200Response(), { status: 200 }],
-    ]
+      [getGetApiV3AlttitleId200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`get /api/v3/alttitle/:id`) % resultArray.length],
+    )
   }),
   http.get(`${baseURL}/api`, async () => {
-    const resultArray = [[await getGetApi200Response(), { status: 200 }]]
+    const resultArray = [[getGetApi200Response(), { status: 200 }]] as [
+      any,
+      { status: number },
+    ][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`get /api`) % resultArray.length],
+    )
   }),
   http.post(`${baseURL}/login`, async () => {
-    const resultArray = [[undefined, { status: 200 }]]
+    const resultArray = [[undefined, { status: 200 }]] as [
+      any,
+      { status: number },
+    ][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`post /login`) % resultArray.length],
+    )
   }),
   http.get(`${baseURL}/login`, async () => {
-    const resultArray = [[undefined, { status: 200 }]]
+    const resultArray = [[undefined, { status: 200 }]] as [
+      any,
+      { status: number },
+    ][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`get /login`) % resultArray.length],
+    )
   }),
   http.get(`${baseURL}/logout`, async () => {
-    const resultArray = [[undefined, { status: 200 }]]
+    const resultArray = [[undefined, { status: 200 }]] as [
+      any,
+      { status: number },
+    ][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`get /logout`) % resultArray.length],
+    )
   }),
   http.post(`${baseURL}/api/v3/autotagging`, async () => {
     const resultArray = [
-      [await getPostApiV3Autotagging200Response(), { status: 200 }],
-    ]
+      [getPostApiV3Autotagging200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`post /api/v3/autotagging`) % resultArray.length],
+    )
   }),
   http.get(`${baseURL}/api/v3/autotagging`, async () => {
     const resultArray = [
-      [await getGetApiV3Autotagging200Response(), { status: 200 }],
-    ]
+      [getGetApiV3Autotagging200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`get /api/v3/autotagging`) % resultArray.length],
+    )
   }),
   http.put(`${baseURL}/api/v3/autotagging/:id`, async () => {
     const resultArray = [
-      [await getPutApiV3AutotaggingId200Response(), { status: 200 }],
-    ]
+      [getPutApiV3AutotaggingId200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`put /api/v3/autotagging/:id`) % resultArray.length],
+    )
   }),
   http.delete(`${baseURL}/api/v3/autotagging/:id`, async () => {
-    const resultArray = [[undefined, { status: 200 }]]
+    const resultArray = [[undefined, { status: 200 }]] as [
+      any,
+      { status: number },
+    ][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[
+        next(`delete /api/v3/autotagging/:id`) % resultArray.length
+      ],
+    )
   }),
   http.get(`${baseURL}/api/v3/autotagging/:id`, async () => {
     const resultArray = [
-      [await getGetApiV3AutotaggingId200Response(), { status: 200 }],
-    ]
+      [getGetApiV3AutotaggingId200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`get /api/v3/autotagging/:id`) % resultArray.length],
+    )
   }),
   http.get(`${baseURL}/api/v3/autotagging/schema`, async () => {
-    const resultArray = [[undefined, { status: 200 }]]
+    const resultArray = [[undefined, { status: 200 }]] as [
+      any,
+      { status: number },
+    ][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[
+        next(`get /api/v3/autotagging/schema`) % resultArray.length
+      ],
+    )
   }),
   http.get(`${baseURL}/api/v3/system/backup`, async () => {
     const resultArray = [
-      [await getGetApiV3SystemBackup200Response(), { status: 200 }],
-    ]
+      [getGetApiV3SystemBackup200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`get /api/v3/system/backup`) % resultArray.length],
+    )
   }),
   http.delete(`${baseURL}/api/v3/system/backup/:id`, async () => {
-    const resultArray = [[undefined, { status: 200 }]]
+    const resultArray = [[undefined, { status: 200 }]] as [
+      any,
+      { status: number },
+    ][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[
+        next(`delete /api/v3/system/backup/:id`) % resultArray.length
+      ],
+    )
   }),
   http.post(`${baseURL}/api/v3/system/backup/restore/:id`, async () => {
-    const resultArray = [[undefined, { status: 200 }]]
+    const resultArray = [[undefined, { status: 200 }]] as [
+      any,
+      { status: number },
+    ][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[
+        next(`post /api/v3/system/backup/restore/:id`) % resultArray.length
+      ],
+    )
   }),
   http.post(`${baseURL}/api/v3/system/backup/restore/upload`, async () => {
-    const resultArray = [[undefined, { status: 200 }]]
+    const resultArray = [[undefined, { status: 200 }]] as [
+      any,
+      { status: number },
+    ][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[
+        next(`post /api/v3/system/backup/restore/upload`) % resultArray.length
+      ],
+    )
   }),
   http.get(`${baseURL}/api/v3/blocklist`, async () => {
     const resultArray = [
-      [await getGetApiV3Blocklist200Response(), { status: 200 }],
-    ]
+      [getGetApiV3Blocklist200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`get /api/v3/blocklist`) % resultArray.length],
+    )
   }),
   http.get(`${baseURL}/api/v3/blocklist/movie`, async () => {
     const resultArray = [
-      [await getGetApiV3BlocklistMovie200Response(), { status: 200 }],
-    ]
+      [getGetApiV3BlocklistMovie200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`get /api/v3/blocklist/movie`) % resultArray.length],
+    )
   }),
   http.delete(`${baseURL}/api/v3/blocklist/:id`, async () => {
-    const resultArray = [[undefined, { status: 200 }]]
+    const resultArray = [[undefined, { status: 200 }]] as [
+      any,
+      { status: number },
+    ][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`delete /api/v3/blocklist/:id`) % resultArray.length],
+    )
   }),
   http.delete(`${baseURL}/api/v3/blocklist/bulk`, async () => {
-    const resultArray = [[undefined, { status: 200 }]]
+    const resultArray = [[undefined, { status: 200 }]] as [
+      any,
+      { status: number },
+    ][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[
+        next(`delete /api/v3/blocklist/bulk`) % resultArray.length
+      ],
+    )
   }),
   http.get(`${baseURL}/api/v3/calendar`, async () => {
     const resultArray = [
-      [await getGetApiV3Calendar200Response(), { status: 200 }],
-    ]
+      [getGetApiV3Calendar200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`get /api/v3/calendar`) % resultArray.length],
+    )
   }),
   http.get(`${baseURL}/feed/v3/calendar/radarr.ics`, async () => {
-    const resultArray = [[undefined, { status: 200 }]]
+    const resultArray = [[undefined, { status: 200 }]] as [
+      any,
+      { status: number },
+    ][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[
+        next(`get /feed/v3/calendar/radarr.ics`) % resultArray.length
+      ],
+    )
   }),
   http.get(`${baseURL}/api/v3/collection`, async () => {
     const resultArray = [
-      [await getGetApiV3Collection200Response(), { status: 200 }],
-    ]
+      [getGetApiV3Collection200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`get /api/v3/collection`) % resultArray.length],
+    )
   }),
   http.put(`${baseURL}/api/v3/collection`, async () => {
-    const resultArray = [[undefined, { status: 200 }]]
+    const resultArray = [[undefined, { status: 200 }]] as [
+      any,
+      { status: number },
+    ][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`put /api/v3/collection`) % resultArray.length],
+    )
   }),
   http.put(`${baseURL}/api/v3/collection/:id`, async () => {
     const resultArray = [
-      [await getPutApiV3CollectionId200Response(), { status: 200 }],
-    ]
+      [getPutApiV3CollectionId200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`put /api/v3/collection/:id`) % resultArray.length],
+    )
   }),
   http.get(`${baseURL}/api/v3/collection/:id`, async () => {
     const resultArray = [
-      [await getGetApiV3CollectionId200Response(), { status: 200 }],
-    ]
+      [getGetApiV3CollectionId200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`get /api/v3/collection/:id`) % resultArray.length],
+    )
   }),
   http.post(`${baseURL}/api/v3/command`, async () => {
     const resultArray = [
-      [await getPostApiV3Command200Response(), { status: 200 }],
-    ]
+      [getPostApiV3Command200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`post /api/v3/command`) % resultArray.length],
+    )
   }),
   http.get(`${baseURL}/api/v3/command`, async () => {
     const resultArray = [
-      [await getGetApiV3Command200Response(), { status: 200 }],
-    ]
+      [getGetApiV3Command200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`get /api/v3/command`) % resultArray.length],
+    )
   }),
   http.delete(`${baseURL}/api/v3/command/:id`, async () => {
-    const resultArray = [[undefined, { status: 200 }]]
+    const resultArray = [[undefined, { status: 200 }]] as [
+      any,
+      { status: number },
+    ][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`delete /api/v3/command/:id`) % resultArray.length],
+    )
   }),
   http.get(`${baseURL}/api/v3/command/:id`, async () => {
     const resultArray = [
-      [await getGetApiV3CommandId200Response(), { status: 200 }],
-    ]
+      [getGetApiV3CommandId200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`get /api/v3/command/:id`) % resultArray.length],
+    )
   }),
   http.get(`${baseURL}/api/v3/credit`, async () => {
-    const resultArray = [[undefined, { status: 200 }]]
+    const resultArray = [[undefined, { status: 200 }]] as [
+      any,
+      { status: number },
+    ][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`get /api/v3/credit`) % resultArray.length],
+    )
   }),
   http.get(`${baseURL}/api/v3/credit/:id`, async () => {
     const resultArray = [
-      [await getGetApiV3CreditId200Response(), { status: 200 }],
-    ]
+      [getGetApiV3CreditId200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`get /api/v3/credit/:id`) % resultArray.length],
+    )
   }),
   http.get(`${baseURL}/api/v3/customfilter`, async () => {
     const resultArray = [
-      [await getGetApiV3Customfilter200Response(), { status: 200 }],
-    ]
+      [getGetApiV3Customfilter200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`get /api/v3/customfilter`) % resultArray.length],
+    )
   }),
   http.post(`${baseURL}/api/v3/customfilter`, async () => {
     const resultArray = [
-      [await getPostApiV3Customfilter200Response(), { status: 200 }],
-    ]
+      [getPostApiV3Customfilter200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`post /api/v3/customfilter`) % resultArray.length],
+    )
   }),
   http.put(`${baseURL}/api/v3/customfilter/:id`, async () => {
     const resultArray = [
-      [await getPutApiV3CustomfilterId200Response(), { status: 200 }],
-    ]
+      [getPutApiV3CustomfilterId200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`put /api/v3/customfilter/:id`) % resultArray.length],
+    )
   }),
   http.delete(`${baseURL}/api/v3/customfilter/:id`, async () => {
-    const resultArray = [[undefined, { status: 200 }]]
+    const resultArray = [[undefined, { status: 200 }]] as [
+      any,
+      { status: number },
+    ][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[
+        next(`delete /api/v3/customfilter/:id`) % resultArray.length
+      ],
+    )
   }),
   http.get(`${baseURL}/api/v3/customfilter/:id`, async () => {
     const resultArray = [
-      [await getGetApiV3CustomfilterId200Response(), { status: 200 }],
-    ]
+      [getGetApiV3CustomfilterId200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`get /api/v3/customfilter/:id`) % resultArray.length],
+    )
   }),
   http.get(`${baseURL}/api/v3/customformat`, async () => {
     const resultArray = [
-      [await getGetApiV3Customformat200Response(), { status: 200 }],
-    ]
+      [getGetApiV3Customformat200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`get /api/v3/customformat`) % resultArray.length],
+    )
   }),
   http.post(`${baseURL}/api/v3/customformat`, async () => {
     const resultArray = [
-      [await getPostApiV3Customformat200Response(), { status: 200 }],
-    ]
+      [getPostApiV3Customformat200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`post /api/v3/customformat`) % resultArray.length],
+    )
   }),
   http.put(`${baseURL}/api/v3/customformat/:id`, async () => {
     const resultArray = [
-      [await getPutApiV3CustomformatId200Response(), { status: 200 }],
-    ]
+      [getPutApiV3CustomformatId200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`put /api/v3/customformat/:id`) % resultArray.length],
+    )
   }),
   http.delete(`${baseURL}/api/v3/customformat/:id`, async () => {
-    const resultArray = [[undefined, { status: 200 }]]
+    const resultArray = [[undefined, { status: 200 }]] as [
+      any,
+      { status: number },
+    ][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[
+        next(`delete /api/v3/customformat/:id`) % resultArray.length
+      ],
+    )
   }),
   http.get(`${baseURL}/api/v3/customformat/:id`, async () => {
     const resultArray = [
-      [await getGetApiV3CustomformatId200Response(), { status: 200 }],
-    ]
+      [getGetApiV3CustomformatId200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`get /api/v3/customformat/:id`) % resultArray.length],
+    )
   }),
   http.put(`${baseURL}/api/v3/customformat/bulk`, async () => {
     const resultArray = [
-      [await getPutApiV3CustomformatBulk200Response(), { status: 200 }],
-    ]
+      [getPutApiV3CustomformatBulk200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[
+        next(`put /api/v3/customformat/bulk`) % resultArray.length
+      ],
+    )
   }),
   http.delete(`${baseURL}/api/v3/customformat/bulk`, async () => {
-    const resultArray = [[undefined, { status: 200 }]]
+    const resultArray = [[undefined, { status: 200 }]] as [
+      any,
+      { status: number },
+    ][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[
+        next(`delete /api/v3/customformat/bulk`) % resultArray.length
+      ],
+    )
   }),
   http.get(`${baseURL}/api/v3/customformat/schema`, async () => {
-    const resultArray = [[undefined, { status: 200 }]]
+    const resultArray = [[undefined, { status: 200 }]] as [
+      any,
+      { status: number },
+    ][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[
+        next(`get /api/v3/customformat/schema`) % resultArray.length
+      ],
+    )
   }),
   http.get(`${baseURL}/api/v3/wanted/cutoff`, async () => {
     const resultArray = [
-      [await getGetApiV3WantedCutoff200Response(), { status: 200 }],
-    ]
+      [getGetApiV3WantedCutoff200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`get /api/v3/wanted/cutoff`) % resultArray.length],
+    )
   }),
   http.post(`${baseURL}/api/v3/delayprofile`, async () => {
     const resultArray = [
-      [await getPostApiV3Delayprofile200Response(), { status: 200 }],
-    ]
+      [getPostApiV3Delayprofile200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`post /api/v3/delayprofile`) % resultArray.length],
+    )
   }),
   http.get(`${baseURL}/api/v3/delayprofile`, async () => {
     const resultArray = [
-      [await getGetApiV3Delayprofile200Response(), { status: 200 }],
-    ]
+      [getGetApiV3Delayprofile200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`get /api/v3/delayprofile`) % resultArray.length],
+    )
   }),
   http.delete(`${baseURL}/api/v3/delayprofile/:id`, async () => {
-    const resultArray = [[undefined, { status: 200 }]]
+    const resultArray = [[undefined, { status: 200 }]] as [
+      any,
+      { status: number },
+    ][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[
+        next(`delete /api/v3/delayprofile/:id`) % resultArray.length
+      ],
+    )
   }),
   http.put(`${baseURL}/api/v3/delayprofile/:id`, async () => {
     const resultArray = [
-      [await getPutApiV3DelayprofileId200Response(), { status: 200 }],
-    ]
+      [getPutApiV3DelayprofileId200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`put /api/v3/delayprofile/:id`) % resultArray.length],
+    )
   }),
   http.get(`${baseURL}/api/v3/delayprofile/:id`, async () => {
     const resultArray = [
-      [await getGetApiV3DelayprofileId200Response(), { status: 200 }],
-    ]
+      [getGetApiV3DelayprofileId200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`get /api/v3/delayprofile/:id`) % resultArray.length],
+    )
   }),
   http.put(`${baseURL}/api/v3/delayprofile/reorder/:id`, async () => {
     const resultArray = [
-      [await getPutApiV3DelayprofileReorderId200Response(), { status: 200 }],
-    ]
+      [getPutApiV3DelayprofileReorderId200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[
+        next(`put /api/v3/delayprofile/reorder/:id`) % resultArray.length
+      ],
+    )
   }),
   http.get(`${baseURL}/api/v3/diskspace`, async () => {
     const resultArray = [
-      [await getGetApiV3Diskspace200Response(), { status: 200 }],
-    ]
+      [getGetApiV3Diskspace200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`get /api/v3/diskspace`) % resultArray.length],
+    )
   }),
   http.get(`${baseURL}/api/v3/downloadclient`, async () => {
     const resultArray = [
-      [await getGetApiV3Downloadclient200Response(), { status: 200 }],
-    ]
+      [getGetApiV3Downloadclient200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`get /api/v3/downloadclient`) % resultArray.length],
+    )
   }),
   http.post(`${baseURL}/api/v3/downloadclient`, async () => {
     const resultArray = [
-      [await getPostApiV3Downloadclient200Response(), { status: 200 }],
-    ]
+      [getPostApiV3Downloadclient200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`post /api/v3/downloadclient`) % resultArray.length],
+    )
   }),
   http.put(`${baseURL}/api/v3/downloadclient/:id`, async () => {
     const resultArray = [
-      [await getPutApiV3DownloadclientId200Response(), { status: 200 }],
-    ]
+      [getPutApiV3DownloadclientId200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[
+        next(`put /api/v3/downloadclient/:id`) % resultArray.length
+      ],
+    )
   }),
   http.delete(`${baseURL}/api/v3/downloadclient/:id`, async () => {
-    const resultArray = [[undefined, { status: 200 }]]
+    const resultArray = [[undefined, { status: 200 }]] as [
+      any,
+      { status: number },
+    ][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[
+        next(`delete /api/v3/downloadclient/:id`) % resultArray.length
+      ],
+    )
   }),
   http.get(`${baseURL}/api/v3/downloadclient/:id`, async () => {
     const resultArray = [
-      [await getGetApiV3DownloadclientId200Response(), { status: 200 }],
-    ]
+      [getGetApiV3DownloadclientId200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[
+        next(`get /api/v3/downloadclient/:id`) % resultArray.length
+      ],
+    )
   }),
   http.put(`${baseURL}/api/v3/downloadclient/bulk`, async () => {
     const resultArray = [
-      [await getPutApiV3DownloadclientBulk200Response(), { status: 200 }],
-    ]
+      [getPutApiV3DownloadclientBulk200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[
+        next(`put /api/v3/downloadclient/bulk`) % resultArray.length
+      ],
+    )
   }),
   http.delete(`${baseURL}/api/v3/downloadclient/bulk`, async () => {
-    const resultArray = [[undefined, { status: 200 }]]
+    const resultArray = [[undefined, { status: 200 }]] as [
+      any,
+      { status: number },
+    ][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[
+        next(`delete /api/v3/downloadclient/bulk`) % resultArray.length
+      ],
+    )
   }),
   http.get(`${baseURL}/api/v3/downloadclient/schema`, async () => {
     const resultArray = [
-      [await getGetApiV3DownloadclientSchema200Response(), { status: 200 }],
-    ]
+      [getGetApiV3DownloadclientSchema200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[
+        next(`get /api/v3/downloadclient/schema`) % resultArray.length
+      ],
+    )
   }),
   http.post(`${baseURL}/api/v3/downloadclient/test`, async () => {
-    const resultArray = [[undefined, { status: 200 }]]
+    const resultArray = [[undefined, { status: 200 }]] as [
+      any,
+      { status: number },
+    ][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[
+        next(`post /api/v3/downloadclient/test`) % resultArray.length
+      ],
+    )
   }),
   http.post(`${baseURL}/api/v3/downloadclient/testall`, async () => {
-    const resultArray = [[undefined, { status: 200 }]]
+    const resultArray = [[undefined, { status: 200 }]] as [
+      any,
+      { status: number },
+    ][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[
+        next(`post /api/v3/downloadclient/testall`) % resultArray.length
+      ],
+    )
   }),
   http.post(`${baseURL}/api/v3/downloadclient/action/:name`, async () => {
-    const resultArray = [[undefined, { status: 200 }]]
+    const resultArray = [[undefined, { status: 200 }]] as [
+      any,
+      { status: number },
+    ][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[
+        next(`post /api/v3/downloadclient/action/:name`) % resultArray.length
+      ],
+    )
   }),
   http.get(`${baseURL}/api/v3/config/downloadclient`, async () => {
     const resultArray = [
-      [await getGetApiV3ConfigDownloadclient200Response(), { status: 200 }],
-    ]
+      [getGetApiV3ConfigDownloadclient200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[
+        next(`get /api/v3/config/downloadclient`) % resultArray.length
+      ],
+    )
   }),
   http.put(`${baseURL}/api/v3/config/downloadclient/:id`, async () => {
     const resultArray = [
-      [await getPutApiV3ConfigDownloadclientId200Response(), { status: 200 }],
-    ]
+      [getPutApiV3ConfigDownloadclientId200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[
+        next(`put /api/v3/config/downloadclient/:id`) % resultArray.length
+      ],
+    )
   }),
   http.get(`${baseURL}/api/v3/config/downloadclient/:id`, async () => {
     const resultArray = [
-      [await getGetApiV3ConfigDownloadclientId200Response(), { status: 200 }],
-    ]
+      [getGetApiV3ConfigDownloadclientId200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[
+        next(`get /api/v3/config/downloadclient/:id`) % resultArray.length
+      ],
+    )
   }),
   http.get(`${baseURL}/api/v3/extrafile`, async () => {
     const resultArray = [
-      [await getGetApiV3Extrafile200Response(), { status: 200 }],
-    ]
+      [getGetApiV3Extrafile200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`get /api/v3/extrafile`) % resultArray.length],
+    )
   }),
   http.get(`${baseURL}/api/v3/filesystem`, async () => {
-    const resultArray = [[undefined, { status: 200 }]]
+    const resultArray = [[undefined, { status: 200 }]] as [
+      any,
+      { status: number },
+    ][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`get /api/v3/filesystem`) % resultArray.length],
+    )
   }),
   http.get(`${baseURL}/api/v3/filesystem/type`, async () => {
-    const resultArray = [[undefined, { status: 200 }]]
+    const resultArray = [[undefined, { status: 200 }]] as [
+      any,
+      { status: number },
+    ][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`get /api/v3/filesystem/type`) % resultArray.length],
+    )
   }),
   http.get(`${baseURL}/api/v3/filesystem/mediafiles`, async () => {
-    const resultArray = [[undefined, { status: 200 }]]
+    const resultArray = [[undefined, { status: 200 }]] as [
+      any,
+      { status: number },
+    ][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[
+        next(`get /api/v3/filesystem/mediafiles`) % resultArray.length
+      ],
+    )
   }),
   http.get(`${baseURL}/api/v3/health`, async () => {
-    const resultArray = [
-      [await getGetApiV3Health200Response(), { status: 200 }],
-    ]
+    const resultArray = [[getGetApiV3Health200Response(), { status: 200 }]] as [
+      any,
+      { status: number },
+    ][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`get /api/v3/health`) % resultArray.length],
+    )
   }),
   http.get(`${baseURL}/api/v3/history`, async () => {
     const resultArray = [
-      [await getGetApiV3History200Response(), { status: 200 }],
-    ]
+      [getGetApiV3History200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`get /api/v3/history`) % resultArray.length],
+    )
   }),
   http.get(`${baseURL}/api/v3/history/since`, async () => {
     const resultArray = [
-      [await getGetApiV3HistorySince200Response(), { status: 200 }],
-    ]
+      [getGetApiV3HistorySince200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`get /api/v3/history/since`) % resultArray.length],
+    )
   }),
   http.get(`${baseURL}/api/v3/history/movie`, async () => {
     const resultArray = [
-      [await getGetApiV3HistoryMovie200Response(), { status: 200 }],
-    ]
+      [getGetApiV3HistoryMovie200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`get /api/v3/history/movie`) % resultArray.length],
+    )
   }),
   http.post(`${baseURL}/api/v3/history/failed/:id`, async () => {
-    const resultArray = [[undefined, { status: 200 }]]
+    const resultArray = [[undefined, { status: 200 }]] as [
+      any,
+      { status: number },
+    ][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[
+        next(`post /api/v3/history/failed/:id`) % resultArray.length
+      ],
+    )
   }),
   http.get(`${baseURL}/api/v3/config/host`, async () => {
     const resultArray = [
-      [await getGetApiV3ConfigHost200Response(), { status: 200 }],
-    ]
+      [getGetApiV3ConfigHost200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`get /api/v3/config/host`) % resultArray.length],
+    )
   }),
   http.put(`${baseURL}/api/v3/config/host/:id`, async () => {
     const resultArray = [
-      [await getPutApiV3ConfigHostId200Response(), { status: 200 }],
-    ]
+      [getPutApiV3ConfigHostId200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`put /api/v3/config/host/:id`) % resultArray.length],
+    )
   }),
   http.get(`${baseURL}/api/v3/config/host/:id`, async () => {
     const resultArray = [
-      [await getGetApiV3ConfigHostId200Response(), { status: 200 }],
-    ]
+      [getGetApiV3ConfigHostId200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`get /api/v3/config/host/:id`) % resultArray.length],
+    )
   }),
   http.get(`${baseURL}/api/v3/importlist`, async () => {
     const resultArray = [
-      [await getGetApiV3Importlist200Response(), { status: 200 }],
-    ]
+      [getGetApiV3Importlist200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`get /api/v3/importlist`) % resultArray.length],
+    )
   }),
   http.post(`${baseURL}/api/v3/importlist`, async () => {
     const resultArray = [
-      [await getPostApiV3Importlist200Response(), { status: 200 }],
-    ]
+      [getPostApiV3Importlist200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`post /api/v3/importlist`) % resultArray.length],
+    )
   }),
   http.put(`${baseURL}/api/v3/importlist/:id`, async () => {
     const resultArray = [
-      [await getPutApiV3ImportlistId200Response(), { status: 200 }],
-    ]
+      [getPutApiV3ImportlistId200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`put /api/v3/importlist/:id`) % resultArray.length],
+    )
   }),
   http.delete(`${baseURL}/api/v3/importlist/:id`, async () => {
-    const resultArray = [[undefined, { status: 200 }]]
+    const resultArray = [[undefined, { status: 200 }]] as [
+      any,
+      { status: number },
+    ][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[
+        next(`delete /api/v3/importlist/:id`) % resultArray.length
+      ],
+    )
   }),
   http.get(`${baseURL}/api/v3/importlist/:id`, async () => {
     const resultArray = [
-      [await getGetApiV3ImportlistId200Response(), { status: 200 }],
-    ]
+      [getGetApiV3ImportlistId200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`get /api/v3/importlist/:id`) % resultArray.length],
+    )
   }),
   http.put(`${baseURL}/api/v3/importlist/bulk`, async () => {
     const resultArray = [
-      [await getPutApiV3ImportlistBulk200Response(), { status: 200 }],
-    ]
+      [getPutApiV3ImportlistBulk200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`put /api/v3/importlist/bulk`) % resultArray.length],
+    )
   }),
   http.delete(`${baseURL}/api/v3/importlist/bulk`, async () => {
-    const resultArray = [[undefined, { status: 200 }]]
+    const resultArray = [[undefined, { status: 200 }]] as [
+      any,
+      { status: number },
+    ][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[
+        next(`delete /api/v3/importlist/bulk`) % resultArray.length
+      ],
+    )
   }),
   http.get(`${baseURL}/api/v3/importlist/schema`, async () => {
     const resultArray = [
-      [await getGetApiV3ImportlistSchema200Response(), { status: 200 }],
-    ]
+      [getGetApiV3ImportlistSchema200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[
+        next(`get /api/v3/importlist/schema`) % resultArray.length
+      ],
+    )
   }),
   http.post(`${baseURL}/api/v3/importlist/test`, async () => {
-    const resultArray = [[undefined, { status: 200 }]]
+    const resultArray = [[undefined, { status: 200 }]] as [
+      any,
+      { status: number },
+    ][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`post /api/v3/importlist/test`) % resultArray.length],
+    )
   }),
   http.post(`${baseURL}/api/v3/importlist/testall`, async () => {
-    const resultArray = [[undefined, { status: 200 }]]
+    const resultArray = [[undefined, { status: 200 }]] as [
+      any,
+      { status: number },
+    ][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[
+        next(`post /api/v3/importlist/testall`) % resultArray.length
+      ],
+    )
   }),
   http.post(`${baseURL}/api/v3/importlist/action/:name`, async () => {
-    const resultArray = [[undefined, { status: 200 }]]
+    const resultArray = [[undefined, { status: 200 }]] as [
+      any,
+      { status: number },
+    ][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[
+        next(`post /api/v3/importlist/action/:name`) % resultArray.length
+      ],
+    )
   }),
   http.get(`${baseURL}/api/v3/config/importlist`, async () => {
     const resultArray = [
-      [await getGetApiV3ConfigImportlist200Response(), { status: 200 }],
-    ]
+      [getGetApiV3ConfigImportlist200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[
+        next(`get /api/v3/config/importlist`) % resultArray.length
+      ],
+    )
   }),
   http.put(`${baseURL}/api/v3/config/importlist/:id`, async () => {
     const resultArray = [
-      [await getPutApiV3ConfigImportlistId200Response(), { status: 200 }],
-    ]
+      [getPutApiV3ConfigImportlistId200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[
+        next(`put /api/v3/config/importlist/:id`) % resultArray.length
+      ],
+    )
   }),
   http.get(`${baseURL}/api/v3/config/importlist/:id`, async () => {
     const resultArray = [
-      [await getGetApiV3ConfigImportlistId200Response(), { status: 200 }],
-    ]
+      [getGetApiV3ConfigImportlistId200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[
+        next(`get /api/v3/config/importlist/:id`) % resultArray.length
+      ],
+    )
   }),
   http.get(`${baseURL}/api/v3/exclusions`, async () => {
     const resultArray = [
-      [await getGetApiV3Exclusions200Response(), { status: 200 }],
-    ]
+      [getGetApiV3Exclusions200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`get /api/v3/exclusions`) % resultArray.length],
+    )
   }),
   http.post(`${baseURL}/api/v3/exclusions`, async () => {
     const resultArray = [
-      [await getPostApiV3Exclusions200Response(), { status: 200 }],
-    ]
+      [getPostApiV3Exclusions200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`post /api/v3/exclusions`) % resultArray.length],
+    )
   }),
   http.get(`${baseURL}/api/v3/exclusions/paged`, async () => {
     const resultArray = [
-      [await getGetApiV3ExclusionsPaged200Response(), { status: 200 }],
-    ]
+      [getGetApiV3ExclusionsPaged200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`get /api/v3/exclusions/paged`) % resultArray.length],
+    )
   }),
   http.put(`${baseURL}/api/v3/exclusions/:id`, async () => {
     const resultArray = [
-      [await getPutApiV3ExclusionsId200Response(), { status: 200 }],
-    ]
+      [getPutApiV3ExclusionsId200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`put /api/v3/exclusions/:id`) % resultArray.length],
+    )
   }),
   http.delete(`${baseURL}/api/v3/exclusions/:id`, async () => {
-    const resultArray = [[undefined, { status: 200 }]]
+    const resultArray = [[undefined, { status: 200 }]] as [
+      any,
+      { status: number },
+    ][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[
+        next(`delete /api/v3/exclusions/:id`) % resultArray.length
+      ],
+    )
   }),
   http.get(`${baseURL}/api/v3/exclusions/:id`, async () => {
     const resultArray = [
-      [await getGetApiV3ExclusionsId200Response(), { status: 200 }],
-    ]
+      [getGetApiV3ExclusionsId200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`get /api/v3/exclusions/:id`) % resultArray.length],
+    )
   }),
   http.post(`${baseURL}/api/v3/exclusions/bulk`, async () => {
-    const resultArray = [[undefined, { status: 200 }]]
+    const resultArray = [[undefined, { status: 200 }]] as [
+      any,
+      { status: number },
+    ][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`post /api/v3/exclusions/bulk`) % resultArray.length],
+    )
   }),
   http.delete(`${baseURL}/api/v3/exclusions/bulk`, async () => {
-    const resultArray = [[undefined, { status: 200 }]]
+    const resultArray = [[undefined, { status: 200 }]] as [
+      any,
+      { status: number },
+    ][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[
+        next(`delete /api/v3/exclusions/bulk`) % resultArray.length
+      ],
+    )
   }),
   http.get(`${baseURL}/api/v3/importlist/movie`, async () => {
-    const resultArray = [[undefined, { status: 200 }]]
+    const resultArray = [[undefined, { status: 200 }]] as [
+      any,
+      { status: number },
+    ][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`get /api/v3/importlist/movie`) % resultArray.length],
+    )
   }),
   http.post(`${baseURL}/api/v3/importlist/movie`, async () => {
-    const resultArray = [[undefined, { status: 200 }]]
+    const resultArray = [[undefined, { status: 200 }]] as [
+      any,
+      { status: number },
+    ][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[
+        next(`post /api/v3/importlist/movie`) % resultArray.length
+      ],
+    )
   }),
   http.get(`${baseURL}/api/v3/indexer`, async () => {
     const resultArray = [
-      [await getGetApiV3Indexer200Response(), { status: 200 }],
-    ]
+      [getGetApiV3Indexer200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`get /api/v3/indexer`) % resultArray.length],
+    )
   }),
   http.post(`${baseURL}/api/v3/indexer`, async () => {
     const resultArray = [
-      [await getPostApiV3Indexer200Response(), { status: 200 }],
-    ]
+      [getPostApiV3Indexer200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`post /api/v3/indexer`) % resultArray.length],
+    )
   }),
   http.put(`${baseURL}/api/v3/indexer/:id`, async () => {
     const resultArray = [
-      [await getPutApiV3IndexerId200Response(), { status: 200 }],
-    ]
+      [getPutApiV3IndexerId200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`put /api/v3/indexer/:id`) % resultArray.length],
+    )
   }),
   http.delete(`${baseURL}/api/v3/indexer/:id`, async () => {
-    const resultArray = [[undefined, { status: 200 }]]
+    const resultArray = [[undefined, { status: 200 }]] as [
+      any,
+      { status: number },
+    ][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`delete /api/v3/indexer/:id`) % resultArray.length],
+    )
   }),
   http.get(`${baseURL}/api/v3/indexer/:id`, async () => {
     const resultArray = [
-      [await getGetApiV3IndexerId200Response(), { status: 200 }],
-    ]
+      [getGetApiV3IndexerId200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`get /api/v3/indexer/:id`) % resultArray.length],
+    )
   }),
   http.put(`${baseURL}/api/v3/indexer/bulk`, async () => {
     const resultArray = [
-      [await getPutApiV3IndexerBulk200Response(), { status: 200 }],
-    ]
+      [getPutApiV3IndexerBulk200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`put /api/v3/indexer/bulk`) % resultArray.length],
+    )
   }),
   http.delete(`${baseURL}/api/v3/indexer/bulk`, async () => {
-    const resultArray = [[undefined, { status: 200 }]]
+    const resultArray = [[undefined, { status: 200 }]] as [
+      any,
+      { status: number },
+    ][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`delete /api/v3/indexer/bulk`) % resultArray.length],
+    )
   }),
   http.get(`${baseURL}/api/v3/indexer/schema`, async () => {
     const resultArray = [
-      [await getGetApiV3IndexerSchema200Response(), { status: 200 }],
-    ]
+      [getGetApiV3IndexerSchema200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`get /api/v3/indexer/schema`) % resultArray.length],
+    )
   }),
   http.post(`${baseURL}/api/v3/indexer/test`, async () => {
-    const resultArray = [[undefined, { status: 200 }]]
+    const resultArray = [[undefined, { status: 200 }]] as [
+      any,
+      { status: number },
+    ][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`post /api/v3/indexer/test`) % resultArray.length],
+    )
   }),
   http.post(`${baseURL}/api/v3/indexer/testall`, async () => {
-    const resultArray = [[undefined, { status: 200 }]]
+    const resultArray = [[undefined, { status: 200 }]] as [
+      any,
+      { status: number },
+    ][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`post /api/v3/indexer/testall`) % resultArray.length],
+    )
   }),
   http.post(`${baseURL}/api/v3/indexer/action/:name`, async () => {
-    const resultArray = [[undefined, { status: 200 }]]
+    const resultArray = [[undefined, { status: 200 }]] as [
+      any,
+      { status: number },
+    ][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[
+        next(`post /api/v3/indexer/action/:name`) % resultArray.length
+      ],
+    )
   }),
   http.get(`${baseURL}/api/v3/config/indexer`, async () => {
     const resultArray = [
-      [await getGetApiV3ConfigIndexer200Response(), { status: 200 }],
-    ]
+      [getGetApiV3ConfigIndexer200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`get /api/v3/config/indexer`) % resultArray.length],
+    )
   }),
   http.put(`${baseURL}/api/v3/config/indexer/:id`, async () => {
     const resultArray = [
-      [await getPutApiV3ConfigIndexerId200Response(), { status: 200 }],
-    ]
+      [getPutApiV3ConfigIndexerId200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[
+        next(`put /api/v3/config/indexer/:id`) % resultArray.length
+      ],
+    )
   }),
   http.get(`${baseURL}/api/v3/config/indexer/:id`, async () => {
     const resultArray = [
-      [await getGetApiV3ConfigIndexerId200Response(), { status: 200 }],
-    ]
+      [getGetApiV3ConfigIndexerId200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[
+        next(`get /api/v3/config/indexer/:id`) % resultArray.length
+      ],
+    )
   }),
   http.get(`${baseURL}/api/v3/indexerflag`, async () => {
     const resultArray = [
-      [await getGetApiV3Indexerflag200Response(), { status: 200 }],
-    ]
+      [getGetApiV3Indexerflag200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`get /api/v3/indexerflag`) % resultArray.length],
+    )
   }),
   http.get(`${baseURL}/api/v3/language`, async () => {
     const resultArray = [
-      [await getGetApiV3Language200Response(), { status: 200 }],
-    ]
+      [getGetApiV3Language200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`get /api/v3/language`) % resultArray.length],
+    )
   }),
   http.get(`${baseURL}/api/v3/language/:id`, async () => {
     const resultArray = [
-      [await getGetApiV3LanguageId200Response(), { status: 200 }],
-    ]
+      [getGetApiV3LanguageId200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`get /api/v3/language/:id`) % resultArray.length],
+    )
   }),
   http.get(`${baseURL}/api/v3/localization`, async () => {
     const resultArray = [
-      [await getGetApiV3Localization200Response(), { status: 200 }],
-    ]
+      [getGetApiV3Localization200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`get /api/v3/localization`) % resultArray.length],
+    )
   }),
   http.get(`${baseURL}/api/v3/localization/language`, async () => {
     const resultArray = [
-      [await getGetApiV3LocalizationLanguage200Response(), { status: 200 }],
-    ]
+      [getGetApiV3LocalizationLanguage200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[
+        next(`get /api/v3/localization/language`) % resultArray.length
+      ],
+    )
   }),
   http.get(`${baseURL}/api/v3/log`, async () => {
-    const resultArray = [[await getGetApiV3Log200Response(), { status: 200 }]]
+    const resultArray = [[getGetApiV3Log200Response(), { status: 200 }]] as [
+      any,
+      { status: number },
+    ][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`get /api/v3/log`) % resultArray.length],
+    )
   }),
   http.get(`${baseURL}/api/v3/log/file`, async () => {
     const resultArray = [
-      [await getGetApiV3LogFile200Response(), { status: 200 }],
-    ]
+      [getGetApiV3LogFile200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`get /api/v3/log/file`) % resultArray.length],
+    )
   }),
   http.get(`${baseURL}/api/v3/log/file/:filename`, async () => {
-    const resultArray = [[undefined, { status: 200 }]]
+    const resultArray = [[undefined, { status: 200 }]] as [
+      any,
+      { status: number },
+    ][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[
+        next(`get /api/v3/log/file/:filename`) % resultArray.length
+      ],
+    )
   }),
   http.get(`${baseURL}/api/v3/manualimport`, async () => {
     const resultArray = [
-      [await getGetApiV3Manualimport200Response(), { status: 200 }],
-    ]
+      [getGetApiV3Manualimport200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`get /api/v3/manualimport`) % resultArray.length],
+    )
   }),
   http.post(`${baseURL}/api/v3/manualimport`, async () => {
-    const resultArray = [[undefined, { status: 200 }]]
+    const resultArray = [[undefined, { status: 200 }]] as [
+      any,
+      { status: number },
+    ][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`post /api/v3/manualimport`) % resultArray.length],
+    )
   }),
   http.get(`${baseURL}/api/v3/mediacover/:movieId/:filename`, async () => {
-    const resultArray = [[undefined, { status: 200 }]]
+    const resultArray = [[undefined, { status: 200 }]] as [
+      any,
+      { status: number },
+    ][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[
+        next(`get /api/v3/mediacover/:movieId/:filename`) % resultArray.length
+      ],
+    )
   }),
   http.get(`${baseURL}/api/v3/config/mediamanagement`, async () => {
     const resultArray = [
-      [await getGetApiV3ConfigMediamanagement200Response(), { status: 200 }],
-    ]
+      [getGetApiV3ConfigMediamanagement200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[
+        next(`get /api/v3/config/mediamanagement`) % resultArray.length
+      ],
+    )
   }),
   http.put(`${baseURL}/api/v3/config/mediamanagement/:id`, async () => {
     const resultArray = [
-      [await getPutApiV3ConfigMediamanagementId200Response(), { status: 200 }],
-    ]
+      [getPutApiV3ConfigMediamanagementId200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[
+        next(`put /api/v3/config/mediamanagement/:id`) % resultArray.length
+      ],
+    )
   }),
   http.get(`${baseURL}/api/v3/config/mediamanagement/:id`, async () => {
     const resultArray = [
-      [await getGetApiV3ConfigMediamanagementId200Response(), { status: 200 }],
-    ]
+      [getGetApiV3ConfigMediamanagementId200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[
+        next(`get /api/v3/config/mediamanagement/:id`) % resultArray.length
+      ],
+    )
   }),
   http.get(`${baseURL}/api/v3/metadata`, async () => {
     const resultArray = [
-      [await getGetApiV3Metadata200Response(), { status: 200 }],
-    ]
+      [getGetApiV3Metadata200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`get /api/v3/metadata`) % resultArray.length],
+    )
   }),
   http.post(`${baseURL}/api/v3/metadata`, async () => {
     const resultArray = [
-      [await getPostApiV3Metadata200Response(), { status: 200 }],
-    ]
+      [getPostApiV3Metadata200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`post /api/v3/metadata`) % resultArray.length],
+    )
   }),
   http.put(`${baseURL}/api/v3/metadata/:id`, async () => {
     const resultArray = [
-      [await getPutApiV3MetadataId200Response(), { status: 200 }],
-    ]
+      [getPutApiV3MetadataId200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`put /api/v3/metadata/:id`) % resultArray.length],
+    )
   }),
   http.delete(`${baseURL}/api/v3/metadata/:id`, async () => {
-    const resultArray = [[undefined, { status: 200 }]]
+    const resultArray = [[undefined, { status: 200 }]] as [
+      any,
+      { status: number },
+    ][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`delete /api/v3/metadata/:id`) % resultArray.length],
+    )
   }),
   http.get(`${baseURL}/api/v3/metadata/:id`, async () => {
     const resultArray = [
-      [await getGetApiV3MetadataId200Response(), { status: 200 }],
-    ]
+      [getGetApiV3MetadataId200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`get /api/v3/metadata/:id`) % resultArray.length],
+    )
   }),
   http.get(`${baseURL}/api/v3/metadata/schema`, async () => {
     const resultArray = [
-      [await getGetApiV3MetadataSchema200Response(), { status: 200 }],
-    ]
+      [getGetApiV3MetadataSchema200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`get /api/v3/metadata/schema`) % resultArray.length],
+    )
   }),
   http.post(`${baseURL}/api/v3/metadata/test`, async () => {
-    const resultArray = [[undefined, { status: 200 }]]
+    const resultArray = [[undefined, { status: 200 }]] as [
+      any,
+      { status: number },
+    ][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`post /api/v3/metadata/test`) % resultArray.length],
+    )
   }),
   http.post(`${baseURL}/api/v3/metadata/testall`, async () => {
-    const resultArray = [[undefined, { status: 200 }]]
+    const resultArray = [[undefined, { status: 200 }]] as [
+      any,
+      { status: number },
+    ][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[
+        next(`post /api/v3/metadata/testall`) % resultArray.length
+      ],
+    )
   }),
   http.post(`${baseURL}/api/v3/metadata/action/:name`, async () => {
-    const resultArray = [[undefined, { status: 200 }]]
+    const resultArray = [[undefined, { status: 200 }]] as [
+      any,
+      { status: number },
+    ][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[
+        next(`post /api/v3/metadata/action/:name`) % resultArray.length
+      ],
+    )
   }),
   http.get(`${baseURL}/api/v3/config/metadata`, async () => {
     const resultArray = [
-      [await getGetApiV3ConfigMetadata200Response(), { status: 200 }],
-    ]
+      [getGetApiV3ConfigMetadata200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`get /api/v3/config/metadata`) % resultArray.length],
+    )
   }),
   http.put(`${baseURL}/api/v3/config/metadata/:id`, async () => {
     const resultArray = [
-      [await getPutApiV3ConfigMetadataId200Response(), { status: 200 }],
-    ]
+      [getPutApiV3ConfigMetadataId200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[
+        next(`put /api/v3/config/metadata/:id`) % resultArray.length
+      ],
+    )
   }),
   http.get(`${baseURL}/api/v3/config/metadata/:id`, async () => {
     const resultArray = [
-      [await getGetApiV3ConfigMetadataId200Response(), { status: 200 }],
-    ]
+      [getGetApiV3ConfigMetadataId200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[
+        next(`get /api/v3/config/metadata/:id`) % resultArray.length
+      ],
+    )
   }),
   http.get(`${baseURL}/api/v3/wanted/missing`, async () => {
     const resultArray = [
-      [await getGetApiV3WantedMissing200Response(), { status: 200 }],
-    ]
+      [getGetApiV3WantedMissing200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`get /api/v3/wanted/missing`) % resultArray.length],
+    )
   }),
   http.get(`${baseURL}/api/v3/movie`, async () => {
-    const resultArray = [[await getGetApiV3Movie200Response(), { status: 200 }]]
+    const resultArray = [[getGetApiV3Movie200Response(), { status: 200 }]] as [
+      any,
+      { status: number },
+    ][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`get /api/v3/movie`) % resultArray.length],
+    )
   }),
   http.post(`${baseURL}/api/v3/movie`, async () => {
-    const resultArray = [
-      [await getPostApiV3Movie200Response(), { status: 200 }],
-    ]
+    const resultArray = [[getPostApiV3Movie200Response(), { status: 200 }]] as [
+      any,
+      { status: number },
+    ][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`post /api/v3/movie`) % resultArray.length],
+    )
   }),
   http.put(`${baseURL}/api/v3/movie/:id`, async () => {
     const resultArray = [
-      [await getPutApiV3MovieId200Response(), { status: 200 }],
-    ]
+      [getPutApiV3MovieId200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`put /api/v3/movie/:id`) % resultArray.length],
+    )
   }),
   http.delete(`${baseURL}/api/v3/movie/:id`, async () => {
-    const resultArray = [[undefined, { status: 200 }]]
+    const resultArray = [[undefined, { status: 200 }]] as [
+      any,
+      { status: number },
+    ][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`delete /api/v3/movie/:id`) % resultArray.length],
+    )
   }),
   http.get(`${baseURL}/api/v3/movie/:id`, async () => {
     const resultArray = [
-      [await getGetApiV3MovieId200Response(), { status: 200 }],
-    ]
+      [getGetApiV3MovieId200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`get /api/v3/movie/:id`) % resultArray.length],
+    )
   }),
   http.put(`${baseURL}/api/v3/movie/editor`, async () => {
-    const resultArray = [[undefined, { status: 200 }]]
+    const resultArray = [[undefined, { status: 200 }]] as [
+      any,
+      { status: number },
+    ][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`put /api/v3/movie/editor`) % resultArray.length],
+    )
   }),
   http.delete(`${baseURL}/api/v3/movie/editor`, async () => {
-    const resultArray = [[undefined, { status: 200 }]]
+    const resultArray = [[undefined, { status: 200 }]] as [
+      any,
+      { status: number },
+    ][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`delete /api/v3/movie/editor`) % resultArray.length],
+    )
   }),
   http.get(`${baseURL}/api/v3/moviefile`, async () => {
     const resultArray = [
-      [await getGetApiV3Moviefile200Response(), { status: 200 }],
-    ]
+      [getGetApiV3Moviefile200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`get /api/v3/moviefile`) % resultArray.length],
+    )
   }),
   http.put(`${baseURL}/api/v3/moviefile/:id`, async () => {
     const resultArray = [
-      [await getPutApiV3MoviefileId200Response(), { status: 200 }],
-    ]
+      [getPutApiV3MoviefileId200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`put /api/v3/moviefile/:id`) % resultArray.length],
+    )
   }),
   http.delete(`${baseURL}/api/v3/moviefile/:id`, async () => {
-    const resultArray = [[undefined, { status: 200 }]]
+    const resultArray = [[undefined, { status: 200 }]] as [
+      any,
+      { status: number },
+    ][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`delete /api/v3/moviefile/:id`) % resultArray.length],
+    )
   }),
   http.get(`${baseURL}/api/v3/moviefile/:id`, async () => {
     const resultArray = [
-      [await getGetApiV3MoviefileId200Response(), { status: 200 }],
-    ]
+      [getGetApiV3MoviefileId200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`get /api/v3/moviefile/:id`) % resultArray.length],
+    )
   }),
   http.put(`${baseURL}/api/v3/moviefile/editor`, async () => {
-    const resultArray = [[undefined, { status: 200 }]]
+    const resultArray = [[undefined, { status: 200 }]] as [
+      any,
+      { status: number },
+    ][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`put /api/v3/moviefile/editor`) % resultArray.length],
+    )
   }),
   http.delete(`${baseURL}/api/v3/moviefile/bulk`, async () => {
-    const resultArray = [[undefined, { status: 200 }]]
+    const resultArray = [[undefined, { status: 200 }]] as [
+      any,
+      { status: number },
+    ][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[
+        next(`delete /api/v3/moviefile/bulk`) % resultArray.length
+      ],
+    )
   }),
   http.put(`${baseURL}/api/v3/moviefile/bulk`, async () => {
-    const resultArray = [[undefined, { status: 200 }]]
+    const resultArray = [[undefined, { status: 200 }]] as [
+      any,
+      { status: number },
+    ][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`put /api/v3/moviefile/bulk`) % resultArray.length],
+    )
+  }),
+  http.get(`${baseURL}/api/v3/movie/:id/folder`, async () => {
+    const resultArray = [[undefined, { status: 200 }]] as [
+      any,
+      { status: number },
+    ][]
+
+    return HttpResponse.json(
+      ...resultArray[next(`get /api/v3/movie/:id/folder`) % resultArray.length],
+    )
   }),
   http.post(`${baseURL}/api/v3/movie/import`, async () => {
     const resultArray = [
-      [await getPostApiV3MovieImport200Response(), { status: 200 }],
-    ]
+      [getPostApiV3MovieImport200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`post /api/v3/movie/import`) % resultArray.length],
+    )
   }),
   http.get(`${baseURL}/api/v3/movie/lookup/tmdb`, async () => {
     const resultArray = [
-      [await getGetApiV3MovieLookupTmdb200Response(), { status: 200 }],
-    ]
+      [getGetApiV3MovieLookupTmdb200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[
+        next(`get /api/v3/movie/lookup/tmdb`) % resultArray.length
+      ],
+    )
   }),
   http.get(`${baseURL}/api/v3/movie/lookup/imdb`, async () => {
     const resultArray = [
-      [await getGetApiV3MovieLookupImdb200Response(), { status: 200 }],
-    ]
+      [getGetApiV3MovieLookupImdb200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[
+        next(`get /api/v3/movie/lookup/imdb`) % resultArray.length
+      ],
+    )
   }),
   http.get(`${baseURL}/api/v3/movie/lookup`, async () => {
     const resultArray = [
-      [await getGetApiV3MovieLookup200Response(), { status: 200 }],
-    ]
+      [getGetApiV3MovieLookup200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`get /api/v3/movie/lookup`) % resultArray.length],
+    )
   }),
   http.get(`${baseURL}/api/v3/config/naming`, async () => {
     const resultArray = [
-      [await getGetApiV3ConfigNaming200Response(), { status: 200 }],
-    ]
+      [getGetApiV3ConfigNaming200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`get /api/v3/config/naming`) % resultArray.length],
+    )
   }),
   http.put(`${baseURL}/api/v3/config/naming/:id`, async () => {
     const resultArray = [
-      [await getPutApiV3ConfigNamingId200Response(), { status: 200 }],
-    ]
+      [getPutApiV3ConfigNamingId200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[
+        next(`put /api/v3/config/naming/:id`) % resultArray.length
+      ],
+    )
   }),
   http.get(`${baseURL}/api/v3/config/naming/:id`, async () => {
     const resultArray = [
-      [await getGetApiV3ConfigNamingId200Response(), { status: 200 }],
-    ]
+      [getGetApiV3ConfigNamingId200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[
+        next(`get /api/v3/config/naming/:id`) % resultArray.length
+      ],
+    )
   }),
   http.get(`${baseURL}/api/v3/config/naming/examples`, async () => {
-    const resultArray = [[undefined, { status: 200 }]]
+    const resultArray = [[undefined, { status: 200 }]] as [
+      any,
+      { status: number },
+    ][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[
+        next(`get /api/v3/config/naming/examples`) % resultArray.length
+      ],
+    )
   }),
   http.get(`${baseURL}/api/v3/notification`, async () => {
     const resultArray = [
-      [await getGetApiV3Notification200Response(), { status: 200 }],
-    ]
+      [getGetApiV3Notification200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`get /api/v3/notification`) % resultArray.length],
+    )
   }),
   http.post(`${baseURL}/api/v3/notification`, async () => {
     const resultArray = [
-      [await getPostApiV3Notification200Response(), { status: 200 }],
-    ]
+      [getPostApiV3Notification200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`post /api/v3/notification`) % resultArray.length],
+    )
   }),
   http.put(`${baseURL}/api/v3/notification/:id`, async () => {
     const resultArray = [
-      [await getPutApiV3NotificationId200Response(), { status: 200 }],
-    ]
+      [getPutApiV3NotificationId200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`put /api/v3/notification/:id`) % resultArray.length],
+    )
   }),
   http.delete(`${baseURL}/api/v3/notification/:id`, async () => {
-    const resultArray = [[undefined, { status: 200 }]]
+    const resultArray = [[undefined, { status: 200 }]] as [
+      any,
+      { status: number },
+    ][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[
+        next(`delete /api/v3/notification/:id`) % resultArray.length
+      ],
+    )
   }),
   http.get(`${baseURL}/api/v3/notification/:id`, async () => {
     const resultArray = [
-      [await getGetApiV3NotificationId200Response(), { status: 200 }],
-    ]
+      [getGetApiV3NotificationId200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`get /api/v3/notification/:id`) % resultArray.length],
+    )
   }),
   http.get(`${baseURL}/api/v3/notification/schema`, async () => {
     const resultArray = [
-      [await getGetApiV3NotificationSchema200Response(), { status: 200 }],
-    ]
+      [getGetApiV3NotificationSchema200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[
+        next(`get /api/v3/notification/schema`) % resultArray.length
+      ],
+    )
   }),
   http.post(`${baseURL}/api/v3/notification/test`, async () => {
-    const resultArray = [[undefined, { status: 200 }]]
+    const resultArray = [[undefined, { status: 200 }]] as [
+      any,
+      { status: number },
+    ][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[
+        next(`post /api/v3/notification/test`) % resultArray.length
+      ],
+    )
   }),
   http.post(`${baseURL}/api/v3/notification/testall`, async () => {
-    const resultArray = [[undefined, { status: 200 }]]
+    const resultArray = [[undefined, { status: 200 }]] as [
+      any,
+      { status: number },
+    ][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[
+        next(`post /api/v3/notification/testall`) % resultArray.length
+      ],
+    )
   }),
   http.post(`${baseURL}/api/v3/notification/action/:name`, async () => {
-    const resultArray = [[undefined, { status: 200 }]]
+    const resultArray = [[undefined, { status: 200 }]] as [
+      any,
+      { status: number },
+    ][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[
+        next(`post /api/v3/notification/action/:name`) % resultArray.length
+      ],
+    )
   }),
   http.get(`${baseURL}/api/v3/parse`, async () => {
-    const resultArray = [[await getGetApiV3Parse200Response(), { status: 200 }]]
+    const resultArray = [[getGetApiV3Parse200Response(), { status: 200 }]] as [
+      any,
+      { status: number },
+    ][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`get /api/v3/parse`) % resultArray.length],
+    )
   }),
   http.get(`${baseURL}/ping`, async () => {
-    const resultArray = [[await getGetPing200Response(), { status: 200 }]]
+    const resultArray = [[getGetPing200Response(), { status: 200 }]] as [
+      any,
+      { status: number },
+    ][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`get /ping`) % resultArray.length],
+    )
   }),
   http.head(`${baseURL}/ping`, async () => {
-    const resultArray = [[await getHeadPing200Response(), { status: 200 }]]
+    const resultArray = [[getHeadPing200Response(), { status: 200 }]] as [
+      any,
+      { status: number },
+    ][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`head /ping`) % resultArray.length],
+    )
   }),
   http.put(`${baseURL}/api/v3/qualitydefinition/:id`, async () => {
     const resultArray = [
-      [await getPutApiV3QualitydefinitionId200Response(), { status: 200 }],
-    ]
+      [getPutApiV3QualitydefinitionId200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[
+        next(`put /api/v3/qualitydefinition/:id`) % resultArray.length
+      ],
+    )
   }),
   http.get(`${baseURL}/api/v3/qualitydefinition/:id`, async () => {
     const resultArray = [
-      [await getGetApiV3QualitydefinitionId200Response(), { status: 200 }],
-    ]
+      [getGetApiV3QualitydefinitionId200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[
+        next(`get /api/v3/qualitydefinition/:id`) % resultArray.length
+      ],
+    )
   }),
   http.get(`${baseURL}/api/v3/qualitydefinition`, async () => {
     const resultArray = [
-      [await getGetApiV3Qualitydefinition200Response(), { status: 200 }],
-    ]
+      [getGetApiV3Qualitydefinition200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[
+        next(`get /api/v3/qualitydefinition`) % resultArray.length
+      ],
+    )
   }),
   http.put(`${baseURL}/api/v3/qualitydefinition/update`, async () => {
-    const resultArray = [[undefined, { status: 200 }]]
+    const resultArray = [[undefined, { status: 200 }]] as [
+      any,
+      { status: number },
+    ][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[
+        next(`put /api/v3/qualitydefinition/update`) % resultArray.length
+      ],
+    )
   }),
   http.post(`${baseURL}/api/v3/qualityprofile`, async () => {
     const resultArray = [
-      [await getPostApiV3Qualityprofile200Response(), { status: 200 }],
-    ]
+      [getPostApiV3Qualityprofile200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`post /api/v3/qualityprofile`) % resultArray.length],
+    )
   }),
   http.get(`${baseURL}/api/v3/qualityprofile`, async () => {
     const resultArray = [
-      [await getGetApiV3Qualityprofile200Response(), { status: 200 }],
-    ]
+      [getGetApiV3Qualityprofile200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`get /api/v3/qualityprofile`) % resultArray.length],
+    )
   }),
   http.delete(`${baseURL}/api/v3/qualityprofile/:id`, async () => {
-    const resultArray = [[undefined, { status: 200 }]]
+    const resultArray = [[undefined, { status: 200 }]] as [
+      any,
+      { status: number },
+    ][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[
+        next(`delete /api/v3/qualityprofile/:id`) % resultArray.length
+      ],
+    )
   }),
   http.put(`${baseURL}/api/v3/qualityprofile/:id`, async () => {
     const resultArray = [
-      [await getPutApiV3QualityprofileId200Response(), { status: 200 }],
-    ]
+      [getPutApiV3QualityprofileId200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[
+        next(`put /api/v3/qualityprofile/:id`) % resultArray.length
+      ],
+    )
   }),
   http.get(`${baseURL}/api/v3/qualityprofile/:id`, async () => {
     const resultArray = [
-      [await getGetApiV3QualityprofileId200Response(), { status: 200 }],
-    ]
+      [getGetApiV3QualityprofileId200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[
+        next(`get /api/v3/qualityprofile/:id`) % resultArray.length
+      ],
+    )
   }),
   http.get(`${baseURL}/api/v3/qualityprofile/schema`, async () => {
     const resultArray = [
-      [await getGetApiV3QualityprofileSchema200Response(), { status: 200 }],
-    ]
+      [getGetApiV3QualityprofileSchema200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[
+        next(`get /api/v3/qualityprofile/schema`) % resultArray.length
+      ],
+    )
   }),
   http.delete(`${baseURL}/api/v3/queue/:id`, async () => {
-    const resultArray = [[undefined, { status: 200 }]]
+    const resultArray = [[undefined, { status: 200 }]] as [
+      any,
+      { status: number },
+    ][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`delete /api/v3/queue/:id`) % resultArray.length],
+    )
   }),
   http.delete(`${baseURL}/api/v3/queue/bulk`, async () => {
-    const resultArray = [[undefined, { status: 200 }]]
+    const resultArray = [[undefined, { status: 200 }]] as [
+      any,
+      { status: number },
+    ][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`delete /api/v3/queue/bulk`) % resultArray.length],
+    )
   }),
   http.get(`${baseURL}/api/v3/queue`, async () => {
-    const resultArray = [[await getGetApiV3Queue200Response(), { status: 200 }]]
+    const resultArray = [[getGetApiV3Queue200Response(), { status: 200 }]] as [
+      any,
+      { status: number },
+    ][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`get /api/v3/queue`) % resultArray.length],
+    )
   }),
   http.post(`${baseURL}/api/v3/queue/grab/:id`, async () => {
-    const resultArray = [[undefined, { status: 200 }]]
+    const resultArray = [[undefined, { status: 200 }]] as [
+      any,
+      { status: number },
+    ][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`post /api/v3/queue/grab/:id`) % resultArray.length],
+    )
   }),
   http.post(`${baseURL}/api/v3/queue/grab/bulk`, async () => {
-    const resultArray = [[undefined, { status: 200 }]]
+    const resultArray = [[undefined, { status: 200 }]] as [
+      any,
+      { status: number },
+    ][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`post /api/v3/queue/grab/bulk`) % resultArray.length],
+    )
   }),
   http.get(`${baseURL}/api/v3/queue/details`, async () => {
     const resultArray = [
-      [await getGetApiV3QueueDetails200Response(), { status: 200 }],
-    ]
+      [getGetApiV3QueueDetails200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`get /api/v3/queue/details`) % resultArray.length],
+    )
   }),
   http.get(`${baseURL}/api/v3/queue/status`, async () => {
     const resultArray = [
-      [await getGetApiV3QueueStatus200Response(), { status: 200 }],
-    ]
+      [getGetApiV3QueueStatus200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`get /api/v3/queue/status`) % resultArray.length],
+    )
   }),
   http.post(`${baseURL}/api/v3/release`, async () => {
-    const resultArray = [[undefined, { status: 200 }]]
+    const resultArray = [[undefined, { status: 200 }]] as [
+      any,
+      { status: number },
+    ][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`post /api/v3/release`) % resultArray.length],
+    )
   }),
   http.get(`${baseURL}/api/v3/release`, async () => {
     const resultArray = [
-      [await getGetApiV3Release200Response(), { status: 200 }],
-    ]
+      [getGetApiV3Release200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`get /api/v3/release`) % resultArray.length],
+    )
   }),
   http.post(`${baseURL}/api/v3/releaseprofile`, async () => {
     const resultArray = [
-      [await getPostApiV3Releaseprofile200Response(), { status: 200 }],
-    ]
+      [getPostApiV3Releaseprofile200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`post /api/v3/releaseprofile`) % resultArray.length],
+    )
   }),
   http.get(`${baseURL}/api/v3/releaseprofile`, async () => {
     const resultArray = [
-      [await getGetApiV3Releaseprofile200Response(), { status: 200 }],
-    ]
+      [getGetApiV3Releaseprofile200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`get /api/v3/releaseprofile`) % resultArray.length],
+    )
   }),
   http.delete(`${baseURL}/api/v3/releaseprofile/:id`, async () => {
-    const resultArray = [[undefined, { status: 200 }]]
+    const resultArray = [[undefined, { status: 200 }]] as [
+      any,
+      { status: number },
+    ][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[
+        next(`delete /api/v3/releaseprofile/:id`) % resultArray.length
+      ],
+    )
   }),
   http.put(`${baseURL}/api/v3/releaseprofile/:id`, async () => {
     const resultArray = [
-      [await getPutApiV3ReleaseprofileId200Response(), { status: 200 }],
-    ]
+      [getPutApiV3ReleaseprofileId200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[
+        next(`put /api/v3/releaseprofile/:id`) % resultArray.length
+      ],
+    )
   }),
   http.get(`${baseURL}/api/v3/releaseprofile/:id`, async () => {
     const resultArray = [
-      [await getGetApiV3ReleaseprofileId200Response(), { status: 200 }],
-    ]
+      [getGetApiV3ReleaseprofileId200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[
+        next(`get /api/v3/releaseprofile/:id`) % resultArray.length
+      ],
+    )
   }),
   http.post(`${baseURL}/api/v3/release/push`, async () => {
     const resultArray = [
-      [await getPostApiV3ReleasePush200Response(), { status: 200 }],
-    ]
+      [getPostApiV3ReleasePush200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`post /api/v3/release/push`) % resultArray.length],
+    )
   }),
   http.post(`${baseURL}/api/v3/remotepathmapping`, async () => {
     const resultArray = [
-      [await getPostApiV3Remotepathmapping200Response(), { status: 200 }],
-    ]
+      [getPostApiV3Remotepathmapping200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[
+        next(`post /api/v3/remotepathmapping`) % resultArray.length
+      ],
+    )
   }),
   http.get(`${baseURL}/api/v3/remotepathmapping`, async () => {
     const resultArray = [
-      [await getGetApiV3Remotepathmapping200Response(), { status: 200 }],
-    ]
+      [getGetApiV3Remotepathmapping200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[
+        next(`get /api/v3/remotepathmapping`) % resultArray.length
+      ],
+    )
   }),
   http.delete(`${baseURL}/api/v3/remotepathmapping/:id`, async () => {
-    const resultArray = [[undefined, { status: 200 }]]
+    const resultArray = [[undefined, { status: 200 }]] as [
+      any,
+      { status: number },
+    ][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[
+        next(`delete /api/v3/remotepathmapping/:id`) % resultArray.length
+      ],
+    )
   }),
   http.put(`${baseURL}/api/v3/remotepathmapping/:id`, async () => {
     const resultArray = [
-      [await getPutApiV3RemotepathmappingId200Response(), { status: 200 }],
-    ]
+      [getPutApiV3RemotepathmappingId200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[
+        next(`put /api/v3/remotepathmapping/:id`) % resultArray.length
+      ],
+    )
   }),
   http.get(`${baseURL}/api/v3/remotepathmapping/:id`, async () => {
     const resultArray = [
-      [await getGetApiV3RemotepathmappingId200Response(), { status: 200 }],
-    ]
+      [getGetApiV3RemotepathmappingId200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[
+        next(`get /api/v3/remotepathmapping/:id`) % resultArray.length
+      ],
+    )
   }),
   http.get(`${baseURL}/api/v3/rename`, async () => {
-    const resultArray = [
-      [await getGetApiV3Rename200Response(), { status: 200 }],
-    ]
+    const resultArray = [[getGetApiV3Rename200Response(), { status: 200 }]] as [
+      any,
+      { status: number },
+    ][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`get /api/v3/rename`) % resultArray.length],
+    )
   }),
   http.post(`${baseURL}/api/v3/rootfolder`, async () => {
     const resultArray = [
-      [await getPostApiV3Rootfolder200Response(), { status: 200 }],
-    ]
+      [getPostApiV3Rootfolder200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`post /api/v3/rootfolder`) % resultArray.length],
+    )
   }),
   http.get(`${baseURL}/api/v3/rootfolder`, async () => {
     const resultArray = [
-      [await getGetApiV3Rootfolder200Response(), { status: 200 }],
-    ]
+      [getGetApiV3Rootfolder200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`get /api/v3/rootfolder`) % resultArray.length],
+    )
   }),
   http.delete(`${baseURL}/api/v3/rootfolder/:id`, async () => {
-    const resultArray = [[undefined, { status: 200 }]]
+    const resultArray = [[undefined, { status: 200 }]] as [
+      any,
+      { status: number },
+    ][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[
+        next(`delete /api/v3/rootfolder/:id`) % resultArray.length
+      ],
+    )
   }),
   http.get(`${baseURL}/api/v3/rootfolder/:id`, async () => {
     const resultArray = [
-      [await getGetApiV3RootfolderId200Response(), { status: 200 }],
-    ]
+      [getGetApiV3RootfolderId200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`get /api/v3/rootfolder/:id`) % resultArray.length],
+    )
   }),
   http.get(`${baseURL}/content/:path`, async () => {
-    const resultArray = [[undefined, { status: 200 }]]
+    const resultArray = [[undefined, { status: 200 }]] as [
+      any,
+      { status: number },
+    ][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`get /content/:path`) % resultArray.length],
+    )
   }),
   http.get(`${baseURL}/`, async () => {
-    const resultArray = [[undefined, { status: 200 }]]
+    const resultArray = [[undefined, { status: 200 }]] as [
+      any,
+      { status: number },
+    ][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(...resultArray[next(`get /`) % resultArray.length])
   }),
   http.get(`${baseURL}/:path`, async () => {
-    const resultArray = [[undefined, { status: 200 }]]
+    const resultArray = [[undefined, { status: 200 }]] as [
+      any,
+      { status: number },
+    ][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`get /:path`) % resultArray.length],
+    )
   }),
   http.get(`${baseURL}/api/v3/system/status`, async () => {
     const resultArray = [
-      [await getGetApiV3SystemStatus200Response(), { status: 200 }],
-    ]
+      [getGetApiV3SystemStatus200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`get /api/v3/system/status`) % resultArray.length],
+    )
   }),
   http.get(`${baseURL}/api/v3/system/routes`, async () => {
-    const resultArray = [[undefined, { status: 200 }]]
+    const resultArray = [[undefined, { status: 200 }]] as [
+      any,
+      { status: number },
+    ][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`get /api/v3/system/routes`) % resultArray.length],
+    )
   }),
   http.get(`${baseURL}/api/v3/system/routes/duplicate`, async () => {
-    const resultArray = [[undefined, { status: 200 }]]
+    const resultArray = [[undefined, { status: 200 }]] as [
+      any,
+      { status: number },
+    ][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[
+        next(`get /api/v3/system/routes/duplicate`) % resultArray.length
+      ],
+    )
   }),
   http.post(`${baseURL}/api/v3/system/shutdown`, async () => {
-    const resultArray = [[undefined, { status: 200 }]]
+    const resultArray = [[undefined, { status: 200 }]] as [
+      any,
+      { status: number },
+    ][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`post /api/v3/system/shutdown`) % resultArray.length],
+    )
   }),
   http.post(`${baseURL}/api/v3/system/restart`, async () => {
-    const resultArray = [[undefined, { status: 200 }]]
+    const resultArray = [[undefined, { status: 200 }]] as [
+      any,
+      { status: number },
+    ][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`post /api/v3/system/restart`) % resultArray.length],
+    )
   }),
   http.get(`${baseURL}/api/v3/tag`, async () => {
-    const resultArray = [[await getGetApiV3Tag200Response(), { status: 200 }]]
+    const resultArray = [[getGetApiV3Tag200Response(), { status: 200 }]] as [
+      any,
+      { status: number },
+    ][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`get /api/v3/tag`) % resultArray.length],
+    )
   }),
   http.post(`${baseURL}/api/v3/tag`, async () => {
-    const resultArray = [[await getPostApiV3Tag200Response(), { status: 200 }]]
+    const resultArray = [[getPostApiV3Tag200Response(), { status: 200 }]] as [
+      any,
+      { status: number },
+    ][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`post /api/v3/tag`) % resultArray.length],
+    )
   }),
   http.put(`${baseURL}/api/v3/tag/:id`, async () => {
-    const resultArray = [[await getPutApiV3TagId200Response(), { status: 200 }]]
+    const resultArray = [[getPutApiV3TagId200Response(), { status: 200 }]] as [
+      any,
+      { status: number },
+    ][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`put /api/v3/tag/:id`) % resultArray.length],
+    )
   }),
   http.delete(`${baseURL}/api/v3/tag/:id`, async () => {
-    const resultArray = [[undefined, { status: 200 }]]
+    const resultArray = [[undefined, { status: 200 }]] as [
+      any,
+      { status: number },
+    ][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`delete /api/v3/tag/:id`) % resultArray.length],
+    )
   }),
   http.get(`${baseURL}/api/v3/tag/:id`, async () => {
-    const resultArray = [[await getGetApiV3TagId200Response(), { status: 200 }]]
+    const resultArray = [[getGetApiV3TagId200Response(), { status: 200 }]] as [
+      any,
+      { status: number },
+    ][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`get /api/v3/tag/:id`) % resultArray.length],
+    )
   }),
   http.get(`${baseURL}/api/v3/tag/detail`, async () => {
     const resultArray = [
-      [await getGetApiV3TagDetail200Response(), { status: 200 }],
-    ]
+      [getGetApiV3TagDetail200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`get /api/v3/tag/detail`) % resultArray.length],
+    )
   }),
   http.get(`${baseURL}/api/v3/tag/detail/:id`, async () => {
     const resultArray = [
-      [await getGetApiV3TagDetailId200Response(), { status: 200 }],
-    ]
+      [getGetApiV3TagDetailId200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`get /api/v3/tag/detail/:id`) % resultArray.length],
+    )
   }),
   http.get(`${baseURL}/api/v3/system/task`, async () => {
     const resultArray = [
-      [await getGetApiV3SystemTask200Response(), { status: 200 }],
-    ]
+      [getGetApiV3SystemTask200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`get /api/v3/system/task`) % resultArray.length],
+    )
   }),
   http.get(`${baseURL}/api/v3/system/task/:id`, async () => {
     const resultArray = [
-      [await getGetApiV3SystemTaskId200Response(), { status: 200 }],
-    ]
+      [getGetApiV3SystemTaskId200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`get /api/v3/system/task/:id`) % resultArray.length],
+    )
   }),
   http.put(`${baseURL}/api/v3/config/ui/:id`, async () => {
     const resultArray = [
-      [await getPutApiV3ConfigUiId200Response(), { status: 200 }],
-    ]
+      [getPutApiV3ConfigUiId200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`put /api/v3/config/ui/:id`) % resultArray.length],
+    )
   }),
   http.get(`${baseURL}/api/v3/config/ui/:id`, async () => {
     const resultArray = [
-      [await getGetApiV3ConfigUiId200Response(), { status: 200 }],
-    ]
+      [getGetApiV3ConfigUiId200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`get /api/v3/config/ui/:id`) % resultArray.length],
+    )
   }),
   http.get(`${baseURL}/api/v3/config/ui`, async () => {
     const resultArray = [
-      [await getGetApiV3ConfigUi200Response(), { status: 200 }],
-    ]
+      [getGetApiV3ConfigUi200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`get /api/v3/config/ui`) % resultArray.length],
+    )
   }),
   http.get(`${baseURL}/api/v3/update`, async () => {
-    const resultArray = [
-      [await getGetApiV3Update200Response(), { status: 200 }],
-    ]
+    const resultArray = [[getGetApiV3Update200Response(), { status: 200 }]] as [
+      any,
+      { status: number },
+    ][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`get /api/v3/update`) % resultArray.length],
+    )
   }),
   http.get(`${baseURL}/api/v3/log/file/update`, async () => {
     const resultArray = [
-      [await getGetApiV3LogFileUpdate200Response(), { status: 200 }],
-    ]
+      [getGetApiV3LogFileUpdate200Response(), { status: 200 }],
+    ] as [any, { status: number }][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[next(`get /api/v3/log/file/update`) % resultArray.length],
+    )
   }),
   http.get(`${baseURL}/api/v3/log/file/update/:filename`, async () => {
-    const resultArray = [[undefined, { status: 200 }]]
+    const resultArray = [[undefined, { status: 200 }]] as [
+      any,
+      { status: number },
+    ][]
 
-    return HttpResponse.json(...resultArray[next() % resultArray.length])
+    return HttpResponse.json(
+      ...resultArray[
+        next(`get /api/v3/log/file/update/:filename`) % resultArray.length
+      ],
+    )
   }),
 ]
 
@@ -4662,15 +5591,7 @@ export function getGetApiV3Health200Response() {
     source: faker.lorem.words(),
     type: faker.helpers.arrayElement(['ok', 'notice', 'warning', 'error']),
     message: faker.lorem.words(),
-    wikiUrl: {
-      fullUri: faker.lorem.words(),
-      scheme: faker.lorem.words(),
-      host: faker.lorem.words(),
-      port: faker.number.int(),
-      path: faker.lorem.words(),
-      query: faker.lorem.words(),
-      fragment: faker.lorem.words(),
-    },
+    wikiUrl: faker.internet.url(),
   }))
 }
 
