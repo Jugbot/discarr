@@ -20,7 +20,7 @@ services:
     image: ghcr.io/jugbot/discarr:latest
     restart: unless-stopped
     volumes:
-      - postgres-data:/var/lib/postgresql/data
+      - <your/data/dir>:/data
     ports:
       # All ports are optional
       - '3000:3000' # api
@@ -34,6 +34,4 @@ services:
       - JELLYSEER_PUBLIC_URL= # fallback: JELLYSEER_URL
       - LOG_LEVEL= # default: info # options: error|warn|info|verbose|debug
       - CRON_SCHEDULE= # default: * * * * * (every minute)
-volumes:
-  postgres-data:
 ```
