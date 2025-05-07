@@ -24,7 +24,7 @@ export async function getNotificationSettings(userId: number) {
   }
 
   return {
-    discordId: res.data.discordEnabled ? res.data.discordId : null,
+    discordId: res.data.discordId,
   }
 }
 
