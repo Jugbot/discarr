@@ -1,10 +1,16 @@
 packages:
   - packages/*
   - configs/*
+catalogs:
+  msw1:
+    msw: ^1.3.4
+    msw-storybook-addon: ^1.10.0
+    msw-trpc: ^1.3.4
 catalog:
   '@electric-sql/pglite': ^0.2.17
   '@eslint/compat': ^1.2.7
   '@eslint/js': ^9.23.0
+  '@faker-js/faker': ^9.7.0
   '@radix-ui/themes': ^3.1.3
   '@stitches/react': ^1.2.8
   '@storybook/addon-essentials': ^8.2.9
@@ -43,7 +49,8 @@ catalog:
   husky: ^9.1.5
   jsdom: ^25.0.0
   lint-staged: ^15.2.10
-  msw: ^1.3.4
+  msw: ^2.7.5
+  msw-auto-mock: ^0.31.0
   msw-storybook-addon: ^1.10.0
   msw-trpc: ^1.3.4
   node-cron: ^3.0.3
@@ -62,4 +69,6 @@ catalog:
   vite: ^5.4.1
   vitest: ^2.0.5
   winston: ^3.17.0
-  zod: ^3.23.8
+  zod: ^3.24.3
+onlyBuiltDependencies:
+  - msw

@@ -1,6 +1,6 @@
 import { and, eq } from '@acme/db'
 import { Media } from '@acme/db/schema'
-import { DeepPartial, inferRouterContext } from '@trpc/server'
+import { inferRouterContext } from '@trpc/server'
 import {
   DiscordAPIError,
   Message,
@@ -14,15 +14,18 @@ import { UserMap } from '../model/User'
 import { postRouter } from '../router/post'
 import { getClient } from '../sdk/discord'
 import { client as jellyseerrClient } from '../sdk/jellyseer'
-import { client as radarrClient } from '../sdk/radarr'
-import { client as sonarrClient } from '../sdk/sonarr'
+import { getClient as getRadarrClient } from '../sdk/radarr'
+import { getClient as getSonarrClient } from '../sdk/sonarr'
 import { getServer, getTextChannel, templates } from '../service/discord'
 import { deepEquals } from '../utilities/deepEquals'
 
-export function mediaService({
+export async function mediaService({
   logger,
   db,
 }: inferRouterContext<typeof postRouter>) {
+  const radarrClient = await getRadarrClient()
+  const sonarrClient = await getSonarrClient()
+
   const handleBadResponse =
     (errorMessage: string) =>
     <T>(res: { data?: T; response: Response; error?: unknown }) => {
@@ -228,8 +231,7 @@ export function mediaService({
       return
     }
 
-    // Last state can potentially have missing keys
-    const lastState = threadRow.last_state as DeepPartial<MediaInfo>
+    const lastState = threadRow.last_state as MediaInfo
 
     // Get or create thread
     const getThread = async () => {

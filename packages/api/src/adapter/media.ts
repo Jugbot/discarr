@@ -1,5 +1,5 @@
 import { config } from '../config'
-import { components as jellyseerrComponents } from '../generated/overseerrAPI'
+import { components as jellyseerrComponents } from '../generated/jellyseerrAPI'
 import { components as sonarrComponents } from '../generated/sonarrAPI'
 import { MediaInfo, Request, Season } from '../model/Media'
 import { UserMap } from '../model/User'

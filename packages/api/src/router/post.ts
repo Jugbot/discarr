@@ -10,7 +10,7 @@ export const postRouter = createTRPCRouter({
     const { logger, db } = ctx
     logger.info('Running media sync')
 
-    const { getMedia } = mediaService(ctx)
+    const { getMedia } = await mediaService(ctx)
 
     const users = await getUsers()
     const medias = await getMedia(users)
@@ -36,7 +36,7 @@ export const postRouter = createTRPCRouter({
     const { logger } = ctx
     logger.info('Checking media updates')
 
-    const { getMedia } = mediaService(ctx)
+    const { getMedia } = await mediaService(ctx)
 
     const users = await getUsers()
     const medias = await getMedia(users)
@@ -56,7 +56,7 @@ export const postRouter = createTRPCRouter({
           mediaId: `${media.type}/${media.id}`,
         })
         mediaLogger.verbose(`Processing ${media.title}`)
-        const { processMediaUpdate } = mediaService({
+        const { processMediaUpdate } = await mediaService({
           ...ctx,
           logger: mediaLogger,
         })
