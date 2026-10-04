@@ -12,6 +12,9 @@
     },
     "./schema": {
       "default": "./src/schema.ts"
+    },
+    "./mock": {
+      "default": "./src/mock.ts"
     }
   },
   "scripts": {

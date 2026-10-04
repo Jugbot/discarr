@@ -12,6 +12,7 @@
     "dev": "tsx watch src/server",
     "prod": "tsx src/server",
     "check-types": "tsc",
+    "test": "vitest run",
     "gen-types": "node ./scripts/gen-types.js ./src/generated"
   },
   "dependencies": {
@@ -26,13 +27,17 @@
   },
   "devDependencies": {
     "@acme/tsconfig": "workspace:*",
+    "@faker-js/faker": "catalog:",
     "@types/cors": "catalog:",
     "@types/node-cron": "catalog:",
     "eslint": "catalog:",
+    "msw": "catalog:",
+    "msw-auto-mock": "catalog:",
     "node-cron": "catalog:",
     "prettier": "catalog:",
     "tsx": "catalog:",
     "typescript": "catalog:",
+    "vitest": "catalog:",
     "winston": "catalog:"
   }
 }
